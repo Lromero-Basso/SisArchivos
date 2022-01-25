@@ -1,1 +1,42 @@
 {% extends "base.html.twig" %}
+
+{% block body %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Cod Caja|</th>
+            <th scope="col">Cod Estante</th>
+            <th scope="col">Cod Lado</th>
+            <th scope="col">Columna</th>
+            <th scope="col">Piso</th>
+            <th scope="col">Cod Area</th>
+            <th scope="col">Titulo Caja</th>
+            <th scope="col">Nro desde</th>
+            <th scope="col">Nro hasta</th>
+            <th scope="col">Fecha desde</th>
+            <th scope="col">Fecha hasta</th>
+            <th scope="col">Archivado hasta</th>
+            <th scope="col">Observa</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for box in boxes %}
+        <tr>
+            <th scope="row">{{box.id}}</th>
+            <td>{{box.codEstante}}</td>
+            <td>{{box.codLado}}</td>
+            <td>{{box.columna}}</td>
+            <td>{{box.piso}}</td>
+            <td>{{box.codArea}}</td>
+            <td>{{box.tituloCaja}}</td>
+            <td>{{box.nroDesdeCaja}}</td>
+            <td>{{box.nroHastaCaja}}</td>
+            <td>{{box.fechaDesdeCaja|date('d/m/Y')}}</td>
+            <td>{{box.fechaHastaCaja|date('d/m/Y')}}</td>
+            <td>{{box.archivadoHasta|date('d/m/Y')}}</td>
+            <td>{{box.observa}}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

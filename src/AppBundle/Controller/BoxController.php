@@ -37,7 +37,7 @@ class BoxController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $todos = $entityManager->getRepository(Depcajas::class)->findAll();
+        $boxes = $entityManager->getRepository(Depcajas::class)->findAll();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
@@ -45,7 +45,9 @@ class BoxController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('box/all.html.twig');
+        return $this->render('box/all.html.twig', array(
+            'boxes' => $boxes
+        ));
     }
 
     /**

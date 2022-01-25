@@ -2,31 +2,31 @@
 
 {% block body %}
 <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Codigo carpeta</th>
-      <th scope="col">Nro carpeta</th>
-      <th scope="col">Codigo caja</th>
-      <th scope="col">Titulo carpeta</th>
-      <th scope="col">Fecha desde</th>
-      <th scope="col">Fecha hasta</th>
-      <th scope="col">Estado</th>
-      <th scope="col">Editar</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for folder in folders %}
-    <tr>
-        <th scope="row">{{folder.id}}</th>
-        <td>{{folder.nroCarpeta}}</td>
-        <td>{{folder.codCaja}}</td>
-        <td>{{folder.tituloCarp}}</td>
-        <td>{{folder.fechaDesdeCarp|date('d/m/Y')}}</td>
-        <td>{{folder.fechaHastaCarp|date('d/m/Y')}}</td>
-        <td>{{folder.estado}}</td>
-        <td><a class="btn" href="{{ path('editFolder', { 'id': folder.id }) }}" ><i class="far fa-edit"></i></a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
+    <thead>
+      <tr>
+        <th scope="col">Codigo carpeta</th>
+        <th scope="col">Nro carpeta</th>
+        <th scope="col">Codigo caja</th>
+        <th scope="col">Titulo carpeta</th>
+        <th scope="col">Fecha desde</th>
+        <th scope="col">Fecha hasta</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for folder in folders %}
+      <tr>
+          <th scope="row">{{folder.id}}</th>
+          <td>{{folder.nroCarpeta}}</td>
+          <td>{{folder.codCaja}}</td>
+          <td>{{folder.tituloCarp}}</td>
+          <td>{{folder.fechaDesdeCarp|date('d/m/Y')}}</td>
+          <td>{{folder.fechaHastaCarp|date('d/m/Y')}}</td>
+          <td>{{folder.estado}}</td>
+          <td><a class="btn" href="{{ path('editFolder', { 'id': folder.id }) }}" ><i class="far fa-edit"></i></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
