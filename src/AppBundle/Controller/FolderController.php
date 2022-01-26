@@ -85,6 +85,32 @@ class FolderController extends BaseController
     }
 
     /**
+     * @Route("/{id}", name="showFolder")
+     */
+    public function showFolder(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+             
+        $breadcrumbs->addItem("Vista Previa");
+        
+        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        
+        return $this->render('folder/show.html.twig');
+    }
+
+    /**
+     * @Route("/{id}", name="deleteFolder")
+     */
+    public function deleteFolder(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        return $this->redirectToRoute('viewFolders');
+    }
+
+    /**
     * Create filter form and process filter request.
     *
     */

@@ -65,4 +65,31 @@ class BoxController extends BaseController
         return $this->render('box/edit.html.twig');
     }
 
+    
+    /**
+     * @Route("/{id}", name="showBox")
+     */
+    public function showBox(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+             
+        $breadcrumbs->addItem("Vista Previa");
+        
+        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        
+        return $this->render('box/show.html.twig');
+    }
+
+    /**
+     * @Route("/{id}", name="deleteBox")
+     */
+    public function deleteBox(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        return $this->redirectToRoute('viewBoxes');
+    }
+
 }
