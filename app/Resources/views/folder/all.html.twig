@@ -11,33 +11,32 @@
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewFolders') }}" method="get">
         <div class="row">
           <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
-
-          <div class="col-md-1">{{ form_row(filterForm.nroCarpeta) }}</div>
+          {# <div class="col-md-1">{{ form_row(filterForm.id, { 'attr': {'class': 'form-control'}}) }}</div> #}
+          <div class="col-md-2">{{ form_row(filterForm.nroCarpeta) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codCaja) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.tituloCarp) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.estado) }}</div>
 
           {# INICIO Render manual date range#}
-
-          <div id="fecha" class="col-md-5">
-              <div class="row">
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="control-label" for="fecha_left_date">Fecha desde</label>
-                          <input type="date" id="fecha_left_date" name="fecha[left_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.left_date.vars.value}}" />
-                      </div>
-                  </div>
-              
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="control-label" for="fecha_right_date">fecha hasta</label>
-                          <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaHastaCarp.children.right_date.vars.value}}"/>
-                      </div>
+          
+          <div id="fechaDesdeCarp" class="col-md-5">
+            <div class="row">
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label class="control-label" for="fecha_left_date">Fecha desde</label>
+                      <input type="date" id="fecha_left_date" name="fecha[left_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.left_date.vars.value}}" />
                   </div>
               </div>
+              
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label class="control-label" for="fecha_right_date">fecha hasta</label>
+                      <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.right_date.vars.value}}"/>
+                  </div>
+              </div>
+            </div>
           </div> 
           {% do filterForm.fechaDesdeCarp.setRendered %}
-          {% do filterForm.fechaHastaCarp.setRendered %}
           {# FIN Render manual date range#}
 
     
@@ -143,8 +142,8 @@ Poner los flash en el base
           <td>{{folder.nroCarpeta}}</td>
           <td>{{folder.codCaja}}</td>
           <td>{{folder.tituloCarp}}</td>
-          <td>{{folder.fechaDesdeCarp|date('Y-m-d')}}</td>
-          <td>{{folder.fechaHastaCarp|date('Y-m-d')}}</td>
+          <td>{{folder.fechaDesdeCarp|date('d-m-Y')}}</td>
+          <td>{{folder.fechaHastaCarp|date('d-m-Y')}}</td>
           <td>{{folder.estado}}</td>
           <td class="actions  noExl">
             <div class="btn-group">
