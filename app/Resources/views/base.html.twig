@@ -43,7 +43,7 @@
                         Áreas
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{path('createArea')}}">Registrar</a>
+                            <a class="dropdown-item" href="{{path('createArea')}}">Cargar</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{path('viewAreas')}}">Detalle</a>
                             
@@ -54,7 +54,7 @@
                         Cajas
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{path('createBox')}}">Registrar</a>
+                            <a class="dropdown-item" href="{{path('createBox')}}">Cargar</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{path('viewBoxes')}}">Detalle</a>
                          
@@ -65,9 +65,20 @@
                         Carpetas
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{path('createFolder')}}">Registrar</a>
+                            <a class="dropdown-item" href="{{path('createFolder')}}">Cargar</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{path('viewFolders')}}">Detalle</a>
+                            
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Registro
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{path('createRecord')}}">Cargar</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{path('viewRecords')}}">Detalle</a>
                             
                         </div>
                     </li>
@@ -77,7 +88,7 @@
     </nav>
     <div class="container">
     {% block menu %}
-            {{ wo_render_breadcrumbs({separator: '', listId: 'breadcrumbs', viewTemplate: "yourBreadcrumbs.html.twig"}) }}            
+        {{ wo_render_breadcrumbs({separator: '', listId: 'breadcrumbs', viewTemplate: "yourBreadcrumbs.html.twig"}) }}            
     {% endblock %}
     {% block body %}{% endblock %}
     </div>

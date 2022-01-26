@@ -17,8 +17,12 @@ class CarpecajaFilterType extends AbstractType
             ->add('nroCarpeta', Filters\NumberFilterType::class, array(
                 'label' => 'N° Carpeta'
             ))
-            ->add('codCaja', Filters\NumberFilterType::class)
-            ->add('tituloCarp', Filters\TextFilterType::class)
+            ->add('codCaja', Filters\NumberFilterType::class, array(
+                'label' => 'Código caja'
+            ))
+            ->add('tituloCarp', Filters\TextFilterType::class, array(
+                'label' => 'Título carpeta'
+            ))
             ->add('fechaDesdeCarp', Filters\DateRangeFilterType::class,  array(
                 'label' => 'Fecha',
                 'left_date_options' => array(
@@ -33,7 +37,9 @@ class CarpecajaFilterType extends AbstractType
                     'label' => 'hasta'
                 )
             ))
-            ->add('estado', Filters\TextFilterType::class);
+            ->add('estado', Filters\TextFilterType::class, array(
+                'label' => 'Estado'
+            ));
         $builder->setMethod("GET");
     }
     

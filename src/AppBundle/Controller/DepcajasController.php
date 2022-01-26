@@ -7,59 +7,57 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use AppBundle\Entity\Carpecaja;
+use AppBundle\Entity\Depcajas;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap4View;
 
-
-//carpecaja
+//depcajas
 
 /**
- * @Route("/folder")
+ * @Route("/box")
  */
-class FolderController extends BaseController
+class DepcajasController extends BaseController
 {
     /**
-     * @Route("/create", name="createFolder")
+     * @Route("/create", name="createBox")
      */
-    public function createFolder(Request $request){
+    public function createBox(Request $request){
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Carpeta", "createFolder");
+        $breadcrumbs->addRouteItem("Cargar Caja", "createBox");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('folder/create.html.twig');
+        return $this->render('box/create.html.twig');
     }
 
     /**
-     * @Route("/view", name="viewFolders")
-     * @Method("GET")
+     * @Route("/view", name="viewBoxes")
      */
-    public function viewFolders(Request $request){
+    public function viewBoxes(Request $request){
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Ver Carpetas", "viewFolders");
+        $breadcrumbs->addRouteItem("Ver Cajas", "viewBoxes");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
+        $queryBuilder = $entityManager->getRepository('AppBundle:Depcajas')->createQueryBuilder('e');
 
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
-        list($folders, $pagerHtml) = $this->paginator($queryBuilder, $request);
+        list($boxes, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
         return $this->render('folder/all.html.twig', array(
-            'folders' => $folders,
+            'boxes' => $boxes,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
             'totalOfRecordsString' => $totalOfRecordsString,
@@ -67,25 +65,25 @@ class FolderController extends BaseController
     }
 
     /**
-     * @Route("/edit/{id}", name="editFolder")
+     * @Route("/edit/{id}", name="editBox")
      */
-    public function editFolder(Request $request, $id){
-
+    public function editBox(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addItem("Editar Carpeta - $id", "editFolder");
+        $breadcrumbs->addItem("Editar Caja - $id", "editBox");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
-        
-        return $this->render('folder/edit.html.twig');
+
+        return $this->render('box/edit.html.twig');
     }
 
+    
     /**
-     * @Route("/{id}", name="showFolder")
+     * @Route("/{id}", name="showBox")
      */
-    public function showFolder(Request $request, $id){
+    public function showBox(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -95,17 +93,17 @@ class FolderController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
         
-        return $this->render('folder/show.html.twig');
+        return $this->render('box/show.html.twig');
     }
 
     /**
-     * @Route("/{id}", name="deleteFolder")
+     * @Route("/{id}", name="deleteBox")
      */
-    public function deleteFolder(Request $request, $id){
+    public function deleteBox(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
         
-        return $this->redirectToRoute('viewFolders');
+        return $this->redirectToRoute('viewBoxes');
     }
 
     /**
@@ -114,14 +112,14 @@ class FolderController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType');
+        $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType');
 
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
-            if($session->get('CarpecajaControllerFilter') != null){
+            if($session->get('DepcajaControllerFilter') != null){
                 //If null apply reset, is necessary because without the validate, this closed the session
-                $session->remove('CarpecajaControllerFilter');
+                $session->remove('DepcajaControllerFilter');
             }
         }
 
@@ -136,24 +134,9 @@ class FolderController extends BaseController
 
                 //Save filter to session
                 $filterData = $filterForm->getData();
-                $session->set('CarpecajaControllerFilter', $filterData);
+                $session->set('DepcajaControllerFilter', $filterData);
             }
         }
-        else{
-            if($session->has('CarpecajaControllerFilter')){
-                $filterData = $session->get('CarpecajaControllerFilter');
-
-                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-                    if (is_object($filter)) {
-                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-                    }
-                }
-
-                $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
-                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-            }
-        }
-
         return array($filterForm, $queryBuilder);
 
     }
@@ -186,7 +169,7 @@ class FolderController extends BaseController
         {
             $requestParams = $request->query->all();
             $requestParams['pcg_page'] = $page;
-            return $me->generateUrl('viewFolders', $requestParams);
+            return $me->generateUrl('viewBoxes', $requestParams);
         };
 
         // Paginator - view
@@ -222,7 +205,7 @@ class FolderController extends BaseController
 
     /**
     * Bulk Action
-    * @Route("/bulk-action/", name="carpecaja_bulk_action")
+    * @Route("/bulk-action/", name="depcaja_bulk_action")
     * @Method("POST")
     */
     public function bulkAction(Request $request)
@@ -233,7 +216,7 @@ class FolderController extends BaseController
         if ($action == "delete") {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Carpecaja');
+                $repository = $em->getRepository('AppBundle:Area');
 
                 foreach ($ids as $id) {
                     $folder = $repository->find($id);
@@ -248,8 +231,7 @@ class FolderController extends BaseController
             }
         }
 
-        return $this->redirect($this->generateUrl('viewFolders'));
+        return $this->redirect($this->generateUrl('viewBoxes'));
     }
-
 
 }

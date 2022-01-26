@@ -1,44 +1,42 @@
 {% extends "base.html.twig" %}
 
-{% block title %} {{ parent() }} - Carpetas {% endblock %}
+{% block title %} {{ parent() }} - Registros {% endblock %}
 
 {% block body %}
 
 <!-- HEADER -->
 <div class="row"> 
-  <!-- FILTERING -->
+
+<!-- FILTERING -->
   <div class="col-md-12"> 
     <div  id="filters" class="collapse"> 
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewFolders') }}" method="get">
         <div class="row">
           <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
-          {# <div class="col-md-1">{{ form_row(filterForm.id, { 'attr': {'class': 'form-control'}}) }}</div> #}
-          <div class="col-md-2">{{ form_row(filterForm.nroCarpeta) }}</div>
-          <div class="col-md-2">{{ form_row(filterForm.codCaja) }}</div>
-          <div class="col-md-2">{{ form_row(filterForm.tituloCarp) }}</div>
-          <div class="col-md-2">{{ form_row(filterForm.estado) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.codCarpeta) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.legajo) }}</div>
 
           {# INICIO Render manual date range#}
           
-          <div id="fechaDesdeCarp" class="col-md-5">
+          <div id="fechaRetiro" class="col-md-5">
             <div class="row">
               <div class="col-md-6">
                   <div class="form-group">
                       <label class="control-label" for="fecha_left_date">Fecha desde</label>
-                      <input type="date" id="fecha_left_date" name="fecha[left_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.left_date.vars.value}}" />
+                      <input type="date" id="fecha_left_date" name="fecha[left_date]" class="form-control" value="{{ filterForm.fechaRetiro.children.left_date.vars.value}}" />
                   </div>
               </div>
               
               <div class="col-md-6">
                   <div class="form-group">
                       <label class="control-label" for="fecha_right_date">fecha hasta</label>
-                      <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaHastaCarp.children.right_date.vars.value}}"/>
+                      <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaDevolucion.children.right_date.vars.value}}"/>
                   </div>
               </div>
             </div>
           </div> 
-          {% do filterForm.fechaDesdeCarp.setRendered %}
-          {% do filterForm.fechaHastaCarp.setRendered %}
+          {% do filterForm.fechaRetiro.setRendered %}
+          {% do filterForm.fechaDevolucion.setRendered %}
           {# FIN Render manual date range#}
 
     
@@ -59,17 +57,16 @@
     </div>
   </div>
   <!-- END FILTERING -->
-
-
+  
   <!-- PAGE SIZE -->
   <div class="col-md-3 pull-left">
     <div class="pagination form-inline ">
       <select class = "form-control"  onchange="window.location = this.value" >
-          <option value='{{ path('viewFolders', app.request.query.all|merge({'pcg_show': '10'})) }}' {% if app.request.get('pcg_show')  == 10 %}  selected {% endif %}>10</option>
-          <option value='{{ path('viewFolders', app.request.query.all|merge({'pcg_show': '20'})) }}' {% if app.request.get('pcg_show')  == 20 %}  selected {% endif %}>20</option>
-          <option value='{{ path('viewFolders', app.request.query.all|merge({'pcg_show': '50'})) }}' {% if app.request.get('pcg_show')  == 50 %}  selected {% endif %}>50</option>
-          <option value='{{ path('viewFolders', app.request.query.all|merge({'pcg_show': '100'})) }}' {% if app.request.get('pcg_show') == 100 %} selected {% endif %}>100</option>
-          <option value='{{ path('viewFolders', app.request.query.all|merge({'pcg_show': '500'})) }}' {% if app.request.get('pcg_show') == 500 %} selected {% endif %}>500</option>
+          <option value='{{ path('viewRecords', app.request.query.all|merge({'pcg_show': '10'})) }}' {% if app.request.get('pcg_show')  == 10 %}  selected {% endif %}>10</option>
+          <option value='{{ path('viewRecords', app.request.query.all|merge({'pcg_show': '20'})) }}' {% if app.request.get('pcg_show')  == 20 %}  selected {% endif %}>20</option>
+          <option value='{{ path('viewRecords', app.request.query.all|merge({'pcg_show': '50'})) }}' {% if app.request.get('pcg_show')  == 50 %}  selected {% endif %}>50</option>
+          <option value='{{ path('viewRecords', app.request.query.all|merge({'pcg_show': '100'})) }}' {% if app.request.get('pcg_show') == 100 %} selected {% endif %}>100</option>
+          <option value='{{ path('viewRecords', app.request.query.all|merge({'pcg_show': '500'})) }}' {% if app.request.get('pcg_show') == 500 %} selected {% endif %}>500</option>
       </select>
     </div>
       
@@ -101,62 +98,39 @@
 <!-- END HEADER -->
 </div>
 
-<!-- FLASH MESSAGES -->
-{# <div class="row">
-    <div class="col-md-12">
-        {% for type, flashMessages in app.session.flashbag.all() %} 
-        {% for flashMessage in flashMessages %}
-        <div class="alert alert-{{ type }}">
-            {{ flashMessage|raw }}
-        </div>
-         {% endfor %} 
-         {% endfor %} 
-    </div>
-</div> 
-
-Poner los flash en el base
-
-#}
-
-<!-- END FLASH MESSAGES -->
-
 <!-- /TABLE WITH SORT -->
 
-<form method="POST" id="bulk_form" action="{{ path('carpecaja_bulk_action') }} ">
+<form method="POST" id="bulk_form" action="{{ path('histarch_bulk_action') }} ">
   <div class="card mb-4 mt-4">
-    <table class="table table-striped table-hover table-sm" id="tabla" namefile="Carpecaja">
+    <table class="table table-striped table-hover table-sm" id="tabla" namefile="Histarch">
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
           <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Id')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('nroCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° Carpeta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código Caja')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('tituloCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título Carpeta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaDesdeCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Desde')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaHastaCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Hasta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('estado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Estado')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código carpeta')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Legajo')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Retiro')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Devolución')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
-        {% for folder in folders %}
+        {% for record in records %}
         <tr>
           <td>{{folder.id}}</td>
-          <td>{{folder.nroCarpeta}}</td>
-          <td>{{folder.codCaja}}</td>
-          <td>{{folder.tituloCarp}}</td>
-          <td>{{folder.fechaDesdeCarp|date('d-m-Y')}}</td>
-          <td>{{folder.fechaHastaCarp|date('d-m-Y')}}</td>
-          <td>{{folder.estado}}</td>
+          <td>{{folder.codCarpeta}}</td>
+          <td>{{folder.legajo}}</td>
+          <td>{{folder.fechaRetiro|date('d-m-Y')}}</td>
+          <td>{{folder.fechaDevolucion|date('d-m-Y')}}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showFolder', { 'id': folder.id }) }}">Vista Previa</a>
-                <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar</a>
-                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteFolder', { 'id': folder.id}) }}">Eliminar</a>
+                <a class="dropdown-item" title='Vista Previa' href="{{ path('showRecord', { 'id': folder.id }) }}">Vista Previa</a>
+                <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': folder.id }) }}">Editar</a>
+                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteRecord', { 'id': folder.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>
@@ -192,8 +166,9 @@ Poner los flash en el base
   </div>
 </div>
 
-{% endblock %}
 {% block javascript %}
 	{{ parent()}}
     <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
 {% endblock %} 
+
+{% endblock %}

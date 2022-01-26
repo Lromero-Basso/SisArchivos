@@ -7,87 +7,83 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use AppBundle\Entity\Areas;
+use AppBundle\Entity\Histarch;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap4View;
 
 
-
 /**
- * 
- * @Route("/area")
+ * @Route("/record")
  */
-class AreaController extends BaseController
+class HistarchController extends BaseController
 {
-
     /**
-     * @Route("/create", name="createArea")
+     * @Route("/create", name="createRecord")
      */
-    public function createArea(Request $request){
+    public function createRecord(Request $request){
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Area", "createArea");
+        $breadcrumbs->addRouteItem("Cargar Registro", "createRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('area/create.html.twig');
+        return $this->render('record/create.html.twig');
     }
 
     /**
-     * @Route("/view", name="viewAreas")
+     * @Route("/view", name="viewRecords")
      * @Method("GET")
      */
-    public function viewAreas(Request $request){
+    public function viewRecords(Request $request){
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Ver Areas", "viewAreas");
+        $breadcrumbs->addRouteItem("Ver Registros", "viewRecords");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $queryBuilder = $entityManager->getRepository('AppBundle:Areas')->createQueryBuilder('e');
+        $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
 
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
-        list($areas, $pagerHtml) = $this->paginator($queryBuilder, $request);
+        list($folders, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
-        return $this->render('folder/all.html.twig', array(
-            'areas' => $areas,
+        return $this->render('record/all.html.twig', array(
+            'folders' => $folders,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
             'totalOfRecordsString' => $totalOfRecordsString,
         ));
-
-        return $this->render('area/all.html.twig', array(
-            'areas' => $areas
-        ));
     }
 
     /**
-     * @Route("/edit/{id}", name="editArea")
+     * @Route("/edit/{id}", name="editRecord")
      */
-    public function editArea(Request $request, $id){
+    public function editRecord(Request $request, $id){
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addItem("Editar Area - $id", "editArea");
+        $breadcrumbs->addItem("Editar Registro - $id", "editRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
-
-        return $this->render('area/edit.html.twig');
+        
+        return $this->render('record/edit.html.twig');
     }
 
-        /**
-     * @Route("/{id}", name="showArea")
+    /**
+     * @Route("/{id}", name="showRecord")
      */
-    public function showArea(Request $request, $id){
+    public function showRecord(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -97,17 +93,17 @@ class AreaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
         
-        return $this->render('area/show.html.twig');
+        return $this->render('record/show.html.twig');
     }
 
     /**
-     * @Route("/{id}", name="deleteArea")
+     * @Route("/{id}", name="deleteRecord")
      */
-    public function deleteArea(Request $request, $id){
+    public function deleteRecord(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
         
-        return $this->redirectToRoute('viewAreas');
+        return $this->redirectToRoute('viewRecords');
     }
 
     /**
@@ -116,14 +112,14 @@ class AreaController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\AreaFilterType');
+        $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType');
 
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
-            if($session->get('AreaControllerFilter') != null){
+            if($session->get('HistarchControllerFilter') != null){
                 //If null apply reset, is necessary because without the validate, this closed the session
-                $session->remove('AreaControllerFilter');
+                $session->remove('HistarchControllerFilter');
             }
         }
 
@@ -138,12 +134,12 @@ class AreaController extends BaseController
 
                 //Save filter to session
                 $filterData = $filterForm->getData();
-                $session->set('AreaControllerFilter', $filterData);
+                $session->set('HistarchControllerFilter', $filterData);
             }
         }
         else{
-            if($session->has('AreaControllerFilter')){
-                $filterData = $session->get('AreaControllerFilter');
+            if($session->has('HistarchControllerFilter')){
+                $filterData = $session->get('HistarchControllerFilter');
 
                 foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
                     if (is_object($filter)) {
@@ -151,7 +147,7 @@ class AreaController extends BaseController
                     }
                 }
 
-                $filterForm = $this->createForm('AppBundle\Form\AreaFilterType', $filterData);
+                $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType', $filterData);
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
             }
         }
@@ -188,7 +184,7 @@ class AreaController extends BaseController
         {
             $requestParams = $request->query->all();
             $requestParams['pcg_page'] = $page;
-            return $me->generateUrl('viewAreas', $requestParams);
+            return $me->generateUrl('viewRecords', $requestParams);
         };
 
         // Paginator - view
@@ -224,7 +220,7 @@ class AreaController extends BaseController
 
     /**
     * Bulk Action
-    * @Route("/bulk-action/", name="area_bulk_action")
+    * @Route("/bulk-action/", name="histarch_bulk_action")
     * @Method("POST")
     */
     public function bulkAction(Request $request)
@@ -235,7 +231,7 @@ class AreaController extends BaseController
         if ($action == "delete") {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Areas');
+                $repository = $em->getRepository('AppBundle:Carpecaja');
 
                 foreach ($ids as $id) {
                     $folder = $repository->find($id);
@@ -250,7 +246,7 @@ class AreaController extends BaseController
             }
         }
 
-        return $this->redirect($this->generateUrl('viewAreas'));
+        return $this->redirect($this->generateUrl('viewRecords'));
     }
-    
+
 }

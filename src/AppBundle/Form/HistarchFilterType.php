@@ -8,12 +8,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HistarchFilterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('codCarpeta')->add('fechaRetiro')->add('fechaDevolucion')->add('legajo');
+        $builder
+            ->add('id', Filters\NumberFilterType::class)
+            ->add('codCarpeta', Filters\NumberFilterType::class)
+            ->add('fechaRetiro', Filters\DateRangeFilterType::class,  array(
+                'label' => 'Fecha',
+                'left_date_options' => array(
+                    'widget' => 'single_text',
+                    'label' => 'desde'
+                ),
+            ))
+            ->add('fechaDevolucion', Filters\DateRangeFilterType::class,  array(
+                'label' => 'Fecha',
+                'right_date_options' => array(
+                    'widget' => 'single_text',
+                    'label' => 'hasta'
+                )
+            ))
+            ->add('legajo', Filters\NumberFilterType::class, array(
+                'label' => 'Legajo'
+            ));
     }
     
     /**
@@ -22,7 +38,9 @@ class HistarchFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Histarch'
+            'allow_extra_fields' => true,
+            'csrf_protection' => false,
+            'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
         ));
     }
 
@@ -31,7 +49,7 @@ class HistarchFilterType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_histarch';
+        return null;
     }
 
 
