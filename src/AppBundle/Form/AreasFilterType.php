@@ -6,14 +6,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HistarchType extends AbstractType
+class AreasFilterType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('codCarpeta')->add('fechaRetiro')->add('fechaDevolucion')->add('legajo');
+        $builder
+            ->add('nomArea');
     }
     
     /**
@@ -22,7 +23,7 @@ class HistarchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Histarch'
+            'data_class' => 'AppBundle\Entity\Areas'
         ));
     }
 
@@ -31,7 +32,7 @@ class HistarchType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_histarch';
+        return 'appbundle_areas';
     }
 
 

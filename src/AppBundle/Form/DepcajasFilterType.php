@@ -6,14 +6,26 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CarpecajaType extends AbstractType
+class DepcajasFilterType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nroCarpeta')->add('codCaja')->add('tituloCarp')->add('fechaDesdeCarp')->add('fechaHastaCarp')->add('estado');
+        $builder
+            ->add('codEstante')
+            ->add('codLado')
+            ->add('columna')
+            ->add('piso')
+            ->add('codArea')
+            ->add('tituloCaja')
+            ->add('nroDesdeCaja')
+            ->add('nroHastaCaja')
+            ->add('fechaDesdeCaja')
+            ->add('fechaHastaCaja')
+            ->add('archivadoHasta')
+            ->add('observa');
     }
     
     /**
@@ -22,7 +34,7 @@ class CarpecajaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Carpecaja'
+            'data_class' => 'AppBundle\Entity\Depcajas'
         ));
     }
 
@@ -31,7 +43,7 @@ class CarpecajaType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_carpecaja';
+        return 'appbundle_depcajas';
     }
 
 
