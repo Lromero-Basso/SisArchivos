@@ -44,8 +44,6 @@ class FolderController extends BaseController
     public function viewFolders(Request $request){
 
         $entityManager = $this->getDoctrine()->getManager();
-      
-        // $folders = $entityManager->getRepository(Carpecaja::class)->findAll();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
@@ -118,12 +116,11 @@ class FolderController extends BaseController
         $session = $request->getSession();
         $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType');
 
+
         //Reset filter
         if($request->get('filter_action') == 'reset'){
             if($session->get('CarpecajaControllerFilter') != null){
-                //Verifico que no sea null para aplicar el reset, si es null lo borra, 
-                //sino te cerraba la sesion
-                //sino funca con get , probar con has linea 87
+                //If null apply reset, is necessary because without the validate, this closed the session
                 $session->remove('CarpecajaControllerFilter');
             }
         }
@@ -131,7 +128,7 @@ class FolderController extends BaseController
         //Filter action
         if($request->get('filter_action') == 'filter'){
             $filterForm->handleRequest($request);
-
+            
             // Bind values from the request
             if($filterForm->isValid()){
                 // Build the query from the given form object

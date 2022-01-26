@@ -42,9 +42,6 @@ class CarpecajaFilterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // $resolver->setDefaults(array(
-        //     'data_class' => 'AppBundle\Entity\Carpecaja'
-        // ));
         $resolver->setDefaults(array(
             'allow_extra_fields' => true,
             'csrf_protection' => false,
