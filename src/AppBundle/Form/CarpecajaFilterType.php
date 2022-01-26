@@ -14,7 +14,9 @@ class CarpecajaFilterType extends AbstractType
     {
         $builder
             ->add('id', Filters\NumberFilterType::class)
-            ->add('nroCarpeta', Filters\NumberFilterType::class)
+            ->add('nroCarpeta', Filters\NumberFilterType::class, array(
+                'label' => 'N° Carpeta'
+            ))
             ->add('codCaja', Filters\NumberFilterType::class)
             ->add('tituloCarp', Filters\TextFilterType::class)
             ->add('fechaDesdeCarp', Filters\DateRangeFilterType::class,  array(

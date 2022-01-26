@@ -63,5 +63,31 @@ class AreaController extends BaseController
 
         return $this->render('area/edit.html.twig');
     }
+
+        /**
+     * @Route("/{id}", name="showArea")
+     */
+    public function showArea(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+             
+        $breadcrumbs->addItem("Vista Previa");
+        
+        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        
+        return $this->render('area/show.html.twig');
+    }
+
+    /**
+     * @Route("/{id}", name="deleteArea")
+     */
+    public function deleteArea(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        return $this->redirectToRoute('viewAreas');
+    }
     
 }
