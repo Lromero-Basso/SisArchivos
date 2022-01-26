@@ -31,12 +31,13 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label class="control-label" for="fecha_right_date">fecha hasta</label>
-                      <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.right_date.vars.value}}"/>
+                      <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaHastaCarp.children.right_date.vars.value}}"/>
                   </div>
               </div>
             </div>
           </div> 
           {% do filterForm.fechaDesdeCarp.setRendered %}
+          {% do filterForm.fechaHastaCarp.setRendered %}
           {# FIN Render manual date range#}
 
     
