@@ -56,7 +56,7 @@ class DepcajasController extends BaseController
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
-        return $this->render('folder/all.html.twig', array(
+        return $this->render('box/all.html.twig', array(
             'boxes' => $boxes,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
@@ -137,6 +137,21 @@ class DepcajasController extends BaseController
                 $session->set('DepcajaControllerFilter', $filterData);
             }
         }
+        //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        // else{
+        //     if($session->has('DepcajaControllerFilter')){
+        //         $filterData = $session->get('DepcajaControllerFilter');
+
+        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+        //             if (is_object($filter)) {
+        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+        //             }
+        //         }
+
+        //         $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType', $filterData);
+        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+        //     }
+        // }
         return array($filterForm, $queryBuilder);
 
     }
@@ -216,7 +231,7 @@ class DepcajasController extends BaseController
         if ($action == "delete") {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Area');
+                $repository = $em->getRepository('AppBundle:Depcaja');
 
                 foreach ($ids as $id) {
                     $folder = $repository->find($id);

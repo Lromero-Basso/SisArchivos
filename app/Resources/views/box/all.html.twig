@@ -9,7 +9,7 @@
 <!-- FILTERING -->
   <div class="col-md-12"> 
     <div  id="filters" class="collapse"> 
-      <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewFolders') }}" method="get">
+      <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewBoxes') }}" method="get">
         <div class="row">
           <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codEstante) }}</div>
@@ -102,7 +102,7 @@
   <div class="col-md-3">
     <div class="float-right">
       <a class="btn dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
-      <a class="btn btn-primary h3 pull-right" href="{{ path('createFolder') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
+      <a class="btn btn-primary h3 pull-right" href="{{ path('createBox') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
     </div>	
   </div>
   <!-- END FILTER BUTTON -->
@@ -128,39 +128,45 @@
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Id')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código Estante')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código Lado')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('columna',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Columna')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('piso',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Piso')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codArea',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código área')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('tituloCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título caja')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('nroDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° Desde')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('nroHastaCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° Hasta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Desde')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaHastaCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Hasta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('archivadoHasta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Archivado Hasta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('observa',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Observa')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Estante')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Lado')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('columna',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Columna')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('piso',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Piso')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codArea',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código área')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('tituloCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Título caja')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('nroDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° Desde')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('nroHastaCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° Hasta')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Fecha Desde')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaHastaCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Fecha Hasta')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('observa',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Observa')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
-        {% for record in records %}
+        {% for box in boxes %}
         <tr>
-          <td>{{folder.id}}</td>
-          <td>{{folder.codCarpeta}}</td>
-          <td>{{folder.legajo}}</td>
-          <td>{{folder.fechaRetiro|date('d-m-Y')}}</td>
-          <td>{{folder.fechaDevolucion|date('d-m-Y')}}</td>
+          <td>{{box.id}}</td>
+          <td>{{box.codEstante}}</td>
+          <td>{{box.codLado}}</td>
+          <td>{{box.columna}}</td>
+          <td>{{box.piso}}</td>
+          <td>{{box.codArea}}</td>
+          <td>{{box.tituloCaja}}</td>
+          <td>{{box.nroDesdeCaja}}</td>
+          <td>{{box.nroHastaCaja}}</td>
+          <td>{{box.fechaDesdeCaja|date('d-m-Y')}}</td>
+          <td>{{box.fechaHastaCaja|date('d-m-Y')}}</td>
+          <td>{{box.observa}}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showBox', { 'id': folder.id }) }}">Vista Previa</a>
-                <a class="dropdown-item" title='Editar'  href="{{ path('editBox', { 'id': folder.id }) }}">Editar</a>
-                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteBox', { 'id': folder.id}) }}">Eliminar</a>
+                <a class="dropdown-item" title='Vista Previa' href="{{ path('showBox', { 'id': box.id }) }}">Vista Previa</a>
+                <a class="dropdown-item" title='Editar'  href="{{ path('editBox', { 'id': box.id }) }}">Editar</a>
+                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteBox', { 'id': box.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>
@@ -201,5 +207,3 @@
 	{{ parent()}}
     <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
 {% endblock %} 
-
-{% endblock %}

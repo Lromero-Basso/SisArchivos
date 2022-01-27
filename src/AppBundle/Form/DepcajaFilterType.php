@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
+
 class DepcajaFilterType extends AbstractType
 {
     /**
@@ -67,6 +69,7 @@ class DepcajaFilterType extends AbstractType
             ->add('observa', Filters\TextFilterType::class, array(
                 'label' => 'Observa'
             ));
+        $builder->setMethod("GET");
     }
     
     /**

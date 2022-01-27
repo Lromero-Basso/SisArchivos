@@ -6,18 +6,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
+
 class AreaFilterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('id', Filters\NumberFilterType::class)
-            ->add('nomArea', Filters\TextFilterType::class, array(
-                'label' => 'Nombre Área'
-            ));
+            ->add('nomArea', Filters\NumberFilterType::class);
+        $builder->setMethod("GET");
     }
     
     /**

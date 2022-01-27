@@ -46,7 +46,7 @@ class AreaController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Ver Areas", "viewAreas");
+        $breadcrumbs->addRouteItem("Ver Áreas", "viewAreas");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
@@ -57,15 +57,11 @@ class AreaController extends BaseController
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
-        return $this->render('folder/all.html.twig', array(
+        return $this->render('area/all.html.twig', array(
             'areas' => $areas,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
             'totalOfRecordsString' => $totalOfRecordsString,
-        ));
-
-        return $this->render('area/all.html.twig', array(
-            'areas' => $areas
         ));
     }
 
@@ -110,6 +106,7 @@ class AreaController extends BaseController
         return $this->redirectToRoute('viewAreas');
     }
 
+
     /**
     * Create filter form and process filter request.
     *
@@ -141,20 +138,21 @@ class AreaController extends BaseController
                 $session->set('AreaControllerFilter', $filterData);
             }
         }
-        else{
-            if($session->has('AreaControllerFilter')){
-                $filterData = $session->get('AreaControllerFilter');
+        //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        // else{
+        //     if($session->has('AreaControllerFilter')){
+        //         $filterData = $session->get('AreaControllerFilter');
 
-                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-                    if (is_object($filter)) {
-                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-                    }
-                }
+        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+        //             if (is_object($filter)) {
+        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+        //             }
+        //         }
 
-                $filterForm = $this->createForm('AppBundle\Form\AreaFilterType', $filterData);
-                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-            }
-        }
+        //         $filterForm = $this->createForm('AppBundle\Form\AreaFilterType', $filterData);
+        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+        //     }
+        // }
 
         return array($filterForm, $queryBuilder);
 
@@ -252,5 +250,5 @@ class AreaController extends BaseController
 
         return $this->redirect($this->generateUrl('viewAreas'));
     }
-    
+
 }

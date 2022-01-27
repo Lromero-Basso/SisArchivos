@@ -139,20 +139,21 @@ class CarpecajaController extends BaseController
                 $session->set('CarpecajaControllerFilter', $filterData);
             }
         }
-        else{
-            if($session->has('CarpecajaControllerFilter')){
-                $filterData = $session->get('CarpecajaControllerFilter');
+        //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        // else{
+        //     if($session->has('CarpecajaControllerFilter')){
+        //         $filterData = $session->get('CarpecajaControllerFilter');
 
-                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-                    if (is_object($filter)) {
-                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-                    }
-                }
+        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+        //             if (is_object($filter)) {
+        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+        //             }
+        //         }
 
-                $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
-                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-            }
-        }
+        //         $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
+        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+        //     }
+        // }
 
         return array($filterForm, $queryBuilder);
 

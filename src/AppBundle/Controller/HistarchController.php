@@ -49,15 +49,15 @@ class HistarchController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
+        $queryBuilder = $entityManager->getRepository('AppBundle:Histarch')->createQueryBuilder('e');
 
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
-        list($folders, $pagerHtml) = $this->paginator($queryBuilder, $request);
+        list($records, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
         return $this->render('record/all.html.twig', array(
-            'folders' => $folders,
+            'records' => $records,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
             'totalOfRecordsString' => $totalOfRecordsString,
@@ -137,21 +137,22 @@ class HistarchController extends BaseController
                 $session->set('HistarchControllerFilter', $filterData);
             }
         }
-        else{
-            if($session->has('HistarchControllerFilter')){
-                $filterData = $session->get('HistarchControllerFilter');
+         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        // else{
+        //     if($session->has('HistarchControllerFilter')){
+        //         $filterData = $session->get('HistarchControllerFilter');
 
-                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-                    if (is_object($filter)) {
-                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-                    }
-                }
+        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+        //             if (is_object($filter)) {
+        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+        //             }
+        //         }
 
-                $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType', $filterData);
-                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-            }
-        }
-
+        //         $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType', $filterData);
+        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+        //     }
+        // }
+    
         return array($filterForm, $queryBuilder);
 
     }
@@ -231,11 +232,11 @@ class HistarchController extends BaseController
         if ($action == "delete") {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Carpecaja');
+                $repository = $em->getRepository('AppBundle:Histarch');
 
                 foreach ($ids as $id) {
-                    $folder = $repository->find($id);
-                    $em->remove($folder);
+                    $record = $repository->find($id);
+                    $em->remove($record);
                     $em->flush();
                 }
 

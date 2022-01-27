@@ -10,7 +10,7 @@
 <!-- FILTERING -->
   <div class="col-md-12"> 
     <div  id="filters" class="collapse"> 
-      <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewFolders') }}" method="get">
+      <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewRecords') }}" method="get">
         <div class="row">
           <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codCarpeta) }}</div>
@@ -80,7 +80,7 @@
   <div class="col-md-3">
     <div class="float-right">
       <a class="btn dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
-      <a class="btn btn-primary h3 pull-right" href="{{ path('createFolder') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
+      <a class="btn btn-primary h3 pull-right" href="{{ path('createRecord') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
     </div>	
   </div>
   <!-- END FILTER BUTTON -->
@@ -106,31 +106,31 @@
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Id')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código carpeta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Legajo')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Retiro')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Devolución')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código carpeta')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Legajo')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Retiro')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Devolución')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
         {% for record in records %}
         <tr>
-          <td>{{folder.id}}</td>
-          <td>{{folder.codCarpeta}}</td>
-          <td>{{folder.legajo}}</td>
-          <td>{{folder.fechaRetiro|date('d-m-Y')}}</td>
-          <td>{{folder.fechaDevolucion|date('d-m-Y')}}</td>
+          <td>{{record.id}}</td>
+          <td>{{record.codCarpeta}}</td>
+          <td>{{record.legajo}}</td>
+          <td>{{record.fechaRetiro|date('d-m-Y')}}</td>
+          <td>{{record.fechaDevolucion|date('d-m-Y')}}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showRecord', { 'id': folder.id }) }}">Vista Previa</a>
-                <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': folder.id }) }}">Editar</a>
-                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteRecord', { 'id': folder.id}) }}">Eliminar</a>
+                <a class="dropdown-item" title='Vista Previa' href="{{ path('showRecord', { 'id': record.id }) }}">Vista Previa</a>
+                <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': record.id }) }}">Editar</a>
+                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>
@@ -166,9 +166,10 @@
   </div>
 </div>
 
+{% endblock %}
+
 {% block javascript %}
 	{{ parent()}}
     <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
 {% endblock %} 
 
-{% endblock %}

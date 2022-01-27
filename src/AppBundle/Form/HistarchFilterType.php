@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
+
 class HistarchFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,6 +32,7 @@ class HistarchFilterType extends AbstractType
             ->add('legajo', Filters\NumberFilterType::class, array(
                 'label' => 'Legajo'
             ));
+        $builder->setMethod("GET");
     }
     
     /**

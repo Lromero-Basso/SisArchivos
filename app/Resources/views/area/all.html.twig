@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %} {{ parent() }} - Areas {% endblock %}
+{% block title %} {{ parent() }} - Registros {% endblock %}
 
 {% block body %}
 
@@ -72,49 +72,33 @@
 <!-- END HEADER -->
 </div>
 
-{# <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Codigo area</th>
-      <th scope="col">Nombrea area</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for area in areas %}
-    <tr>
-        <th scope="row">{{area.id}}</th>
-        <td>{{area.nomArea}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table> #}
 <!-- /TABLE WITH SORT -->
 
 <form method="POST" id="bulk_form" action="{{ path('area_bulk_action') }} ">
   <div class="card mb-4 mt-4">
-    <table class="table table-striped table-hover table-sm" id="tabla" namefile="Area">
+    <table class="table table-striped table-hover table-sm" id="tabla" namefile="Areas">
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Id')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('nomArea',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Nombre área')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewAreas','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('nomArea',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewAreas','Nombre área')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
-        {% for record in records %}
+        {% for area in areas %}
         <tr>
-          <td>{{folder.id}}</td>
-          <td>{{folder.nomArea}}</td>
+          <td>{{area.id}}</td>
+          <td>{{area.nomArea}}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showArea', { 'id': folder.id }) }}">Vista Previa</a>
-                <a class="dropdown-item" title='Editar'  href="{{ path('editArea', { 'id': folder.id }) }}">Editar</a>
-                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteArea', { 'id': folder.id}) }}">Eliminar</a>
+                <a class="dropdown-item" title='Vista Previa' href="{{ path('showArea', { 'id': area.id }) }}">Vista Previa</a>
+                <a class="dropdown-item" title='Editar'  href="{{ path('editArea', { 'id': area.id }) }}">Editar</a>
+                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteArea', { 'id': area.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>
@@ -150,9 +134,9 @@
   </div>
 </div>
 
+{% endblock %}
+
 {% block javascript %}
 	{{ parent()}}
     <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
 {% endblock %} 
-
-{% endblock %}
