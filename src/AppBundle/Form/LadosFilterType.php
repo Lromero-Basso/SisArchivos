@@ -14,7 +14,10 @@ class LadosFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombreLado');
+            ->add('id', Filters\NumberFilterType::class)
+            ->add('nombreLado', Filters\TextFilterType::class, array(
+                'label' => 'Nombre lado'
+            ));
     }
     
     /**
@@ -23,7 +26,9 @@ class LadosFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Lados'
+            'allow_extra_fields' => true,
+            'csrf_protection' => false,
+            'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
         ));
     }
 
@@ -32,7 +37,7 @@ class LadosFilterType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_lados';
+        return null;
     }
 
 

@@ -7,59 +7,57 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use AppBundle\Entity\Carpecaja;
+use AppBundle\Entity\Histarch;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap4View;
 
 
-//carpecaja
-
 /**
- * @Route("/folder")
+ * @Route("/record")
  */
-class FolderController extends BaseController
+class HistarchController extends BaseController
 {
     /**
-     * @Route("/create", name="createFolder")
+     * @Route("/create", name="createRecord")
      */
-    public function createFolder(Request $request){
+    public function createRecord(Request $request){
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Carpeta", "createFolder");
+        $breadcrumbs->addRouteItem("Cargar Registro", "createRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('folder/create.html.twig');
+        return $this->render('record/create.html.twig');
     }
 
     /**
-     * @Route("/view", name="viewFolders")
+     * @Route("/view", name="viewRecords")
      * @Method("GET")
      */
-    public function viewFolders(Request $request){
+    public function viewRecords(Request $request){
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Ver Carpetas", "viewFolders");
+        $breadcrumbs->addRouteItem("Ver Registros", "viewRecords");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
+        $queryBuilder = $entityManager->getRepository('AppBundle:Histarch')->createQueryBuilder('e');
 
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
-        list($folders, $pagerHtml) = $this->paginator($queryBuilder, $request);
+        list($records, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
-        return $this->render('folder/all.html.twig', array(
-            'folders' => $folders,
+        return $this->render('record/all.html.twig', array(
+            'records' => $records,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
             'totalOfRecordsString' => $totalOfRecordsString,
@@ -67,25 +65,25 @@ class FolderController extends BaseController
     }
 
     /**
-     * @Route("/edit/{id}", name="editFolder")
+     * @Route("/edit/{id}", name="editRecord")
      */
-    public function editFolder(Request $request, $id){
+    public function editRecord(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addItem("Editar Carpeta - $id", "editFolder");
+        $breadcrumbs->addItem("Editar Registro - $id", "editRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
         
-        return $this->render('folder/edit.html.twig');
+        return $this->render('record/edit.html.twig');
     }
 
     /**
-     * @Route("/{id}", name="showFolder")
+     * @Route("/{id}", name="showRecord")
      */
-    public function showFolder(Request $request, $id){
+    public function showRecord(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -95,17 +93,17 @@ class FolderController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
         
-        return $this->render('folder/show.html.twig');
+        return $this->render('record/show.html.twig');
     }
 
     /**
-     * @Route("/{id}", name="deleteFolder")
+     * @Route("/{id}", name="deleteRecord")
      */
-    public function deleteFolder(Request $request, $id){
+    public function deleteRecord(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
         
-        return $this->redirectToRoute('viewFolders');
+        return $this->redirectToRoute('viewRecords');
     }
 
     /**
@@ -114,14 +112,14 @@ class FolderController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType');
+        $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType');
 
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
-            if($session->get('CarpecajaControllerFilter') != null){
+            if($session->get('HistarchControllerFilter') != null){
                 //If null apply reset, is necessary because without the validate, this closed the session
-                $session->remove('CarpecajaControllerFilter');
+                $session->remove('HistarchControllerFilter');
             }
         }
 
@@ -136,24 +134,25 @@ class FolderController extends BaseController
 
                 //Save filter to session
                 $filterData = $filterForm->getData();
-                $session->set('CarpecajaControllerFilter', $filterData);
+                $session->set('HistarchControllerFilter', $filterData);
             }
         }
-        else{
-            if($session->has('CarpecajaControllerFilter')){
-                $filterData = $session->get('CarpecajaControllerFilter');
+         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        // else{
+        //     if($session->has('HistarchControllerFilter')){
+        //         $filterData = $session->get('HistarchControllerFilter');
 
-                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-                    if (is_object($filter)) {
-                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-                    }
-                }
+        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+        //             if (is_object($filter)) {
+        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+        //             }
+        //         }
 
-                $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
-                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-            }
-        }
-
+        //         $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType', $filterData);
+        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+        //     }
+        // }
+    
         return array($filterForm, $queryBuilder);
 
     }
@@ -186,7 +185,7 @@ class FolderController extends BaseController
         {
             $requestParams = $request->query->all();
             $requestParams['pcg_page'] = $page;
-            return $me->generateUrl('viewFolders', $requestParams);
+            return $me->generateUrl('viewRecords', $requestParams);
         };
 
         // Paginator - view
@@ -222,7 +221,7 @@ class FolderController extends BaseController
 
     /**
     * Bulk Action
-    * @Route("/bulk-action/", name="carpecaja_bulk_action")
+    * @Route("/bulk-action/", name="histarch_bulk_action")
     * @Method("POST")
     */
     public function bulkAction(Request $request)
@@ -233,11 +232,11 @@ class FolderController extends BaseController
         if ($action == "delete") {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Carpecaja');
+                $repository = $em->getRepository('AppBundle:Histarch');
 
                 foreach ($ids as $id) {
-                    $folder = $repository->find($id);
-                    $em->remove($folder);
+                    $record = $repository->find($id);
+                    $em->remove($record);
                     $em->flush();
                 }
 
@@ -248,8 +247,7 @@ class FolderController extends BaseController
             }
         }
 
-        return $this->redirect($this->generateUrl('viewFolders'));
+        return $this->redirect($this->generateUrl('viewRecords'));
     }
-
 
 }

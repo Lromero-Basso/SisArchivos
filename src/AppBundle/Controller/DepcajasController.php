@@ -7,58 +7,57 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use AppBundle\Entity\Areas;
+use AppBundle\Entity\Depcajas;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap4View;
 
-
+//depcajas
 
 /**
- * 
- * @Route("/area")
+ * @Route("/box")
  */
-class AreaController extends BaseController
+class DepcajasController extends BaseController
 {
-
     /**
-     * @Route("/create", name="createArea")
+     * @Route("/create", name="createBox")
      */
-    public function createArea(Request $request){
+    public function createBox(Request $request){
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Area", "createArea");
+        $breadcrumbs->addRouteItem("Cargar Caja", "createBox");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('area/create.html.twig');
+        return $this->render('box/create.html.twig');
     }
 
     /**
-     * @Route("/view", name="viewAreas")
-     * @Method("GET")
+     * @Route("/view", name="viewBoxes")
      */
-    public function viewAreas(Request $request){
+    public function viewBoxes(Request $request){
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Ver Áreas", "viewAreas");
+        $breadcrumbs->addRouteItem("Ver Cajas", "viewBoxes");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $queryBuilder = $entityManager->getRepository('AppBundle:Areas')->createQueryBuilder('e');
+        $queryBuilder = $entityManager->getRepository('AppBundle:Depcajas')->createQueryBuilder('e');
 
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
-        list($areas, $pagerHtml) = $this->paginator($queryBuilder, $request);
+        list($boxes, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
-        return $this->render('area/all.html.twig', array(
-            'areas' => $areas,
+        return $this->render('box/all.html.twig', array(
+            'boxes' => $boxes,
             'pagerHtml' => $pagerHtml,
             'filterForm' => $filterForm->createView(),
             'totalOfRecordsString' => $totalOfRecordsString,
@@ -66,24 +65,25 @@ class AreaController extends BaseController
     }
 
     /**
-     * @Route("/edit/{id}", name="editArea")
+     * @Route("/edit/{id}", name="editBox")
      */
-    public function editArea(Request $request, $id){
+    public function editBox(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addItem("Editar Area - $id", "editArea");
+        $breadcrumbs->addItem("Editar Caja - $id", "editBox");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('area/edit.html.twig');
+        return $this->render('box/edit.html.twig');
     }
 
-        /**
-     * @Route("/{id}", name="showArea")
+    
+    /**
+     * @Route("/{id}", name="showBox")
      */
-    public function showArea(Request $request, $id){
+    public function showBox(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -93,19 +93,18 @@ class AreaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
         
-        return $this->render('area/show.html.twig');
+        return $this->render('box/show.html.twig');
     }
 
     /**
-     * @Route("/{id}", name="deleteArea")
+     * @Route("/{id}", name="deleteBox")
      */
-    public function deleteArea(Request $request, $id){
+    public function deleteBox(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
         
-        return $this->redirectToRoute('viewAreas');
+        return $this->redirectToRoute('viewBoxes');
     }
-
 
     /**
     * Create filter form and process filter request.
@@ -113,14 +112,14 @@ class AreaController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\AreaFilterType');
+        $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType');
 
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
-            if($session->get('AreaControllerFilter') != null){
+            if($session->get('DepcajaControllerFilter') != null){
                 //If null apply reset, is necessary because without the validate, this closed the session
-                $session->remove('AreaControllerFilter');
+                $session->remove('DepcajaControllerFilter');
             }
         }
 
@@ -135,13 +134,13 @@ class AreaController extends BaseController
 
                 //Save filter to session
                 $filterData = $filterForm->getData();
-                $session->set('AreaControllerFilter', $filterData);
+                $session->set('DepcajaControllerFilter', $filterData);
             }
         }
         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
         // else{
-        //     if($session->has('AreaControllerFilter')){
-        //         $filterData = $session->get('AreaControllerFilter');
+        //     if($session->has('DepcajaControllerFilter')){
+        //         $filterData = $session->get('DepcajaControllerFilter');
 
         //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
         //             if (is_object($filter)) {
@@ -149,11 +148,10 @@ class AreaController extends BaseController
         //             }
         //         }
 
-        //         $filterForm = $this->createForm('AppBundle\Form\AreaFilterType', $filterData);
+        //         $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType', $filterData);
         //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
         //     }
         // }
-
         return array($filterForm, $queryBuilder);
 
     }
@@ -186,7 +184,7 @@ class AreaController extends BaseController
         {
             $requestParams = $request->query->all();
             $requestParams['pcg_page'] = $page;
-            return $me->generateUrl('viewAreas', $requestParams);
+            return $me->generateUrl('viewBoxes', $requestParams);
         };
 
         // Paginator - view
@@ -222,7 +220,7 @@ class AreaController extends BaseController
 
     /**
     * Bulk Action
-    * @Route("/bulk-action/", name="area_bulk_action")
+    * @Route("/bulk-action/", name="depcaja_bulk_action")
     * @Method("POST")
     */
     public function bulkAction(Request $request)
@@ -233,7 +231,7 @@ class AreaController extends BaseController
         if ($action == "delete") {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Areas');
+                $repository = $em->getRepository('AppBundle:Depcaja');
 
                 foreach ($ids as $id) {
                     $folder = $repository->find($id);
@@ -248,7 +246,7 @@ class AreaController extends BaseController
             }
         }
 
-        return $this->redirect($this->generateUrl('viewAreas'));
+        return $this->redirect($this->generateUrl('viewBoxes'));
     }
 
 }
