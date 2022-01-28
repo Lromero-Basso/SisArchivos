@@ -14,7 +14,7 @@ class AreaFilterType extends AbstractType
     {
         $builder
             ->add('id', Filters\NumberFilterType::class)
-            ->add('nomArea', Filters\NumberFilterType::class);
+            ->add('nomArea', Filters\TextFilterType::class);
         $builder->setMethod("GET");
     }
     

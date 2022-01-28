@@ -21,6 +21,7 @@ class HistarchController extends BaseController
 {
     /**
      * @Route("/create", name="createRecord")
+     * @Method({"GET", "POST"})
      */
     public function createRecord(Request $request){
 
@@ -66,6 +67,7 @@ class HistarchController extends BaseController
 
     /**
      * @Route("/edit/{id}", name="editRecord")
+     * @Method({"GET", "POST"})
      */
     public function editRecord(Request $request, $id){
 
@@ -82,6 +84,7 @@ class HistarchController extends BaseController
 
     /**
      * @Route("/{id}", name="showRecord")
+     * @Method("GET")
      */
     public function showRecord(Request $request, $id){
 
@@ -98,6 +101,7 @@ class HistarchController extends BaseController
 
     /**
      * @Route("/{id}", name="deleteRecord")
+     * @Method({"GET", "POST"})
      */
     public function deleteRecord(Request $request, $id){
 
@@ -222,7 +226,7 @@ class HistarchController extends BaseController
     /**
     * Bulk Action
     * @Route("/bulk-action/", name="histarch_bulk_action")
-    * @Method("POST")
+    * @Method({"GET", "POST"})
     */
     public function bulkAction(Request $request)
     {

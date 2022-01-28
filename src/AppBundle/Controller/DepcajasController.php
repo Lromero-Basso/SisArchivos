@@ -22,6 +22,7 @@ class DepcajasController extends BaseController
 {
     /**
      * @Route("/create", name="createBox")
+     * @Method({"GET", "POST"})
      */
     public function createBox(Request $request){
 
@@ -66,6 +67,7 @@ class DepcajasController extends BaseController
 
     /**
      * @Route("/edit/{id}", name="editBox")
+     * @Method({"GET", "POST"})
      */
     public function editBox(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
@@ -82,6 +84,7 @@ class DepcajasController extends BaseController
     
     /**
      * @Route("/{id}", name="showBox")
+     * @Method("GET")
      */
     public function showBox(Request $request, $id){
 
@@ -98,6 +101,7 @@ class DepcajasController extends BaseController
 
     /**
      * @Route("/{id}", name="deleteBox")
+     * @Method({"GET", "POST"})
      */
     public function deleteBox(Request $request, $id){
 
@@ -221,7 +225,7 @@ class DepcajasController extends BaseController
     /**
     * Bulk Action
     * @Route("/bulk-action/", name="depcaja_bulk_action")
-    * @Method("POST")
+    * @Method({"GET", "POST"})
     */
     public function bulkAction(Request $request)
     {

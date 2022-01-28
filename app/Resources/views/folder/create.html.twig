@@ -1,1 +1,62 @@
 {% extends "base.html.twig" %}
+
+{% block body %}
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
+    </div>
+    <form action="{{path('createFolder')}}" method="post">
+    <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
+        <div class="row">
+            <div class="col-md-2">
+                <label>Código Carpeta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Folder[codigoCarp]" >
+            </div>
+            <div class="col-md-2">
+                <label>N° Carpeta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Folder[nroCarp]" >
+            </div>
+            <div class="col-md-5">
+                <label>Título Carpeta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Folder[tituloCarp]" >
+            </div>
+            <div class="col-md-2">
+                <label>Código Caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Folder[codigoCaja]" >
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Fecha Desde<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Folder[fechaDesde]" >
+            </div>
+            <div class="col-md-3">
+                <label>Fecha Hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Folder[fechaHasta]" >
+            </div>
+        </div>
+        <br>
+         <div class="row">
+            <div class="col-md-4">
+                <label>Estado<span class="ml-1 text-danger">*</span></label>
+                <select class="form-control" name="Folder[estado]" required>
+                    <option >Seleccione una opción</option>
+                    <option value="1">En Archivo</option>
+                    <option value="2">Retirada</option>
+                </select>
+            </div>       
+        </div>
+        <div class="float-right mb-3">
+            <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
+                <i class="far fa-check-circle"></i> Armar Caja
+            </button>
+            <a class="btn btn-secondary text-white" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
+                <i class="fas fa-undo-alt"></i> Cancelar
+            </a>
+        </div>
+    </div>
+    
+    </form>
+</div>
+{% endblock %}

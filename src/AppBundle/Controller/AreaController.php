@@ -24,6 +24,7 @@ class AreaController extends BaseController
 
     /**
      * @Route("/create", name="createArea")
+     * @Method({"GET", "POST"})
      */
     public function createArea(Request $request){
         $entityManager = $this->getDoctrine()->getManager();
@@ -67,6 +68,7 @@ class AreaController extends BaseController
 
     /**
      * @Route("/edit/{id}", name="editArea")
+     * @Method({"GET", "POST"})
      */
     public function editArea(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
@@ -80,8 +82,9 @@ class AreaController extends BaseController
         return $this->render('area/edit.html.twig');
     }
 
-        /**
+    /**
      * @Route("/{id}", name="showArea")
+     * @Method("GET")
      */
     public function showArea(Request $request, $id){
 
@@ -98,6 +101,7 @@ class AreaController extends BaseController
 
     /**
      * @Route("/{id}", name="deleteArea")
+     * @Method({"GET", "POST"})
      */
     public function deleteArea(Request $request, $id){
 
@@ -223,7 +227,7 @@ class AreaController extends BaseController
     /**
     * Bulk Action
     * @Route("/bulk-action/", name="area_bulk_action")
-    * @Method("POST")
+    * @Method({"GET", "POST"})
     */
     public function bulkAction(Request $request)
     {
