@@ -15,7 +15,7 @@
           {# <div class="col-md-1">{{ form_row(filterForm.id, { 'attr': {'class': 'form-control'}}) }}</div> #}
           <div class="col-md-2">{{ form_row(filterForm.nroCarpeta) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codCaja) }}</div>
-          <div class="col-md-2">{{ form_row(filterForm.tituloCarp) }}</div>
+          <div class="col-md-4">{{ form_row(filterForm.tituloCarp) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.estado) }}</div>
 
           {# INICIO Render manual date range#}
@@ -154,9 +154,10 @@ Poner los flash en el base
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showFolder', { 'id': folder.id }) }}">Vista Previa</a>
+                <a class="dropdown-item" title='Vista Previa' href="{{ path('showFolder', { 'id': folder.id }) }} ">Vista Previa</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar</a>
-                <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteFolder', { 'id': folder.id}) }}">Eliminar</a>
+                {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteFolder', { 'id': folder.id}) }}">Eliminar</a> #}
               </div>
             </div>
           </td>

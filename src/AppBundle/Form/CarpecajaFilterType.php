@@ -17,12 +17,21 @@ class CarpecajaFilterType extends AbstractType
             ->add('nroCarpeta', Filters\NumberFilterType::class, array(
                 'label' => 'N° Carpeta'
             ))
-            ->add('codCaja', Filters\NumberFilterType::class, array(
+            ->add('codCaja', Filters\TextFilterType::class, array(
                 'label' => 'Código caja'
             ))
             ->add('tituloCarp', Filters\TextFilterType::class, array(
-                'label' => 'Título carpeta'
+                'label'         => 'Título carpeta',
             ))
+            // ->add('tituloCarp', Filters\EntityFilterType::class, array(
+            //     'class' => 'AppBundle\Entity\Carpecaja',
+            //     'choice_label' => 'tituloCarp',
+            //     'label'         => 'Título carpeta',
+            //     'query_builder' => function (\AppBundle\Repository\CarpecajaRepository $er) {
+            //         return $er->createQueryBuilder('c')
+            //         ->orderBy('c.tituloCarp', 'ASC');
+            //     },
+            // ))
             ->add('fechaDesdeCarp', Filters\DateRangeFilterType::class,  array(
                 'label' => 'Fecha',
                 'left_date_options' => array(

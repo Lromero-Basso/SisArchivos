@@ -23,6 +23,7 @@ class CarpecajaController extends BaseController
 {
     /**
      * @Route("/create", name="createFolder")
+     * @Method({"GET", "POST"})
      */
     public function createFolder(Request $request){
 
@@ -68,6 +69,7 @@ class CarpecajaController extends BaseController
 
     /**
      * @Route("/edit/{id}", name="editFolder")
+     * @Method({"GET", "POST"})
      */
     public function editFolder(Request $request, $id){
 
@@ -84,22 +86,22 @@ class CarpecajaController extends BaseController
 
     /**
      * @Route("/{id}", name="showFolder")
+     * @Method({"GET", "POST"})
      */
     public function showFolder(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Vista Previa");
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id'=>$id));
         
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
-        
-        return $this->render('folder/show.html.twig');
+        return $this->render('folder/show.html.twig', array(
+            'folder' => $folder
+        ));
     }
 
     /**
      * @Route("/{id}", name="deleteFolder")
+     * @Method({"GET", "POST"})
      */
     public function deleteFolder(Request $request, $id){
 
@@ -140,20 +142,20 @@ class CarpecajaController extends BaseController
             }
         }
         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
-        // else{
-        //     if($session->has('CarpecajaControllerFilter')){
-        //         $filterData = $session->get('CarpecajaControllerFilter');
+        else{
+            if($session->has('CarpecajaControllerFilter')){
+                $filterData = $session->get('CarpecajaControllerFilter');
 
-        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-        //             if (is_object($filter)) {
-        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-        //             }
-        //         }
+                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+                    if (is_object($filter)) {
+                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+                    }
+                }
 
-        //         $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
-        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-        //     }
-        // }
+                $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+            }
+        }
 
         return array($filterForm, $queryBuilder);
 
