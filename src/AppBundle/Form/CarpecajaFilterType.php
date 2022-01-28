@@ -14,24 +14,20 @@ class CarpecajaFilterType extends AbstractType
     {
         $builder
             ->add('id', Filters\NumberFilterType::class)
-            ->add('nroCarpeta', Filters\NumberFilterType::class, array(
+            ->add('nroCarpeta', Filters\ChoiceFilterType::class, array(
+                'choices' => $options['data'][1],//0 porque es la posicion de los n° carpeta en arrayOptions
                 'label' => 'N° Carpeta'
             ))
             ->add('codCaja', Filters\TextFilterType::class, array(
                 'label' => 'Código caja'
             ))
-            ->add('tituloCarp', Filters\TextFilterType::class, array(
-                'label'         => 'Título carpeta',
-            ))
-            // ->add('tituloCarp', Filters\EntityFilterType::class, array(
-            //     'class' => 'AppBundle\Entity\Carpecaja',
-            //     'choice_label' => 'tituloCarp',
+            // ->add('tituloCarp', Filters\TextFilterType::class, array(
             //     'label'         => 'Título carpeta',
-            //     'query_builder' => function (\AppBundle\Repository\CarpecajaRepository $er) {
-            //         return $er->createQueryBuilder('c')
-            //         ->orderBy('c.tituloCarp', 'ASC');
-            //     },
             // ))
+            ->add('tituloCarp', Filters\ChoiceFilterType::class, array(
+                'choices' => $options['data'][0], //0 porque es la posicion de los titulos en arrayOptions
+                'label' => 'Título carpeta'
+            ))
             ->add('fechaDesdeCarp', Filters\DateRangeFilterType::class,  array(
                 'label' => 'Fecha',
                 'left_date_options' => array(
@@ -46,9 +42,24 @@ class CarpecajaFilterType extends AbstractType
                     'label' => 'hasta'
                 )
             ))
-            ->add('estado', Filters\TextFilterType::class, array(
-                'label' => 'Estado'
+            // ->add('estado', Filters\ChoiceFilterType::class, array(
+            //     'choices'  => [
+            //         //Esto puedo dejarlo asi , porque lo que sucede es que el campo
+            //         //tiene 40 caracteres y completa los demas con vacios, entonces tengo que rellenarlos
+            //         //con la busqueda tambien, y sino la solucion prolija es usar la nueva tabla
+            //         'En Archivo' => 'En archivo                              ',
+            //         'Retirada' => 'Retirada                                ',
+            //     ],
+            //     'label'     => 'Estado'
+            // ));
+              ->add('nEstado', Filters\ChoiceFilterType::class, array(
+                'choices'  => [
+                    'En Archivo' => 0,
+                    'Retirada' => 1
+                ],
+                'label'     => 'Estado'
             ));
+            
         $builder->setMethod("GET");
     }
     

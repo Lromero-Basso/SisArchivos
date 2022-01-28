@@ -12,9 +12,12 @@ class AreaFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+      
         $builder
             ->add('id', Filters\NumberFilterType::class)
-            ->add('nomArea', Filters\TextFilterType::class);
+            ->add('nomArea', Filters\ChoiceFilterType::class, array(
+                'choices' => $options['data'],
+            ));
         $builder->setMethod("GET");
     }
     

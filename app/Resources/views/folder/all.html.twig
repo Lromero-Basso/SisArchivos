@@ -16,7 +16,7 @@
           <div class="col-md-2">{{ form_row(filterForm.nroCarpeta) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codCaja) }}</div>
           <div class="col-md-4">{{ form_row(filterForm.tituloCarp) }}</div>
-          <div class="col-md-2">{{ form_row(filterForm.estado) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.nEstado) }}</div>
 
           {# INICIO Render manual date range#}
           
@@ -31,7 +31,7 @@
               
               <div class="col-md-6">
                   <div class="form-group">
-                      <label class="control-label" for="fecha_right_date">fecha hasta</label>
+                      <label class="control-label" for="fecha_right_date">Fecha hasta</label>
                       <input type="date" id="fecha_right_date" name="fecha[right_date]" class="form-control" value="{{ filterForm.fechaHastaCarp.children.right_date.vars.value}}"/>
                   </div>
               </div>
@@ -134,7 +134,7 @@ Poner los flash en el base
           <th style="border:0px;">{{macros.th_sortable('tituloCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título Carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaDesdeCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Desde')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaHastaCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha Hasta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('estado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Estado')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('nEstado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Estado')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
@@ -147,7 +147,7 @@ Poner los flash en el base
           <td>{{folder.tituloCarp}}</td>
           <td>{{folder.fechaDesdeCarp|date('d-m-Y')}}</td>
           <td>{{folder.fechaHastaCarp|date('d-m-Y')}}</td>
-          <td>{{folder.estado}}</td>
+          <td>{% if folder.nEstado == 0 %}En Archivo{% else %}Retirada{% endif %}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

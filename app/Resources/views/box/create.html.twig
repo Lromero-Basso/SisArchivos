@@ -5,7 +5,146 @@
     <div class="card-header">
         <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
     </div>
+    <form action="{{path('createBox')}}" method="post">
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
+        {% if box is defined %}
+        <div class="row">
+            <div class="col-md-2">
+                <label>Código caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codCaja]" value="{{box.id}}" required>
+            </div>
+            <div class="col-md-2">
+                <label>Código estante<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codEstante]" value="{{box.codEstante}}" required>
+            </div>
+            <div class="col-md-2">
+                <label>Código lado<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codLado]" value="{{box.codLado}}" required>
+            </div>
+            <div class="col-md-4">
+                <label>Título caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
+            </div>     
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Columna<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[columna]" value="{{box.columna}}" required>
+            </div>
+            <div class="col-md-2">
+                <label>Piso<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[piso]" value="{{box.piso}}" required>
+            </div>
+            <div class="col-md-2">
+                <label>Código área<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>
+            </div>
+            <div class="col-md-2">
+                <label>N° Desde <span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[nroDesde]" value="{{box.nroDesdeCaja}}" required>
+            </div>
+            <div class="col-md-2">
+                <label>N° Hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[nroHasta]" value="{{box.nroHastaCaja}}" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="{{box.fechaDesdeCaja|date('d-m-Y')}}}}}}" required>
+            </div>
+            <div class="col-md-3">
+                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[fechaHasta]" value="{{box.fechaHastaCaja|date('d-m-Y')}}}}}}" required>
+            </div>
+            <div class="col-md-3">
+                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="{{box.archivadoHasta|date('d-m-Y')}}}}}}" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-8">
+                <label>Observa</label>
+                <input class="form-control" type="text" name="Depcaja[observa]" value="{{box.observa}}" >
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-md-2">
+                <label>Código caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codCaja]" value="" required>
+            </div>
+            <div class="col-md-2">
+                <label>Código estante<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codEstante]" value="" required>
+            </div>
+            <div class="col-md-2">
+                <label>Código lado<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codLado]" value="" required>
+            </div>
+            <div class="col-md-4">
+                <label>Título caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
+            </div>     
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Columna<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[columna]" value="" required>
+            </div>
+            <div class="col-md-2">
+                <label>Piso<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[piso]" value="" required>
+            </div>
+            <div class="col-md-2">
+                <label>Código área<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[codArea]" value="" required>
+            </div>
+            <div class="col-md-2">
+                <label>N° Desde <span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[nroDesde]" value="" required>
+            </div>
+            <div class="col-md-2">
+                <label>N° Hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[nroHasta]" value="" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="" required>
+            </div>
+            <div class="col-md-3">
+                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[fechaHasta]" value="" required>
+            </div>
+            <div class="col-md-3">
+                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-8">
+                <label>Observa</label>
+                <input class="form-control" type="text" name="Depcaja[observa]" value="" >
+            </div>
+        </div>
+        {% endif %}
+        <div class="float-right mb-3">
+            <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
+                <i class="far fa-check-circle"></i> {% if folder is defined %} Guardar cambios {% else %} Armar caja {% endif %}
+            </button>
+            <a class="btn btn-secondary text-white" onclick="return confirm('¿Está seguro que desea cancelar la carga?')" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
+                <i class="fas fa-undo-alt"></i> Cancelar
+            </a>
+        </div>
     </div>
+    </form>
 </div>
 {% endblock %}

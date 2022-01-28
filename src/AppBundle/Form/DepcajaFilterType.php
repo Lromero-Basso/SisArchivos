@@ -32,7 +32,11 @@ class DepcajaFilterType extends AbstractType
             ->add('codArea', Filters\NumberFilterType::class, array(
                 'label' => 'Código área'
             ))
-            ->add('tituloCaja', Filters\TextFilterType::class, array(
+            // ->add('tituloCaja', Filters\TextFilterType::class, array(
+            //     'label' => 'Título caja'
+            // ))
+            ->add('tituloCaja', Filters\ChoiceFilterType::class, array(
+                'choices' => $options['data'],
                 'label' => 'Título caja'
             ))
             ->add('nroDesdeCaja', Filters\NumberFilterType::class, array(

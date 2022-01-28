@@ -116,8 +116,10 @@ class CarpecajaController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType');
 
+     
+
+        $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $this->getDataCarpeta());
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
@@ -136,26 +138,26 @@ class CarpecajaController extends BaseController
                 // Build the query from the given form object
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
 
-                //Save filter to session
-                $filterData = $filterForm->getData();
-                $session->set('CarpecajaControllerFilter', $filterData);
+                   //Save filter to session
+                   $filterData = $filterForm->getData();
+                   $session->set('CarpecajaControllerFilter', $filterData);
             }
         }
         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
-        else{
-            if($session->has('CarpecajaControllerFilter')){
-                $filterData = $session->get('CarpecajaControllerFilter');
+        // else{
+        //     if($session->has('CarpecajaControllerFilter')){
+        //         $filterData = $session->get('CarpecajaControllerFilter');
 
-                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-                    if (is_object($filter)) {
-                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-                    }
-                }
+        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+        //             if (is_object($filter)) {
+        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+        //             }
+        //         }
 
-                $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
-                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-            }
-        }
+        //         $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
+        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+        //     }
+        // }
 
         return array($filterForm, $queryBuilder);
 
@@ -254,5 +256,33 @@ class CarpecajaController extends BaseController
         return $this->redirect($this->generateUrl('viewFolders'));
     }
 
+    public function getDataCarpeta(){
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $carpecajasTitulo = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('tituloCarp' => 'ASC'));
+        $carpecajasNro = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('nroCarpeta' => 'ASC'));
+
+        //Como solo recibe un array la funcion del FORM, tengo que unirlos en uno nuevo
+        
+        $arrayOptions = [];
+        $arrayTitulos = [];
+        $arrayNroCarp = [];
+
+        foreach($carpecajasTitulo as $carpecaja){
+            $arrayTitulos[$carpecaja->getTituloCarp()] = $carpecaja->getTituloCarp();
+        }
+
+        foreach($carpecajasNro as $carpecaja){
+            $arrayNroCarp[$carpecaja->getNroCarpeta()] = $carpecaja->getNroCarpeta();
+        }
+
+        array_push($arrayOptions, $arrayTitulos, $arrayNroCarp);
+
+
+        return $arrayOptions;
+        
+    }
+
+  
 
 }

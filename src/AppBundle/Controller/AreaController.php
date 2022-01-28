@@ -117,7 +117,7 @@ class AreaController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\AreaFilterType');
+        $filterForm = $this->createForm('AppBundle\Form\AreaFilterType',$this->getNombreAreas());
 
 
         //Reset filter
@@ -253,6 +253,20 @@ class AreaController extends BaseController
         }
 
         return $this->redirect($this->generateUrl('viewAreas'));
+    }
+
+    public function getNombreAreas(){
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $areas = $entityManager->getRepository(Areas::class)->findBy(array(), array('nomArea' => 'ASC'));
+        $arrayOptions = [];
+
+        //Armo el array directamente con los strings para no utilizar posiciones
+        foreach($areas as $area){
+            $arrayOptions[$area->getNomArea()] = $area->getNomArea();
+        }
+        
+        return $arrayOptions;
     }
 
 }
