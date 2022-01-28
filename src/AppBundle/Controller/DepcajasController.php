@@ -255,13 +255,13 @@ class DepcajasController extends BaseController
     public function getTituloCaja(){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $depcajas = $entityManager->getRepository(Depcajas::class)->findAll();
+        $depcajas = $entityManager->getRepository(Depcajas::class)->findBy(array(), array('tituloCaja' => 'ASC'));
 
         $arrayOptions = [];
 
         foreach($depcajas as $depcaja){
             $arrayOptions[$depcaja->getTituloCaja()] = $depcaja->getTituloCaja();
-        }
+        }   
 
         return $arrayOptions;
         

@@ -258,15 +258,13 @@ class AreaController extends BaseController
     public function getNombreAreas(){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $areas = $entityManager->getRepository(Areas::class)->findAll();
-
+        $areas = $entityManager->getRepository(Areas::class)->findBy(array(), array('nomArea' => 'ASC'));
         $arrayOptions = [];
 
         //Armo el array directamente con los strings para no utilizar posiciones
         foreach($areas as $area){
             $arrayOptions[$area->getNomArea()] = $area->getNomArea();
         }
-
         
         return $arrayOptions;
     }

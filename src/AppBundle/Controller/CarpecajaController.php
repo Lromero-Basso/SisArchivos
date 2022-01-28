@@ -259,7 +259,8 @@ class CarpecajaController extends BaseController
     public function getDataCarpeta(){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $carpecajas = $entityManager->getRepository(Carpecaja::class)->findAll();
+        $carpecajasTitulo = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('tituloCarp' => 'ASC'));
+        $carpecajasNro = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('nroCarpeta' => 'ASC'));
 
         //Como solo recibe un array la funcion del FORM, tengo que unirlos en uno nuevo
         
@@ -267,11 +268,11 @@ class CarpecajaController extends BaseController
         $arrayTitulos = [];
         $arrayNroCarp = [];
 
-        foreach($carpecajas as $carpecaja){
+        foreach($carpecajasTitulo as $carpecaja){
             $arrayTitulos[$carpecaja->getTituloCarp()] = $carpecaja->getTituloCarp();
         }
 
-        foreach($carpecajas as $carpecaja){
+        foreach($carpecajasNro as $carpecaja){
             $arrayNroCarp[$carpecaja->getNroCarpeta()] = $carpecaja->getNroCarpeta();
         }
 
