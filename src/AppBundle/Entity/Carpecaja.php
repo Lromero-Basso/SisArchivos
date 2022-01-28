@@ -63,6 +63,13 @@ class Carpecaja
      */
     private $estado;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="n_estado", type="integer")
+     */
+    private $nEstado;
+
 
     /**
      * Get id
@@ -216,6 +223,30 @@ class Carpecaja
     public function getEstado()
     {
         return $this->estado;
+    }
+
+     /**
+     * Set nEstado
+     *
+     * @param integer $nEstado
+     *
+     * @return Carpecaja
+     */
+    public function setNEstado($nEstado)
+    {
+        $this->nEstado = $nEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get nEstado
+     *
+     * @return int
+     */
+    public function getNEstado()
+    {
+        return $this->nEstado;
     }
 }
 

@@ -154,3 +154,11 @@ body {
 .breadcrumb{
   background-color: #f8f9fa !important;
 }
+
+h6 {
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #108A97;
+}

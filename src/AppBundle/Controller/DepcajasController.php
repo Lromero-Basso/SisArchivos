@@ -116,8 +116,7 @@ class DepcajasController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType');
-
+        $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType', $this->getTituloCaja());
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
@@ -252,5 +251,21 @@ class DepcajasController extends BaseController
 
         return $this->redirect($this->generateUrl('viewBoxes'));
     }
+
+    public function getTituloCaja(){
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $depcajas = $entityManager->getRepository(Depcajas::class)->findAll();
+
+        $arrayOptions = [];
+
+        foreach($depcajas as $depcaja){
+            $arrayOptions[$depcaja->getTituloCaja()] = $depcaja->getTituloCaja();
+        }
+
+        return $arrayOptions;
+        
+    }
+
 
 }
