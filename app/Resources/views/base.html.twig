@@ -86,6 +86,24 @@
             </div>
         </div>
     </nav>
+    <div class="col-md-10 col-lg-10 col-sm-12">
+        {% for message in app.flashes('notice') %}
+            <div class="alert-correcto" role="alert">
+            <h6 class="text-info">{{ message }}</h6>
+                <div>
+                    <span class="link-secondary" onclick="ocultar('alert-correcto')">Cerrar</span>
+                </div>
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert-error" role="alert">
+            <h6 class="text-white">{{ message }}</h6>
+                <div>
+                    <span class="link-light" onclick="ocultar('alert-error')">Cerrar</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <div class="container">
     {% block menu %}
         {{ wo_render_breadcrumbs({separator: '', listId: 'breadcrumbs', viewTemplate: "yourBreadcrumbs.html.twig"}) }}            
@@ -114,6 +132,7 @@
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('js/util_js.js') }}"></script>
         <script src="{{ asset('js/fontawesome.js') }}"></script>
+        <script src="/SisArchivos/web/js/addFlash.js" data-search-pseudo-elements></script>
     {% endblock %}
 </body>
 </html>

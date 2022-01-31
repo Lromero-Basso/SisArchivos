@@ -11,11 +11,11 @@
     <div  id="filters" class="collapse"> 
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewBoxes') }}" method="get">
         <div class="row">
-          <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.id) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codEstante) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codLado) }}</div>
           <div class="col-md-4">{{ form_row(filterForm.tituloCaja) }}</div>
-          <div class="col-md-3"></div>
+          <div class="col-md-1"></div>
           <div class="col-md-2">{{ form_row(filterForm.columna) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.piso) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codArea) }}</div>
@@ -102,7 +102,7 @@
   <!-- FILTER BUTTON -->
   <div class="col-md-3">
     <div class="float-right">
-      <a class="btn dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
+      <a class="btn btn-secondary text-white dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
       <a class="btn btn-primary h3 pull-right" href="{{ path('createBox') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
     </div>	
   </div>
@@ -129,7 +129,7 @@
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código caja')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Estante')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Lado')}}</th>
           <th style="border:0px;">{{macros.th_sortable('columna',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Columna')}}</th>

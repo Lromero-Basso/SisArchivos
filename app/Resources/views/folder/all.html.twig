@@ -11,7 +11,7 @@
     <div  id="filters" class="collapse"> 
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewFolders') }}" method="get">
         <div class="row">
-          <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.id) }}</div>
           {# <div class="col-md-1">{{ form_row(filterForm.id, { 'attr': {'class': 'form-control'}}) }}</div> #}
           <div class="col-md-2">{{ form_row(filterForm.nroCarpeta) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codCaja) }}</div>
@@ -82,7 +82,7 @@
   <!-- FILTER BUTTON -->
   <div class="col-md-3">
     <div class="float-right">
-      <a class="btn dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
+      <a class="btn btn-secondary text-white dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
       <a class="btn btn-primary h3 pull-right" href="{{ path('createFolder') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
     </div>	
   </div>
@@ -128,7 +128,7 @@ Poner los flash en el base
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('nroCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° Carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código Caja')}}</th>
           <th style="border:0px;">{{macros.th_sortable('tituloCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título Carpeta')}}</th>

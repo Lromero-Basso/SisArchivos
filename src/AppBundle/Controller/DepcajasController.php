@@ -78,7 +78,7 @@ class DepcajasController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('box/edit.html.twig');
+        return $this->render('box/create.html.twig');
     }
 
     
@@ -166,7 +166,7 @@ class DepcajasController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'desc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
