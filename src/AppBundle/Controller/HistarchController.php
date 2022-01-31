@@ -33,7 +33,38 @@ class HistarchController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('record/create.html.twig');
+        $countRecord = count($entityManager->getRepository(Histarch::class)->findAll());
+        //Esto hay que enviarlo al front pero sumado uno
+
+        $formRecord = $request->get("Histarch");
+        if($formRecord != null){
+
+            $record = $this->$entityManager->getRepository(Histarch::class)->findOneBy(array('id'=>$formRecord['codCaja']));
+            if($record != null){
+                $record = new Histarch();
+            }
+
+            //Revisar relaciones
+            $record->setCodCarpeta($formRecord['codCarpeta']);
+            $record->setLegajo($formRecord['legajo']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $record->setFechaRetiro($formRecord['fechaDesde']);
+            // $record->setFechaDevolucion($formRecord['fechaHasta']);
+            
+
+            $entityManager->persist($record);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se cargó correctamente el registro!'
+            );
+            
+        }
+
+
+        return $this->render('record/create.html.twig', array(
+            'countRecord'  => $countRecord + 1
+        ));
     }
 
     /**

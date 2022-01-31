@@ -35,7 +35,39 @@ class CarpecajaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('folder/create.html.twig');
+        $countFolder = count($entityManager->getRepository(Carpecaja::class)->findAll());
+        //Esto hay que enviarlo al front pero sumado uno
+        
+        $formFolder = $request->get("Carpecaja");
+        if($formFolder != null){
+
+            $folder = $this->$entityManager->getRepository(Carpecaja::class)->findOneBy(array('id'=>$formFolder['codCaja']));
+            if($folder != null){
+                $folder = new Carpecaja();
+            }
+
+            //Revisar relaciones
+            $folder->setNroCarpeta($formFolder['nroCarp']);
+            $folder->setCodCaja($formFolder['tituloCarp']);
+            $folder->setTituloCarp($formFolder['codigoCaja']);
+            $folder->setNEstado($formFolder['estado']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
+            // $folder->setFechaHastaCarp($formFolder['fechaHasta']);
+            
+
+            $entityManager->persist($folder);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se cargó correctamente la carpeta!'
+            );
+            
+        }
+
+        return $this->render('folder/create.html.twig', array(
+            'countFolder'  => $countFolder + 1
+        ));
     }
 
     /**

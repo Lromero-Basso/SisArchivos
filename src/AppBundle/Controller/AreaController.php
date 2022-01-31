@@ -42,10 +42,12 @@ class AreaController extends BaseController
         $formArea = $request->get("Area");
         if($formArea != null){
             $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
+            //Porque no lo busco por id? Probar mañana
    
             if(empty($area)){
                 $area = new Areas();
                 $area->setNomArea(trim(strtoupper($formArea['nomArea'])));
+                
                 $entityManager->persist($area);
                 $entityManager->flush();
                 $this->addFlash(
