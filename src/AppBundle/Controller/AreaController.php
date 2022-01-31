@@ -41,7 +41,7 @@ class AreaController extends BaseController
 
         $formArea = $request->get("Area");
         if($formArea != null){
-            $area = $this->findAreaByName($entityManager, $formArea['nomArea']);
+            $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
    
             if(empty($area)){
                 $area = new Areas();
@@ -115,7 +115,34 @@ class AreaController extends BaseController
 
         $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id' => $id));
 
-      
+        $nombreAntiguo = trim($area->getNomArea());
+   
+        $formArea = $request->get("Area");
+
+        if($formArea != null){
+            //Verifico que la sentencia SQL no venga vacia 
+            //y tengo que actualizar el valor a mayusculas debido a que se guarda de esa manera
+            if(empty($this->findAreaByName($entityManager, strtoupper($formArea['nomArea'])) && strcmp($nombreAntiguo, $formArea['nomArea']))){
+                $area->setNomArea(trim(strtoupper($formArea['nomArea'])));
+                $entityManager->persist($area);
+                $entityManager->flush();
+                $this->addFlash(
+                    'notice',
+                    '¡Se actualizó correctamente el área ' . $area->getNomArea() . '!'
+                );
+                
+            }
+            else{
+                $this->addFlash(
+                    'error',
+                    'El nombre del área que intenta actualizar ya existe'
+                );
+                return $this->redirectToRoute('editArea', ['id' => $id]);
+            }
+         
+            return $this->redirectToRoute('viewAreas');
+
+        }
 
         return $this->render('area/create.html.twig', array(
             'countArea'     => $countArea,
