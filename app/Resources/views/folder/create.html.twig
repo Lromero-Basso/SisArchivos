@@ -5,14 +5,10 @@
     <div class="card-header">
         <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
     </div>
-    <form action="{{path('createFolder')}}" method="post">
+    <form method="post">
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if folder is defined %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCarp]" value="{{folder.id}}" required>
-            </div>
             <div class="col-md-2">
                 <label>N° carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[nroCarp]" value="{{folder.nroCarpeta}}" required>
@@ -30,11 +26,11 @@
         <div class="row">
             <div class="col-md-3">
                 <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Carpecaja[fechaDesde]" value="{{folder.fechaDesde|date('d-m-Y')}}}}" required>
+                <input value="{{folder.fechaDesdeCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaDesde]" required>
             </div>
             <div class="col-md-3">
                 <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Carpecaja[fechaHasta]" value="{{folder.fechaHasta|date('d-m-Y')}}}}" required>
+                <input value="{{folder.fechaHastaCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaHasta]" required>
             </div>
         </div>
         <br>
@@ -42,26 +38,13 @@
             <div class="col-md-4">
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Carpecaja[estado]" id="" required>
-                    <option value="" required>Seleccione una opción</option>
-                    <option value="1">En Archivo</option>
-                    <option value="2">Retirada</option>
+                    <option value="0" {% if folder.nEstado == 0 %} selected {% endif %}>En Archivo</option>
+                    <option value="1" {% if folder.nEstado == 1 %} selected {% endif %}>Retirada</option>
                 </select>
             </div>       
         </div>
-        <div class="float-right mb-3">
-            <button class="btn btn-info" style="margin-top:30px;" type="submit"> 
-                <i class="far fa-check-circle"></i> Armar caja
-            </button>
-            <a class="btn btn-secondary text-white" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
-                <i class="fas fa-undo-alt"></i> Cancelar
-            </a>
-        </div>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCarp]" value="{{countFolder}}" readonly>
-            </div>
             <div class="col-md-2">
                 <label>N° carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[nroCarp]" value="" required>
@@ -92,8 +75,8 @@
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Carpecaja[estado]" id="" required>
                     <option value="" required>Seleccione una opción</option>
-                    <option value="1">En Archivo</option>
-                    <option value="2">Retirada</option>
+                    <option value="0">En Archivo</option>
+                    <option value="1">Retirada</option>
                 </select>
             </div>       
         </div>

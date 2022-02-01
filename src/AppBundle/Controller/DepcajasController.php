@@ -35,23 +35,20 @@ class DepcajasController extends BaseController
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
         $countBox = count($entityManager->getRepository(Depcajas::class)->findAll());
-        //Esto hay que enviarlo al front pero sumado uno
 
         $formBox = $request->get("Depcaja");
-        if($formBox != null){
 
-            $box = $this->$entityManager->getRepository(Depcajas::class)->findOneBy(array('id'=>$formBox['codCaja']));
-            if($box != null){
-                $box = new Depcajas();
-            }
+        if($formBox != null){
+           
+            $box = new Depcajas();
             
             //Revisar relaciones
             $box->setCodEstante($formBox['codEstante']);
             $box->setCodLado($formBox['codLado']);
-            $box->setColumna($formBox['tituloCaja']);
-            $box->setPiso($formBox['columna']);
-            $box->setCodArea($formBox['piso']);
-            $box->setTituloCaja($formBox['codArea']);
+            $box->setPiso($formBox['piso']);
+            $box->setCodArea($formBox['codArea']);
+            $box->setColumna($formBox['columna']);
+            $box->setTituloCaja($formBox['tituloCaja']);
             $box->setNroDesdeCaja($formBox['nroDesde']);
             $box->setNroHastaCaja($formBox['nroHasta']);
             $box->setObserva($formBox['observa']);
@@ -59,19 +56,17 @@ class DepcajasController extends BaseController
             // $box->setFechaDesdeCaja($formBox['fechaDesde']);
             // $box->setFechaHastaCaja($formBox['fechaHasta']);
             // $box->setArchivadoHasta($formBox['archivadoHasta']);
-            
 
             $entityManager->persist($box);
             $entityManager->flush();
             $this->addFlash(
                 'notice',
-                '¡Se cargó correctamente la caja!'
+                '¡Se cargó correctamente la caja ID N° ' . $box->getId() . '!'
             );
             
             return $this->redirectToRoute('viewBoxes');
-
+    
         }
-
 
         return $this->render('box/create.html.twig', array(
             'countBox'  => $countBox + 1
@@ -119,7 +114,42 @@ class DepcajasController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('box/create.html.twig');
+        $countBox = count($entityManager->getRepository(Depcajas::class)->findAll());
+
+        $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
+   
+        $formBox = $request->get("Depcaja");
+
+        if($formBox != null){
+
+            $box->setCodEstante($formBox['codEstante']);
+            $box->setCodLado($formBox['codLado']);
+            $box->setPiso($formBox['piso']);
+            $box->setCodArea($formBox['codArea']);
+            $box->setColumna($formBox['columna']);
+            $box->setTituloCaja($formBox['tituloCaja']);
+            $box->setNroDesdeCaja($formBox['nroDesde']);
+            $box->setNroHastaCaja($formBox['nroHasta']);
+            $box->setObserva($formBox['observa']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $box->setFechaDesdeCaja($formBox['fechaDesde']);
+            // $box->setFechaHastaCaja($formBox['fechaHasta']);
+            // $box->setArchivadoHasta($formBox['archivadoHasta']);
+
+            $entityManager->persist($box);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente la caja ID N° ' . $box->getId() . '!'
+            );
+
+            return $this->redirectToRoute('viewBoxes');
+        }
+
+        return $this->render('box/create.html.twig', array(
+            'countBox'  => $countBox,
+            'box'       => $box
+        ));
     }
 
     

@@ -5,14 +5,10 @@
     <div class="card-header">
         <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
     </div>
-    <form action="{{path('createBox')}}" method="post">
+    <form method="post">
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if box is defined %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codCaja]" value="{{box.id}}" required>
-            </div>
             <div class="col-md-2">
                 <label>Código estante<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codEstante]" value="{{box.codEstante}}" required>
@@ -21,13 +17,6 @@
                 <label>Código lado<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codLado]" value="{{box.codLado}}" required>
             </div>
-            <div class="col-md-4">
-                <label>Título caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
-            </div>     
-        </div>
-        <br>
-        <div class="row">
             <div class="col-md-2">
                 <label>Columna<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[columna]" value="{{box.columna}}" required>
@@ -36,6 +25,13 @@
                 <label>Piso<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[piso]" value="{{box.piso}}" required>
             </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Título caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
+            </div>       
             <div class="col-md-2">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>
@@ -53,30 +49,26 @@
         <div class="row">
             <div class="col-md-3">
                 <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="{{box.fechaDesdeCaja|date('d-m-Y')}}}}}}" required>
+                <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
             </div>
             <div class="col-md-3">
                 <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[fechaHasta]" value="{{box.fechaHastaCaja|date('d-m-Y')}}}}}}" required>
+                <input value="{{box.fechaHastaCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaHasta]" required>
             </div>
             <div class="col-md-3">
                 <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="{{box.archivadoHasta|date('d-m-Y')}}}}}}" required>
+                <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" required>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-8">
                 <label>Observa</label>
-                <input class="form-control" type="text" name="Depcaja[observa]" value="{{box.observa}}" >
+                <input class="form-control" type="text" name="Depcaja[observa]" value="{{box.observa}}">
             </div>
         </div>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codCaja]" value="{{countBox}}" readonly>
-            </div>
             <div class="col-md-2">
                 <label>Código estante<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codEstante]" value="" required>
@@ -85,13 +77,6 @@
                 <label>Código lado<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codLado]" value="" required>
             </div>
-            <div class="col-md-4">
-                <label>Título caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
-            </div>     
-        </div>
-        <br>
-        <div class="row">
             <div class="col-md-2">
                 <label>Columna<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[columna]" value="" required>
@@ -100,6 +85,13 @@
                 <label>Piso<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[piso]" value="" required>
             </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Título caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
+            </div>   
             <div class="col-md-2">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codArea]" value="" required>

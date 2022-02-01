@@ -5,14 +5,10 @@
     <div class="card-header">
         <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
     </div>
-    <form action="{{path('createRecord')}}" method="post">
+    <form method="post">
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if record is defined %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código interno<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Histarch[codInterno]" value="{{record.id}}" required>
-            </div>
             <div class="col-md-2">
                 <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Histarch[codCarpeta]" value="{{record.codCarpeta}}" required>
@@ -26,20 +22,16 @@
         <div class="row">
             <div class="col-md-3">
                 <label>Fecha retiro<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Histarch[fechaDesde]" value="{{record.fechaRetiro|date('d-m-Y')}}}}}}" required>
+                <input value="{{record.fechaRetiro|date('Y-m-d')}}" type="date" class="form-control" name="Histarch[fechaDesde]" required>
             </div>
             <div class="col-md-3">
                 <label>Fecha devolución<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Histarch[fechaHasta]" value="{{record.fechaDevolucion|date('d-m-Y')}}}}}}" required>
+                <input value="{{record.fechaDevolucion|date('Y-m-d')}}" type="date" class="form-control" name="Histarch[fechaHasta]" required>
             </div>
         </div>
         <br>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código interno<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Histarch[codInterno]" value="{{countRecord}}" readonly>
-            </div>
             <div class="col-md-2">
                 <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Histarch[codCarpeta]" value="" required>

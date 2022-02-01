@@ -9,10 +9,6 @@
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if area is defined %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Area[codArea]" value="{{area.id}}" required>
-            </div>
             <div class="col-md-4">
                 <label>Nombre área<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control text-uppercase" type="text" name="Area[nomArea]" value="{{area.nomArea}}" required>
@@ -20,16 +16,13 @@
         </div>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Area[codArea]" value="{{countArea}}" readonly>
-            </div>
             <div class="col-md-4">
                 <label>Nombre área<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control text-uppercase" type="text" name="Area[nomArea]" value="" required>
             </div>
         </div>
-        <div class="float-right mb-3">
+        {% endif %}
+         <div class="float-right mb-3">
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i> {% if area is defined %} Guardar cambios {% else %} Cargar área {% endif %}
             </button>
@@ -37,7 +30,6 @@
                 <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>
-        {% endif %}
         
     </div>
     </form>

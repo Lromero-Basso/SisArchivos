@@ -36,9 +36,6 @@ class AreaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $countArea = count($entityManager->getRepository(Areas::class)->findAll());
-        //Esto hay que enviarlo al front pero sumado uno
-
         $formArea = $request->get("Area");
         if($formArea != null){
             $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
@@ -52,7 +49,7 @@ class AreaController extends BaseController
                 $entityManager->flush();
                 $this->addFlash(
                     'notice',
-                    '¡Se creó correctamente el área ' . $area->getNomArea() . '!'
+                    '¡Se cargó correctamente el área ' . $area->getNomArea() . '!'
                 );
             }
             else{
@@ -67,9 +64,7 @@ class AreaController extends BaseController
 
         }
 
-        return $this->render('area/create.html.twig', array(
-            'countArea'  => $countArea + 1
-        ));
+        return $this->render('area/create.html.twig');
     }
 
     /**
@@ -113,41 +108,25 @@ class AreaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $countArea = count($entityManager->getRepository(Areas::class)->findAll());
-
         $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id' => $id));
 
-        $nombreAntiguo = trim($area->getNomArea());
-   
         $formArea = $request->get("Area");
 
         if($formArea != null){
-            //Verifico que la sentencia SQL no venga vacia 
-            //y tengo que actualizar el valor a mayusculas debido a que se guarda de esa manera
-            if(empty($this->findAreaByName($entityManager, strtoupper($formArea['nomArea'])) && strcmp($nombreAntiguo, $formArea['nomArea']))){
-                $area->setNomArea(trim(strtoupper($formArea['nomArea'])));
-                $entityManager->persist($area);
-                $entityManager->flush();
-                $this->addFlash(
-                    'notice',
-                    '¡Se actualizó correctamente el área ' . $area->getNomArea() . '!'
-                );
-                
-            }
-            else{
-                $this->addFlash(
-                    'error',
-                    'El nombre del área que intenta actualizar ya existe'
-                );
-                return $this->redirectToRoute('editArea', ['id' => $id]);
-            }
-         
+
+            $area->setNomArea(trim(strtoupper($formArea['nomArea'])));
+            $entityManager->persist($area);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente el área ' . $area->getNomArea() . '!'
+            );
+                   
             return $this->redirectToRoute('viewAreas');
 
         }
 
         return $this->render('area/create.html.twig', array(
-            'countArea'     => $countArea,
             'area'          => $area
         ));
     }

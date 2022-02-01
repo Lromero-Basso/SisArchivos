@@ -34,22 +34,16 @@ class CarpecajaController extends BaseController
         $breadcrumbs->addRouteItem("Cargar Carpeta", "createFolder");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
-
-        $countFolder = count($entityManager->getRepository(Carpecaja::class)->findAll());
-        //Esto hay que enviarlo al front pero sumado uno
         
         $formFolder = $request->get("Carpecaja");
         if($formFolder != null){
 
-            $folder = $this->$entityManager->getRepository(Carpecaja::class)->findOneBy(array('id'=>$formFolder['codCaja']));
-            if($folder != null){
-                $folder = new Carpecaja();
-            }
-
+            $folder = new Carpecaja();
+            
             //Revisar relaciones
             $folder->setNroCarpeta($formFolder['nroCarp']);
-            $folder->setCodCaja($formFolder['tituloCarp']);
-            $folder->setTituloCarp($formFolder['codigoCaja']);
+            $folder->setCodCaja($formFolder['codigoCaja']);
+            $folder->setTituloCarp($formFolder['tituloCarp']);
             $folder->setNEstado($formFolder['estado']);
             //Las fechas va de la mano del fitro de busqueda
             // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
@@ -60,14 +54,14 @@ class CarpecajaController extends BaseController
             $entityManager->flush();
             $this->addFlash(
                 'notice',
-                '¡Se cargó correctamente la carpeta!'
+                '¡Se cargó correctamente la carpeta ID N° ' . $folder->getId() . '!'
             );
+
+            return $this->redirectToRoute('viewFolders');
             
         }
 
-        return $this->render('folder/create.html.twig', array(
-            'countFolder'  => $countFolder + 1
-        ));
+        return $this->render('folder/create.html.twig');
     }
 
     /**
@@ -112,8 +106,36 @@ class CarpecajaController extends BaseController
         $breadcrumbs->addItem("Editar Carpeta - $id", "editFolder");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
+
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
+
+        $formFolder = $request->get("Carpecaja");
+
+        if($formFolder != null){
+
+            //Revisar relaciones
+            $folder->setNroCarpeta($formFolder['nroCarp']);
+            $folder->setCodCaja($formFolder['codigoCaja']);
+            $folder->setTituloCarp($formFolder['tituloCarp']);
+            $folder->setNEstado($formFolder['estado']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
+            // $folder->setFechaHastaCarp($formFolder['fechaHasta']);
+            
+            $entityManager->persist($folder);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente la carpeta ID N° ' . $folder->getId() . '!'
+            );
+
+            return $this->redirectToRoute('viewFolders');
+            
+        }
         
-        return $this->render('folder/create.html.twig');
+        return $this->render('folder/create.html.twig', array(
+            'folder'    => $folder
+        ));
     }
 
     /**

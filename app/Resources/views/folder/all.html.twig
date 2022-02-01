@@ -144,10 +144,10 @@ Poner los flash en el base
           <td>{{folder.id}}</td>
           <td>{{folder.nroCarpeta}}</td>
           <td>{{folder.codCaja}}</td>
-          <td>{{folder.tituloCarp}}</td>
+          <td><small>{{folder.tituloCarp}}</small></td>
           <td>{{folder.fechaDesdeCarp|date('d-m-Y')}}</td>
           <td>{{folder.fechaHastaCarp|date('d-m-Y')}}</td>
-          <td>{% if folder.nEstado == 0 %}En Archivo{% else %}Retirada{% endif %}</td>
+          <td>{% if folder.nEstado == 0 %}<span class="badge badge-success">EN ARCHIVO</span>{% else %}<span class="badge  badge-warning">RETIRADA</span>{% endif %}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
