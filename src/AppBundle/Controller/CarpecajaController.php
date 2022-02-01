@@ -34,13 +34,15 @@ class CarpecajaController extends BaseController
         $breadcrumbs->addRouteItem("Nueva Carpeta", "createFolder");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
+
+        $boxes = $entityManager->getRepository(Carpecaja::class)->findAll();
         
         $formFolder = $request->get("Carpecaja");
+
         if($formFolder != null){
 
             $folder = new Carpecaja();
             
-            //Revisar relaciones
             $folder->setNroCarpeta($formFolder['nroCarp']);
             $folder->setCodCaja($formFolder['codigoCaja']);
             $folder->setTituloCarp($formFolder['tituloCarp']);
@@ -61,7 +63,9 @@ class CarpecajaController extends BaseController
             
         }
 
-        return $this->render('folder/create.html.twig');
+        return $this->render('folder/create.html.twig', array(
+            'boxes' => $boxes
+        ));
     }
 
     /**
@@ -109,11 +113,12 @@ class CarpecajaController extends BaseController
 
         $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
 
+        $boxes = $entityManager->getRepository(Carpecaja::class)->findAll();
+
         $formFolder = $request->get("Carpecaja");
 
         if($formFolder != null){
 
-            //Revisar relaciones
             $folder->setNroCarpeta($formFolder['nroCarp']);
             $folder->setCodCaja($formFolder['codigoCaja']);
             $folder->setTituloCarp($formFolder['tituloCarp']);
@@ -134,7 +139,8 @@ class CarpecajaController extends BaseController
         }
         
         return $this->render('folder/create.html.twig', array(
-            'folder'    => $folder
+            'folder'    => $folder,
+            'boxes' => $boxes
         ));
     }
 

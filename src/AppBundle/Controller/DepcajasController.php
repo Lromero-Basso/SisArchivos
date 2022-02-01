@@ -44,7 +44,6 @@ class DepcajasController extends BaseController
            
             $box = new Depcajas();
             
-            //Revisar relaciones
             $box->setCodEstante($formBox['codEstante']);
             $box->setCodLado($formBox['codLado']);
             $box->setPiso($formBox['piso']);

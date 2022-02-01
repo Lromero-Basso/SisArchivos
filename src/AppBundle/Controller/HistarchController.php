@@ -33,12 +33,14 @@ class HistarchController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
+        $folders = $entityManager->getRepository(Carpecaja::class)->findAll();
+
         $formRecord = $request->get("Histarch");
+
         if($formRecord != null){
 
             $record = new Histarch();
             
-            //Revisar relaciones
             $record->setCodCarpeta($formRecord['codCarpeta']);
             $record->setLegajo($formRecord['legajo']);
             //Las fechas va de la mano del fitro de busqueda
@@ -57,7 +59,9 @@ class HistarchController extends BaseController
 
         }
 
-        return $this->render('record/create.html.twig');
+        return $this->render('record/create.html.twig', array(
+            'folders' => $folders
+        ));
     }
 
     /**
@@ -105,10 +109,11 @@ class HistarchController extends BaseController
 
         $record = $entityManager->getRepository(Histarch::class)->findOneBy(array('id'=>$id));
 
+        $folders = $entityManager->getRepository(Carpecaja::class)->findAll();
+
         $formRecord = $request->get("Histarch");
         if($formRecord != null){
 
-            //Revisar relaciones
             $record->setCodCarpeta($formRecord['codCarpeta']);
             $record->setLegajo($formRecord['legajo']);
             //Las fechas va de la mano del fitro de busqueda
@@ -127,7 +132,8 @@ class HistarchController extends BaseController
         }
         
         return $this->render('record/create.html.twig', array(
-            'record' => $record
+            'record' => $record,
+            'folders' => $folders
         ));
     }
 

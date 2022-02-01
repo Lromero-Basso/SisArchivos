@@ -11,7 +11,12 @@
         <div class="row">
             <div class="col-md-2">
                 <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Histarch[codCarpeta]" value="{{record.codCarpeta}}" required>
+                <select class="form-control" name="Histarch[codCarpeta]">
+                    {% for folder in folders %}
+                        <option value="{{folder.id}}" {% if record.codCarpeta == folder.id %} selected  {% endif %}>{{folder.id}} - {{folder.tituloCarp}}</option>
+                    {% endfor %}
+                </select>
+                {# <input class="form-control" type="text" name="Histarch[codCarpeta]" value="{{record.codCarpeta}}" required> #}
             </div>
             <div class="col-md-2">
                 <label>Legajo<span class="ml-1 text-danger">*</span></label>
@@ -34,7 +39,13 @@
         <div class="row">
             <div class="col-md-2">
                 <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Histarch[codCarpeta]" value="" required>
+                <select class="form-control" name="Histarch[codCarpeta]" required>
+                    <option value="">Seleccione un código de área</option>
+                    {% for folder in folders %}
+                        <option value="{{folder.id}}">{{folder.id}} - {{folder.tituloCarp}}</option>
+                    {% endfor %}
+                </select>
+                {# <input class="form-control" type="text" name="Histarch[codCarpeta]" value="" required> #}
             </div>
             <div class="col-md-2">
                 <label>Legajo<span class="ml-1 text-danger">*</span></label>

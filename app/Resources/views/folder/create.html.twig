@@ -19,7 +19,12 @@
             </div>
             <div class="col-md-2">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="{{folder.codCaja}}" required>
+                <select class="form-control" name="Carpecaja[codigoCaja]">
+                    {% for box in boxes %}
+                        <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
+                    {% endfor %}
+                </select>
+                {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="{{folder.codCaja}}" required> #}
             </div>
         </div>
         <br>
@@ -55,7 +60,13 @@
             </div>
             <div class="col-md-2">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="" required>
+                <select class="form-control" name="Carpecaja[codigoCaja]" required>
+                    <option value="">Seleccione un código de área</option>
+                    {% for box in boxes %}
+                        <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
+                    {% endfor %}
+                </select>
+                {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="" required> #}
             </div>
         </div>
         <br>
