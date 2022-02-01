@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Depcajas;
+use AppBundle\Entity\Areas;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -30,13 +31,14 @@ class DepcajasController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Caja", "createBox");
+        $breadcrumbs->addRouteItem("Nueva Caja", "createBox");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $countBox = count($entityManager->getRepository(Depcajas::class)->findAll());
 
         $formBox = $request->get("Depcaja");
+
+        $areas = $entityManager->getRepository(Areas::class)->findAll();
 
         if($formBox != null){
            
@@ -69,7 +71,7 @@ class DepcajasController extends BaseController
         }
 
         return $this->render('box/create.html.twig', array(
-            'countBox'  => $countBox + 1
+            'areas'     => $areas
         ));
     }
 
@@ -120,6 +122,8 @@ class DepcajasController extends BaseController
    
         $formBox = $request->get("Depcaja");
 
+        $areas = $entityManager->getRepository(Areas::class)->findAll();
+
         if($formBox != null){
 
             $box->setCodEstante($formBox['codEstante']);
@@ -148,7 +152,8 @@ class DepcajasController extends BaseController
 
         return $this->render('box/create.html.twig', array(
             'countBox'  => $countBox,
-            'box'       => $box
+            'box'       => $box,
+            'areas'     => $areas
         ));
     }
 

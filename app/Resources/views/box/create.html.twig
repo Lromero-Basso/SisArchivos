@@ -32,9 +32,15 @@
                 <label>Título caja<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
             </div>       
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>
+                <select class="form-control" name="Depcaja[codArea]">
+                    {% for area in areas %}
+                        <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
+                    {% endfor %}
+                </select>
+                
+                {# <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>  #}
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -92,9 +98,15 @@
                 <label>Título caja<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
             </div>   
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codArea]" value="" required>
+                <select class="form-control" name="Depcaja[codArea]" required>
+                    <option value="">Seleccione un código de área</option>
+                    {% for area in areas %}
+                        <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                    {% endfor %}
+                </select>
+                {# <input class="form-control" type="text" name="Depcaja[codArea]" value="" required> #}
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -132,11 +144,15 @@
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i> {% if box is defined %} Guardar cambios {% else %} Armar caja {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="return confirm('¿Está seguro que desea volver?')" style="margin-top:30px;" href="{{path('viewBoxes')}}"> 
+            <a class="btn btn-secondary text-white" onclick="sweetAlert()" style="margin-top:30px;"> 
                 <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>
     </div>
     </form>
 </div>
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{ asset('js/customAlerts.js') }}"></script>
 {% endblock %}

@@ -29,7 +29,7 @@ class HistarchController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Registro", "createRecord");
+        $breadcrumbs->addRouteItem("Nuevo Registro", "createRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 

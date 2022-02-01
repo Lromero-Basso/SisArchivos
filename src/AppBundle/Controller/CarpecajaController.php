@@ -31,7 +31,7 @@ class CarpecajaController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Carpeta", "createFolder");
+        $breadcrumbs->addRouteItem("Nueva Carpeta", "createFolder");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
         

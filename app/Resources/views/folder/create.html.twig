@@ -85,7 +85,7 @@
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i>{% if folder is defined %} Guardar cambios {% else %} Armar carpeta {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="return confirm('¿Está seguro que desea volver?')" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
+            <a class="btn btn-secondary text-white" onclick="sweetAlert()" style="margin-top:30px;"> 
                 <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>
@@ -93,3 +93,8 @@
     </form>
 </div>
 {% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{ asset('js/customAlerts.js') }}"></script>
+{% endblock %}
+

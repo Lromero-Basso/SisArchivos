@@ -32,7 +32,7 @@ class AreaController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Area", "createArea");
+        $breadcrumbs->addRouteItem("Nuevo Area", "createArea");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
