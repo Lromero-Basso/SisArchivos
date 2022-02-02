@@ -39,7 +39,6 @@ class AreaController extends BaseController
         $formArea = $request->get("Area");
         if($formArea != null){
             $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
-            //Porque no lo busco por id? Probar mañana
    
             if(empty($area)){
                 $area = new Areas();
@@ -167,7 +166,6 @@ class AreaController extends BaseController
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
         $filterForm = $this->createForm('AppBundle\Form\AreaFilterType',$this->getNombreAreas());
-
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){

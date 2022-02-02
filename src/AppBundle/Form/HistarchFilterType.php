@@ -12,11 +12,15 @@ class HistarchFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+      
         $builder
             ->add('id', Filters\NumberFilterType::class, array(
-                'label'     => 'Código interno'
+                'label'     => 'Código interno - ID'
             ))
-            ->add('codCarpeta', Filters\NumberFilterType::class)
+            ->add('codCarpeta', Filters\ChoiceFilterType::class, array(
+                'choices'   => $options['data'],
+                'label'     => 'Código carpeta'
+            ))
             ->add('fechaRetiro', Filters\DateRangeFilterType::class,  array(
                 'label' => 'Fecha',
                 'left_date_options' => array(

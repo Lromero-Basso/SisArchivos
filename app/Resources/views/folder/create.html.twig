@@ -9,6 +9,13 @@
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if folder is defined %}
         <div class="row">
+            <div class="col-md-3">
+                <label>Fecha<span class="ml-1 text-danger">*</span></label>
+                <input value="{{folder.fechaDesdeCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaDesde]" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
             <div class="col-md-2">
                 <label>N° carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[nroCarp]" value="{{folder.nroCarpeta}}" required>
@@ -19,10 +26,10 @@
             </div>
             <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
+                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" value="{{folder.codCaja}}" required  >
                 <datalist id="boxes">
                 {% for box in boxes %}
-                    <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
+                    <option value="{{box.id}}"> {{box.id}} - {{box.tituloCaja}}</option>
                 {% endfor %}
                 </datalist>
                 {# <select class="form-control" name="Carpecaja[codigoCaja]">
@@ -35,17 +42,6 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-3">
-                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input value="{{folder.fechaDesdeCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaDesde]" required>
-            </div>
-            <div class="col-md-3">
-                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input value="{{folder.fechaHastaCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaHasta]" required>
-            </div>
-        </div>
-        <br>
-         <div class="row">
             <div class="col-md-4">
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Carpecaja[estado]" id="" required>
@@ -55,6 +51,13 @@
             </div>       
         </div>
         {% else %}
+        <div class="row">
+            <div class="col-md-3">
+                <label>Fecha<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Carpecaja[fechaDesde]" value="{{now|date('Y-m-d')}}" readonly>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-2">
                 <label>N° carpeta<span class="ml-1 text-danger">*</span></label>
@@ -83,17 +86,6 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-3">
-                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Carpecaja[fechaDesde]" value="" required>
-            </div>
-            <div class="col-md-3">
-                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Carpecaja[fechaHasta]" value="" required>
-            </div>
-        </div>
-        <br>
-         <div class="row">
             <div class="col-md-4">
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Carpecaja[estado]" id="" required>

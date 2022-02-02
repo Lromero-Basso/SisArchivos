@@ -14,46 +14,31 @@ class CarpecajaFilterType extends AbstractType
     {
         $builder
             ->add('id', Filters\NumberFilterType::class, array(
-                'label'     => 'Código carpeta'
+                'label'     => 'Código carpeta - ID'
             ))
             ->add('nroCarpeta', Filters\ChoiceFilterType::class, array(
                 'choices'   => $options['data'][1],//0 porque es la posicion de los n° carpeta en arrayOptions
                 'label'     => 'N° Carpeta'
             ))
-            ->add('codCaja', Filters\TextFilterType::class, array(
+            ->add('codCaja', Filters\ChoiceFilterType::class, array(
+                'choices'   => $options['data'][2],//2 porque es la posicion de los codigo caja en arrayOptions
                 'label'     => 'Código caja'
             ))
-            // ->add('tituloCarp', Filters\TextFilterType::class, array(
-            //     'label'         => 'Título carpeta',
-            // ))
             ->add('tituloCarp', Filters\ChoiceFilterType::class, array(
                 'choices'   => $options['data'][0], //0 porque es la posicion de los titulos en arrayOptions
                 'label'     => 'Título carpeta'
             ))
             ->add('fechaDesdeCarp', Filters\DateRangeFilterType::class,  array(
-                'label'     => 'Fecha',
+                'label'     => 'Fecha Desde',
                 'left_date_options' => array(
                     'widget' => 'single_text',
                     'label' => 'desde'
                 ),
-            ))
-            ->add('fechaHastaCarp', Filters\DateRangeFilterType::class,  array(
-                'label'     => 'Fecha',
                 'right_date_options' => array(
                     'widget' => 'single_text',
                     'label' => 'hasta'
                 )
             ))
-            // ->add('estado', Filters\ChoiceFilterType::class, array(
-            //     'choices'  => [
-            //         //Esto puedo dejarlo asi , porque lo que sucede es que el campo
-            //         //tiene 40 caracteres y completa los demas con vacios, entonces tengo que rellenarlos
-            //         //con la busqueda tambien, y sino la solucion prolija es usar la nueva tabla
-            //         'En Archivo' => 'En archivo                              ',
-            //         'Retirada' => 'Retirada                                ',
-            //     ],
-            //     'label'     => 'Estado'
-            // ));
               ->add('nEstado', Filters\ChoiceFilterType::class, array(
                 'choices'  => [
                     'En Archivo' => 0,
