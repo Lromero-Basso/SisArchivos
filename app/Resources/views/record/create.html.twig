@@ -29,10 +29,10 @@
                 <label>Fecha retiro<span class="ml-1 text-danger">*</span></label>
                 <input value="{{record.fechaRetiro|date('Y-m-d')}}" type="date" class="form-control" name="Histarch[fechaDesde]" required>
             </div>
-            <div class="col-md-3">
+            {# <div class="col-md-3">
                 <label>Fecha devolución<span class="ml-1 text-danger">*</span></label>
                 <input value="{{record.fechaDevolucion|date('Y-m-d')}}" type="date" class="form-control" name="Histarch[fechaHasta]" required>
-            </div>
+            </div> #}
         </div>
         <br>
         {% else %}
@@ -57,10 +57,10 @@
                 <label>Fecha retiro<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="date" name="Histarch[fechaDesde]" value="" required>
             </div>
-            <div class="col-md-3">
+            {# <div class="col-md-3">
                 <label>Fecha devolución<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="date" name="Histarch[fechaHasta]" value="" required>
-            </div>
+            </div> #}
         </div>
         <br>
         {% endif %}

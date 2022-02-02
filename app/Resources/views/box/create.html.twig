@@ -13,6 +13,10 @@
                 <label>Fecha<span class="ml-1 text-danger">*</span></label>
                 <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
             </div>
+            <div class="col-md-3">
+                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="{{box.archivadoHasta|date('Y-m-d')}}}}" readonly> 
+            </div>
         </div>
         <br>
         <div class="row">
@@ -69,6 +73,10 @@
             <div class="col-md-3">
                 <label>Fecha<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="{{now|date('Y-m-d')}}" readonly> 
+            </div>
+            <div class="col-md-3">
+                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="" readonly> 
             </div>
         </div>
         <br>

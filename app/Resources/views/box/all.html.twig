@@ -19,6 +19,7 @@
           <div class="col-md-1"></div>
           <div class="col-md-4">{{ form_row(filterForm.tituloCaja) }}</div>
           <div class="col-md-3">{{ form_row(filterForm.codArea) }}</div>
+          <div class="col-md-3">{{ form_row(filterForm.archivadoHasta) }}</div>
           <div class="col-md-4"></div>
 
           {# Falta los nros DESDE Y HASTA #}
@@ -119,6 +120,7 @@
           <th style="border:0px;">{{macros.th_sortable('nroDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° Desde')}}</th>
           <th style="border:0px;">{{macros.th_sortable('nroHastaCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° Hasta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Fecha')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('archivadoHasta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Archivado hasta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('observa',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Observa')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
@@ -135,7 +137,8 @@
           <td><small>{{box.tituloCaja}}</small></td>
           <td>{{box.nroDesdeCaja}}</td>
           <td>{{box.nroHastaCaja}}</td>
-          <td>{{box.fechaDesdeCaja|date('d-m-Y')}}</td>
+          <td><small>{{box.fechaDesdeCaja|date('d-m-Y')}}</small></td>
+          <td><small>{{box.archivadoHasta|date('d-m-Y')}}</small></td>
           <td><small>{{box.observa}}</small></td>
           {# <td>{{box.observa}}</td> #}
           <td class="actions  noExl">

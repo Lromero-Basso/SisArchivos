@@ -98,6 +98,11 @@
 
 <!-- /TABLE WITH SORT -->
 
+<!-- MODALS -->
+{{ include('modals/_retireFolderModal.html.twig') }}
+{{ include('modals/_returnFolderModal.html.twig') }}
+<!-- END MODALS -->
+
 <form method="POST" id="bulk_form" action="{{ path('carpecaja_bulk_action') }} ">
   <div class="card mb-4 mt-4">
     <table class="table table-striped table-hover table-sm" id="tabla" namefile="Carpecaja">
@@ -131,6 +136,14 @@
                 <a class="dropdown-item" title='Vista Previa' href="{{ path('showFolder', { 'id': folder.id }) }} ">Vista Previa</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar</a>
+                <div class="dropdown-divider"></div>
+                {% if folder.nEstado == 0 %}
+                <a class="dropdown-item" title='Editar'  data-toggle="modal" data-target="#modalRetirarCarpeta">Retirar</a>
+                {% else %}
+                <a class="dropdown-item" title='Editar'  data-toggle="modal" data-target="#modalDevolverCarpeta">Devolver</a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title='Editar'  href="{{path('viewRecords')}}">Movimientos</a>
                 {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteFolder', { 'id': folder.id}) }}">Eliminar</a> #}
               </div>
             </div>
@@ -170,5 +183,6 @@
 {% endblock %}
 {% block javascript %}
 	{{ parent()}}
-    <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+  <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+  <script src="{{ asset('js/customAlerts.js') }}"></script>
 {% endblock %} 

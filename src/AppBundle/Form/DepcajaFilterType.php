@@ -62,6 +62,10 @@ class DepcajaFilterType extends AbstractType
                     'label' => 'hasta'
                 )
             ))
+            ->add('archivadoHasta', Filters\DateFilterType::class,  array(
+                'label'     => 'Fecha Desde',
+                'widget'    => 'single_text'
+            ))
             ->add('observa', Filters\TextFilterType::class, array(
                 'label' => 'Observa'
             ));
