@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use AppBundle\Entity\Areas;
 
@@ -31,9 +32,37 @@ class AreaController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Area", "createArea");
+        $breadcrumbs->addRouteItem("Nuevo Area", "createArea");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
+
+        $formArea = $request->get("Area");
+        if($formArea != null){
+            $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
+            //Porque no lo busco por id? Probar mañana
+   
+            if(empty($area)){
+                $area = new Areas();
+                $area->setNomArea(trim(strtoupper($formArea['nomArea'])));
+                
+                $entityManager->persist($area);
+                $entityManager->flush();
+                $this->addFlash(
+                    'notice',
+                    '¡Se cargó correctamente el área ' . $area->getNomArea() . '!'
+                );
+            }
+            else{
+                $this->addFlash(
+                    'error',
+                    'El área que intenta cargar ya existe'
+                );
+                return $this->redirectToRoute('createArea');
+            }
+           
+            return $this->redirectToRoute('viewAreas');
+
+        }
 
         return $this->render('area/create.html.twig');
     }
@@ -79,7 +108,27 @@ class AreaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('area/edit.html.twig');
+        $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id' => $id));
+
+        $formArea = $request->get("Area");
+
+        if($formArea != null){
+
+            $area->setNomArea(trim(strtoupper($formArea['nomArea'])));
+            $entityManager->persist($area);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente el área ' . $area->getNomArea() . '!'
+            );
+                   
+            return $this->redirectToRoute('viewAreas');
+
+        }
+
+        return $this->render('area/create.html.twig', array(
+            'area'          => $area
+        ));
     }
 
     /**
@@ -169,7 +218,7 @@ class AreaController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'desc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
@@ -267,6 +316,19 @@ class AreaController extends BaseController
         }
         
         return $arrayOptions;
+    }
+
+    public function findAreaByName($entityManager, $nombreArea){
+
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM AppBundle:Areas a
+            WHERE trim(a.nomArea) = trim(:nomArea)'
+        )->setParameter('nomArea', "$nombreArea");
+
+        $area = $query->getResult();
+
+        return $area;
     }
 
 }

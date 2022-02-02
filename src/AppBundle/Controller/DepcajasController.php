@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Depcajas;
+use AppBundle\Entity\Areas;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -30,11 +31,47 @@ class DepcajasController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Caja", "createBox");
+        $breadcrumbs->addRouteItem("Nueva Caja", "createBox");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('box/create.html.twig');
+
+        $formBox = $request->get("Depcaja");
+
+        $areas = $entityManager->getRepository(Areas::class)->findAll();
+
+        if($formBox != null){
+           
+            $box = new Depcajas();
+            
+            $box->setCodEstante($formBox['codEstante']);
+            $box->setCodLado($formBox['codLado']);
+            $box->setPiso($formBox['piso']);
+            $box->setCodArea($formBox['codArea']);
+            $box->setColumna($formBox['columna']);
+            $box->setTituloCaja($formBox['tituloCaja']);
+            $box->setNroDesdeCaja($formBox['nroDesde']);
+            $box->setNroHastaCaja($formBox['nroHasta']);
+            $box->setObserva($formBox['observa']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $box->setFechaDesdeCaja($formBox['fechaDesde']);
+            // $box->setFechaHastaCaja($formBox['fechaHasta']);
+            // $box->setArchivadoHasta($formBox['archivadoHasta']);
+
+            $entityManager->persist($box);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se cargó correctamente la caja ID N° ' . $box->getId() . '!'
+            );
+            
+            return $this->redirectToRoute('viewBoxes');
+    
+        }
+
+        return $this->render('box/create.html.twig', array(
+            'areas'     => $areas
+        ));
     }
 
     /**
@@ -78,7 +115,45 @@ class DepcajasController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('box/edit.html.twig');
+        $countBox = count($entityManager->getRepository(Depcajas::class)->findAll());
+
+        $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
+   
+        $formBox = $request->get("Depcaja");
+
+        $areas = $entityManager->getRepository(Areas::class)->findAll();
+
+        if($formBox != null){
+
+            $box->setCodEstante($formBox['codEstante']);
+            $box->setCodLado($formBox['codLado']);
+            $box->setPiso($formBox['piso']);
+            $box->setCodArea($formBox['codArea']);
+            $box->setColumna($formBox['columna']);
+            $box->setTituloCaja($formBox['tituloCaja']);
+            $box->setNroDesdeCaja($formBox['nroDesde']);
+            $box->setNroHastaCaja($formBox['nroHasta']);
+            $box->setObserva($formBox['observa']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $box->setFechaDesdeCaja($formBox['fechaDesde']);
+            // $box->setFechaHastaCaja($formBox['fechaHasta']);
+            // $box->setArchivadoHasta($formBox['archivadoHasta']);
+
+            $entityManager->persist($box);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente la caja ID N° ' . $box->getId() . '!'
+            );
+
+            return $this->redirectToRoute('viewBoxes');
+        }
+
+        return $this->render('box/create.html.twig', array(
+            'countBox'  => $countBox,
+            'box'       => $box,
+            'areas'     => $areas
+        ));
     }
 
     
@@ -166,7 +241,7 @@ class DepcajasController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'desc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);

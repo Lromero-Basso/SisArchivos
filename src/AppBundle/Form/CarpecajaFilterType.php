@@ -13,30 +13,32 @@ class CarpecajaFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', Filters\NumberFilterType::class)
+            ->add('id', Filters\NumberFilterType::class, array(
+                'label'     => 'Código carpeta'
+            ))
             ->add('nroCarpeta', Filters\ChoiceFilterType::class, array(
-                'choices' => $options['data'][1],//0 porque es la posicion de los n° carpeta en arrayOptions
-                'label' => 'N° Carpeta'
+                'choices'   => $options['data'][1],//0 porque es la posicion de los n° carpeta en arrayOptions
+                'label'     => 'N° Carpeta'
             ))
             ->add('codCaja', Filters\TextFilterType::class, array(
-                'label' => 'Código caja'
+                'label'     => 'Código caja'
             ))
             // ->add('tituloCarp', Filters\TextFilterType::class, array(
             //     'label'         => 'Título carpeta',
             // ))
             ->add('tituloCarp', Filters\ChoiceFilterType::class, array(
-                'choices' => $options['data'][0], //0 porque es la posicion de los titulos en arrayOptions
-                'label' => 'Título carpeta'
+                'choices'   => $options['data'][0], //0 porque es la posicion de los titulos en arrayOptions
+                'label'     => 'Título carpeta'
             ))
             ->add('fechaDesdeCarp', Filters\DateRangeFilterType::class,  array(
-                'label' => 'Fecha',
+                'label'     => 'Fecha',
                 'left_date_options' => array(
                     'widget' => 'single_text',
                     'label' => 'desde'
                 ),
             ))
             ->add('fechaHastaCarp', Filters\DateRangeFilterType::class,  array(
-                'label' => 'Fecha',
+                'label'     => 'Fecha',
                 'right_date_options' => array(
                     'widget' => 'single_text',
                     'label' => 'hasta'

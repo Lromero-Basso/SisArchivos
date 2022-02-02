@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Carpecaja;
+use AppBundle\Entity\Depcajas;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -31,11 +32,41 @@ class CarpecajaController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Carpeta", "createFolder");
+        $breadcrumbs->addRouteItem("Nueva Carpeta", "createFolder");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('folder/create.html.twig');
+        $boxes = $entityManager->getRepository(Depcajas::class)->findAll();
+        
+        $formFolder = $request->get("Carpecaja");
+
+        if($formFolder != null){
+
+            $folder = new Carpecaja();
+            
+            $folder->setNroCarpeta($formFolder['nroCarp']);
+            $folder->setCodCaja($formFolder['codigoCaja']);
+            $folder->setTituloCarp($formFolder['tituloCarp']);
+            $folder->setNEstado($formFolder['estado']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
+            // $folder->setFechaHastaCarp($formFolder['fechaHasta']);
+            
+
+            $entityManager->persist($folder);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se cargó correctamente la carpeta ID N° ' . $folder->getId() . '!'
+            );
+
+            return $this->redirectToRoute('viewFolders');
+            
+        }
+
+        return $this->render('folder/create.html.twig', array(
+            'boxes' => $boxes
+        ));
     }
 
     /**
@@ -80,8 +111,38 @@ class CarpecajaController extends BaseController
         $breadcrumbs->addItem("Editar Carpeta - $id", "editFolder");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
+
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
+
+        $boxes = $entityManager->getRepository(Depcajas::class)->findAll();
+
+        $formFolder = $request->get("Carpecaja");
+
+        if($formFolder != null){
+
+            $folder->setNroCarpeta($formFolder['nroCarp']);
+            $folder->setCodCaja($formFolder['codigoCaja']);
+            $folder->setTituloCarp($formFolder['tituloCarp']);
+            $folder->setNEstado($formFolder['estado']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
+            // $folder->setFechaHastaCarp($formFolder['fechaHasta']);
+            
+            $entityManager->persist($folder);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente la carpeta ID N° ' . $folder->getId() . '!'
+            );
+
+            return $this->redirectToRoute('viewFolders');
+            
+        }
         
-        return $this->render('folder/edit.html.twig');
+        return $this->render('folder/create.html.twig', array(
+            'folder'    => $folder,
+            'boxes' => $boxes
+        ));
     }
 
     /**
@@ -170,7 +231,7 @@ class CarpecajaController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'desc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);

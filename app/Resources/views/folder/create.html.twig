@@ -5,14 +5,10 @@
     <div class="card-header">
         <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
     </div>
-    <form action="{{path('createFolder')}}" method="post">
+    <form method="post">
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if folder is defined %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCarp]" value="{{folder.id}}" required>
-            </div>
             <div class="col-md-2">
                 <label>N° carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[nroCarp]" value="{{folder.nroCarpeta}}" required>
@@ -21,20 +17,31 @@
                 <label>Título carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[tituloCarp]" value="{{folder.tituloCarp}}" required>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="{{folder.codCaja}}" required>
+                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
+                <datalist id="boxes">
+                {% for box in boxes %}
+                    <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Carpecaja[codigoCaja]">
+                    {% for box in boxes %}
+                        <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
+                    {% endfor %}
+                </select> #}
+                {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="{{folder.codCaja}}" required> #}
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-3">
                 <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Carpecaja[fechaDesde]" value="{{folder.fechaDesde|date('d-m-Y')}}}}" required>
+                <input value="{{folder.fechaDesdeCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaDesde]" required>
             </div>
             <div class="col-md-3">
                 <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Carpecaja[fechaHasta]" value="{{folder.fechaHasta|date('d-m-Y')}}}}" required>
+                <input value="{{folder.fechaHastaCarp|date('Y-m-d')}}" type="date" class="form-control" name="Carpecaja[fechaHasta]" required>
             </div>
         </div>
         <br>
@@ -42,26 +49,13 @@
             <div class="col-md-4">
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Carpecaja[estado]" id="" required>
-                    <option value="" required>Seleccione una opción</option>
-                    <option value="1">En Archivo</option>
-                    <option value="2">Retirada</option>
+                    <option value="0" {% if folder.nEstado == 0 %} selected {% endif %}>En Archivo</option>
+                    <option value="1" {% if folder.nEstado == 1 %} selected {% endif %}>Retirada</option>
                 </select>
             </div>       
         </div>
-        <div class="float-right mb-3">
-            <button class="btn btn-info" style="margin-top:30px;" type="submit"> 
-                <i class="far fa-check-circle"></i> Armar caja
-            </button>
-            <a class="btn btn-secondary text-white" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
-                <i class="fas fa-undo-alt"></i> Cancelar
-            </a>
-        </div>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCarp]" value="" required>
-            </div>
             <div class="col-md-2">
                 <label>N° carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[nroCarp]" value="" required>
@@ -70,9 +64,21 @@
                 <label>Título carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[tituloCarp]" value="" required>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="" required>
+                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
+                <datalist id="boxes">
+                {% for box in boxes %}
+                    <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Carpecaja[codigoCaja]" required>
+                    <option value="">Seleccione un código de caja</option>
+                    {% for box in boxes %}
+                        <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
+                    {% endfor %}
+                </select> #}
+                {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="" required> #}
             </div>
         </div>
         <br>
@@ -92,8 +98,8 @@
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Carpecaja[estado]" id="" required>
                     <option value="" required>Seleccione una opción</option>
-                    <option value="1">En Archivo</option>
-                    <option value="2">Retirada</option>
+                    <option value="0">En Archivo</option>
+                    <option value="1">Retirada</option>
                 </select>
             </div>       
         </div>
@@ -102,11 +108,16 @@
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i>{% if folder is defined %} Guardar cambios {% else %} Armar carpeta {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="return confirm('¿Está seguro que desea cancelar la carga?')" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
-                <i class="fas fa-undo-alt"></i> Cancelar
+            <a class="btn btn-secondary text-white" {% if folder is defined %} onclick="sweetAlert('edit')" {% else %} onclick="sweetAlert('create')" {% endif %} style="margin-top:30px;"> 
+                <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>
     </div>
     </form>
 </div>
 {% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{ asset('js/customAlerts.js') }}"></script>
+{% endblock %}
+

@@ -162,3 +162,32 @@ h6 {
   line-height: 1.2;
   color: #108A97;
 }
+
+.alert-correcto{
+  background-color: rgb(181, 236, 213);
+  border: none;
+  padding: 15px;
+  margin-top: 20px;
+  margin-right: 10px;
+  position: fixed;
+  z-index: 100;
+  border-radius: 5px;
+  margin-left: 70%;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+  cursor: pointer;
+  color: black;
+}
+.alert-error{
+  background-color: rgb(219, 94, 112);
+  border: none;
+  padding: 15px;
+  margin-top: 20px;
+  margin-right: 10px;
+  position: fixed;
+  z-index: 100;
+  border-radius: 5px;
+  margin-left: 70%;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+  cursor: pointer;
+  color: black;
+}

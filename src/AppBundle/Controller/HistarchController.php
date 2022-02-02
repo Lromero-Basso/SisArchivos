@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Histarch;
+use AppBundle\Entity\Carpecaja;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -29,11 +30,39 @@ class HistarchController extends BaseController
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
              
-        $breadcrumbs->addRouteItem("Cargar Registro", "createRecord");
+        $breadcrumbs->addRouteItem("Nuevo Registro", "createRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        return $this->render('record/create.html.twig');
+        $folders = $entityManager->getRepository(Carpecaja::class)->findAll();
+
+        $formRecord = $request->get("Histarch");
+
+        if($formRecord != null){
+
+            $record = new Histarch();
+            
+            $record->setCodCarpeta($formRecord['codCarpeta']);
+            $record->setLegajo($formRecord['legajo']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $record->setFechaRetiro($formRecord['fechaDesde']);
+            // $record->setFechaDevolucion($formRecord['fechaHasta']);
+            
+
+            $entityManager->persist($record);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se cargó correctamente el registro ID N° ' . $record->getId() . '!'
+            );
+            
+            return $this->redirectToRoute('viewRecords');
+
+        }
+
+        return $this->render('record/create.html.twig', array(
+            'folders' => $folders
+        ));
     }
 
     /**
@@ -78,8 +107,35 @@ class HistarchController extends BaseController
         $breadcrumbs->addItem("Editar Registro - $id", "editRecord");
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
+
+        $record = $entityManager->getRepository(Histarch::class)->findOneBy(array('id'=>$id));
+
+        $folders = $entityManager->getRepository(Carpecaja::class)->findAll();
+
+        $formRecord = $request->get("Histarch");
+        if($formRecord != null){
+
+            $record->setCodCarpeta($formRecord['codCarpeta']);
+            $record->setLegajo($formRecord['legajo']);
+            //Las fechas va de la mano del fitro de busqueda
+            // $record->setFechaRetiro($formRecord['fechaDesde']);
+            // $record->setFechaDevolucion($formRecord['fechaHasta']);
+            
+            $entityManager->persist($record);
+            $entityManager->flush();
+            $this->addFlash(
+                'notice',
+                '¡Se actualizó correctamente el registro ID N° ' . $record->getId() . '!'
+            );
+            
+            return $this->redirectToRoute('viewRecords');
+
+        }
         
-        return $this->render('record/edit.html.twig');
+        return $this->render('record/create.html.twig', array(
+            'record' => $record,
+            'folders' => $folders
+        ));
     }
 
     /**
@@ -168,7 +224,7 @@ class HistarchController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'desc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);

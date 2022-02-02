@@ -12,10 +12,10 @@
     <div  id="filters" class="collapse"> 
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewRecords') }}" method="get">
         <div class="row">
-          <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.id) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codCarpeta) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.legajo) }}</div>
-
+          <div class="col-md-3"></div>
           {# INICIO Render manual date range#}
           
           <div id="fechaRetiro" class="col-md-5">
@@ -79,7 +79,7 @@
   <!-- FILTER BUTTON -->
   <div class="col-md-3">
     <div class="float-right">
-      <a class="btn dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
+      <a class="btn btn-secondary text-white dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
       <a class="btn btn-primary h3 pull-right" href="{{ path('createRecord') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
     </div>	
   </div>
@@ -106,7 +106,7 @@
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código interno')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Legajo')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Retiro')}}</th>

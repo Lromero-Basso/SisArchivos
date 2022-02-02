@@ -5,14 +5,10 @@
     <div class="card-header">
         <i class="far fa-file"></i>&nbsp;&nbsp;<b>Ingreso de datos</b>
     </div>
-    <form action="{{path('createBox')}}" method="post">
+    <form method="post">
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if box is defined %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codCaja]" value="{{box.id}}" required>
-            </div>
             <div class="col-md-2">
                 <label>Código estante<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codEstante]" value="{{box.codEstante}}" required>
@@ -21,13 +17,6 @@
                 <label>Código lado<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codLado]" value="{{box.codLado}}" required>
             </div>
-            <div class="col-md-4">
-                <label>Título caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
-            </div>     
-        </div>
-        <br>
-        <div class="row">
             <div class="col-md-2">
                 <label>Columna<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[columna]" value="{{box.columna}}" required>
@@ -36,9 +25,27 @@
                 <label>Piso<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[piso]" value="{{box.piso}}" required>
             </div>
-            <div class="col-md-2">
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Título caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
+            </div>       
+            <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>
+                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" required  >
+                <datalist id="areas">
+                {% for area in areas %}
+                    <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Depcaja[codArea]">
+                    {% for area in areas %}
+                        <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
+                    {% endfor %}
+                </select> #} 
+                {# <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>  #}
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -53,30 +60,26 @@
         <div class="row">
             <div class="col-md-3">
                 <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="{{box.fechaDesdeCaja|date('d-m-Y')}}}}}}" required>
+                <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
             </div>
             <div class="col-md-3">
                 <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[fechaHasta]" value="{{box.fechaHastaCaja|date('d-m-Y')}}}}}}" required>
+                <input value="{{box.fechaHastaCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaHasta]" required>
             </div>
             <div class="col-md-3">
                 <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="{{box.archivadoHasta|date('d-m-Y')}}}}}}" required>
+                <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" required>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-8">
                 <label>Observa</label>
-                <input class="form-control" type="text" name="Depcaja[observa]" value="{{box.observa}}" >
+                <input class="form-control" type="text" name="Depcaja[observa]" value="{{box.observa}}">
             </div>
         </div>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
-                <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codCaja]" value="" required>
-            </div>
             <div class="col-md-2">
                 <label>Código estante<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codEstante]" value="" required>
@@ -85,13 +88,6 @@
                 <label>Código lado<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codLado]" value="" required>
             </div>
-            <div class="col-md-4">
-                <label>Título caja<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
-            </div>     
-        </div>
-        <br>
-        <div class="row">
             <div class="col-md-2">
                 <label>Columna<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[columna]" value="" required>
@@ -100,9 +96,28 @@
                 <label>Piso<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[piso]" value="" required>
             </div>
-            <div class="col-md-2">
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Título caja<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
+            </div>   
+            <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codArea]" value="" required>
+                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" required  >
+                <datalist id="areas">
+                {% for area in areas %}
+                    <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Depcaja[codArea]" required>
+                    <option value="">Seleccione un código de área</option>
+                    {% for area in areas %}
+                        <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                    {% endfor %}
+                </select> #}
+                {# <input class="form-control" type="text" name="Depcaja[codArea]" value="" required> #}
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -138,13 +153,17 @@
         {% endif %}
         <div class="float-right mb-3">
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
-                <i class="far fa-check-circle"></i> {% if folder is defined %} Guardar cambios {% else %} Armar caja {% endif %}
+                <i class="far fa-check-circle"></i> {% if box is defined %} Guardar cambios {% else %} Armar caja {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="return confirm('¿Está seguro que desea cancelar la carga?')" style="margin-top:30px;" href="{{path('viewFolders')}}"> 
-                <i class="fas fa-undo-alt"></i> Cancelar
+            <a class="btn btn-secondary text-white" {% if box is defined %} onclick="sweetAlert('edit')" {% else %} onclick="sweetAlert('create')" {% endif %} style="margin-top:30px;"> 
+                <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>
     </div>
     </form>
 </div>
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{ asset('js/customAlerts.js') }}"></script>
 {% endblock %}

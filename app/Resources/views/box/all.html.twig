@@ -4,25 +4,25 @@
 
 {% block body %}
 <!-- HEADER -->
-<div class="row"> 
+<div class="row">
 
 <!-- FILTERING -->
-  <div class="col-md-12"> 
-    <div  id="filters" class="collapse"> 
+  <div class="col-md-12">
+    <div  id="filters" class="collapse">
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewBoxes') }}" method="get">
         <div class="row">
-          <div class="col-md-1">{{ form_row(filterForm.id) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.id) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codEstante) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codLado) }}</div>
-          <div class="col-md-4">{{ form_row(filterForm.tituloCaja) }}</div>
-          <div class="col-md-3"></div>
           <div class="col-md-2">{{ form_row(filterForm.columna) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.piso) }}</div>
+          <div class="col-md-1"></div>
+          <div class="col-md-4">{{ form_row(filterForm.tituloCaja) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codArea) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.nroDesdeCaja) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.nroHastaCaja) }}</div>
           {# INICIO Render manual date range#}
-          
+
           <div id="fechaDesdeCaja" class="col-md-5">
             <div class="row">
               <div class="col-md-6">
@@ -31,7 +31,7 @@
                       <input type="date" id="fecha_left_date" name="fecha[left_date]" class="form-control" value="{{ filterForm.fechaDesdeCaja.children.left_date.vars.value}}" />
                   </div>
               </div>
-              
+
               <div class="col-md-6">
                   <div class="form-group">
                       <label class="control-label" for="fecha_right_date">Fecha hasta</label>
@@ -39,7 +39,7 @@
                   </div>
               </div>
             </div>
-          </div> 
+          </div>
           {% do filterForm.fechaDesdeCaja.setRendered %}
           {% do filterForm.fechaHastaCaja.setRendered %}
 
@@ -51,7 +51,7 @@
                       <input type="date" id="fecha_left_date" name="fecha[left_date]" class="form-control" value="{{ filterForm.archivadoHasta.children.left_date.vars.value}}" />
                   </div>
               </div>
-              
+
               <div class="col-md-6">
                   <div class="form-group">
                       <label class="control-label" for="fecha_right_date">Archivado hasta</label>
@@ -59,9 +59,9 @@
                   </div>
               </div>
             </div>
-          </div> 
+          </div>
           {% do filterForm.archivadoHasta.setRendered %}
-         
+
           {# FIN Render manual date range#}
 
           {# <div class="col-md-6">
@@ -80,7 +80,7 @@
     </div>
   </div>
   <!-- END FILTERING -->
-  
+
   <!-- PAGE SIZE -->
   <div class="col-md-3 pull-left">
     <div class="pagination form-inline ">
@@ -92,7 +92,7 @@
           <option value='{{ path('viewBoxes', app.request.query.all|merge({'pcg_show': '500'})) }}' {% if app.request.get('pcg_show') == 500 %} selected {% endif %}>500</option>
       </select>
     </div>
-      
+
   </div>
 
   <!-- END PAGE SIZE -->
@@ -102,9 +102,9 @@
   <!-- FILTER BUTTON -->
   <div class="col-md-3">
     <div class="float-right">
-      <a class="btn dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>	
+      <a class="btn btn-secondary text-white dropdown-toggle pull-right h3" data-toggle="collapse" data-target="#filters">Filtro<span class="caret"></span></a>
       <a class="btn btn-primary h3 pull-right" href="{{ path('createBox') }}" style="margin-bottom:10px"><i class="fas fa-plus"></i> Nuevo</a>
-    </div>	
+    </div>
   </div>
   <!-- END FILTER BUTTON -->
 
@@ -129,7 +129,7 @@
       <thead>
         <tr>
           {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Id')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código caja')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Estante')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Lado')}}</th>
           <th style="border:0px;">{{macros.th_sortable('columna',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Columna')}}</th>
@@ -144,7 +144,7 @@
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
-      <tbody> 
+      <tbody>
         {% for box in boxes %}
         <tr>
           <td>{{box.id}}</td>
@@ -153,7 +153,7 @@
           <td>{{box.columna}}</td>
           <td>{{box.piso}}</td>
           <td>{{box.codArea}}</td>
-          <td>{{box.tituloCaja}}</td>
+          <td><small>{{box.tituloCaja}}</small></td>
           <td>{{box.nroDesdeCaja}}</td>
           <td>{{box.nroHastaCaja}}</td>
           <td>{{box.fechaDesdeCaja|date('d-m-Y')}}</td>
@@ -192,14 +192,14 @@
     </div>
     <!-- END EXPORT DATE -->
   </div>
-    
+
   <div class='col-md-3 text-center'>
         <p>{{totalOfRecordsString}}</p>
   </div>
 
   <div class="col-md-5">
     <div class="float-right">
-      {{ pagerHtml|raw }} 
+      {{ pagerHtml|raw }}
     </div>
   </div>
 </div>
@@ -208,4 +208,4 @@
 {% block javascript %}
 	{{ parent()}}
     <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
-{% endblock %} 
+{% endblock %}
