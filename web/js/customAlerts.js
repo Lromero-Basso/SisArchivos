@@ -15,7 +15,7 @@
 // });
 
 
-function sweetAlert() {
+function sweetAlert(route) {
     Swal.fire({
         title: '¿Está seguro/a que desea volver?',
         icon: 'warning',
@@ -26,7 +26,14 @@ function sweetAlert() {
         confirmButtonText: 'Aceptar'   
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = '../view'
+            console.log(route);
+            if(route == "create"){
+                window.location.href = 'view'
+            }else{
+                window.location.href = '../view'
+            }
+            
         }
     })
 }
+

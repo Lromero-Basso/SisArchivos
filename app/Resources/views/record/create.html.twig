@@ -9,13 +9,19 @@
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if record is defined %}
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Histarch[codCarpeta]">
+                <input list="folders" name="Histarch[codCarpeta]" class="form-control" id="folder" placeholder="Seleccione una carpeta" required  >
+                <datalist id="folders">
+                {% for folder in folders %}
+                    <option value="{{folder.id}}" {% if record.codCarpeta == folder.id %} selected  {% endif %}>{{folder.id}} - {{folder.tituloCarp}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Histarch[codCarpeta]">
                     {% for folder in folders %}
                         <option value="{{folder.id}}" {% if record.codCarpeta == folder.id %} selected  {% endif %}>{{folder.id}} - {{folder.tituloCarp}}</option>
                     {% endfor %}
-                </select>
+                </select> #}
                 {# <input class="form-control" type="text" name="Histarch[codCarpeta]" value="{{record.codCarpeta}}" required> #}
             </div>
             <div class="col-md-2">
@@ -37,14 +43,20 @@
         <br>
         {% else %}
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>Código carpeta<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Histarch[codCarpeta]" required>
+                <input list="folders" name="Histarch[codCarpeta]" class="form-control" id="folder" placeholder="Seleccione una carpeta" required  >
+                <datalist id="folders">
+                {% for folder in folders %}
+                    <option value="{{folder.id}}">{{folder.id}} - {{folder.tituloCarp}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Histarch[codCarpeta]" required>
                     <option value="">Seleccione un código de área</option>
                     {% for folder in folders %}
                         <option value="{{folder.id}}">{{folder.id}} - {{folder.tituloCarp}}</option>
                     {% endfor %}
-                </select>
+                </select> #}
                 {# <input class="form-control" type="text" name="Histarch[codCarpeta]" value="" required> #}
             </div>
             <div class="col-md-2">
@@ -69,7 +81,7 @@
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i> {% if record is defined %} Guardar cambios {% else %} Armar registro {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="sweetAlert()" style="margin-top:30px;"> 
+            <a class="btn btn-secondary text-white" {% if record is defined %} onclick="sweetAlert('edit')" {% else %} onclick="sweetAlert('create')" {% endif %} style="margin-top:30px;"> 
                 <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>

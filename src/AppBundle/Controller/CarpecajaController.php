@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Carpecaja;
+use AppBundle\Entity\Depcajas;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -35,7 +36,7 @@ class CarpecajaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $boxes = $entityManager->getRepository(Carpecaja::class)->findAll();
+        $boxes = $entityManager->getRepository(Depcajas::class)->findAll();
         
         $formFolder = $request->get("Carpecaja");
 
@@ -113,7 +114,7 @@ class CarpecajaController extends BaseController
 
         $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
 
-        $boxes = $entityManager->getRepository(Carpecaja::class)->findAll();
+        $boxes = $entityManager->getRepository(Depcajas::class)->findAll();
 
         $formFolder = $request->get("Carpecaja");
 

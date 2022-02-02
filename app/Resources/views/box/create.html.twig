@@ -32,14 +32,19 @@
                 <label>Título caja<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="{{box.tituloCaja}}" required>
             </div>       
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Depcaja[codArea]">
+                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" required  >
+                <datalist id="areas">
+                {% for area in areas %}
+                    <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Depcaja[codArea]">
                     {% for area in areas %}
                         <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
                     {% endfor %}
-                </select>
-                
+                </select> #} 
                 {# <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>  #}
             </div>
             <div class="col-md-2">
@@ -98,14 +103,20 @@
                 <label>Título caja<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[tituloCaja]" value="" required>
             </div>   
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Depcaja[codArea]" required>
+                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" required  >
+                <datalist id="areas">
+                {% for area in areas %}
+                    <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Depcaja[codArea]" required>
                     <option value="">Seleccione un código de área</option>
                     {% for area in areas %}
                         <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
                     {% endfor %}
-                </select>
+                </select> #}
                 {# <input class="form-control" type="text" name="Depcaja[codArea]" value="" required> #}
             </div>
             <div class="col-md-2">
@@ -144,7 +155,7 @@
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i> {% if box is defined %} Guardar cambios {% else %} Armar caja {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="sweetAlert()" style="margin-top:30px;"> 
+            <a class="btn btn-secondary text-white" {% if box is defined %} onclick="sweetAlert('edit')" {% else %} onclick="sweetAlert('create')" {% endif %} style="margin-top:30px;"> 
                 <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>

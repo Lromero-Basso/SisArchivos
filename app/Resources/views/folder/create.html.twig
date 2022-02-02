@@ -17,13 +17,19 @@
                 <label>Título carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[tituloCarp]" value="{{folder.tituloCarp}}" required>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Carpecaja[codigoCaja]">
+                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
+                <datalist id="boxes">
+                {% for box in boxes %}
+                    <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Carpecaja[codigoCaja]">
                     {% for box in boxes %}
                         <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
                     {% endfor %}
-                </select>
+                </select> #}
                 {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="{{folder.codCaja}}" required> #}
             </div>
         </div>
@@ -58,14 +64,20 @@
                 <label>Título carpeta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Carpecaja[tituloCarp]" value="" required>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Carpecaja[codigoCaja]" required>
-                    <option value="">Seleccione un código de área</option>
+                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
+                <datalist id="boxes">
+                {% for box in boxes %}
+                    <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
+                {% endfor %}
+                </datalist>
+                {# <select class="form-control" name="Carpecaja[codigoCaja]" required>
+                    <option value="">Seleccione un código de caja</option>
                     {% for box in boxes %}
                         <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
                     {% endfor %}
-                </select>
+                </select> #}
                 {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="" required> #}
             </div>
         </div>
@@ -96,7 +108,7 @@
             <button  class="btn btn-info" style="margin-top:30px;" type="submit"> 
                 <i class="far fa-check-circle"></i>{% if folder is defined %} Guardar cambios {% else %} Armar carpeta {% endif %}
             </button>
-            <a class="btn btn-secondary text-white" onclick="sweetAlert()" style="margin-top:30px;"> 
+            <a class="btn btn-secondary text-white" {% if folder is defined %} onclick="sweetAlert('edit')" {% else %} onclick="sweetAlert('create')" {% endif %} style="margin-top:30px;"> 
                 <i class="fas fa-undo-alt"></i> Volver
             </a>
         </div>
