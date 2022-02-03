@@ -39,7 +39,6 @@ class AreaController extends BaseController
         $formArea = $request->get("Area");
         if($formArea != null){
             $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
-            //Porque no lo busco por id? Probar mañana
    
             if(empty($area)){
                 $area = new Areas();
@@ -168,7 +167,6 @@ class AreaController extends BaseController
         $session = $request->getSession();
         $filterForm = $this->createForm('AppBundle\Form\AreaFilterType',$this->getNombreAreas());
 
-
         //Reset filter
         if($request->get('filter_action') == 'reset'){
             if($session->get('AreaControllerFilter') != null){
@@ -218,7 +216,7 @@ class AreaController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'DESC'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);

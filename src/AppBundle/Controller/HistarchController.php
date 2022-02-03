@@ -61,7 +61,7 @@ class HistarchController extends BaseController
         }
 
         return $this->render('record/create.html.twig', array(
-            'folders' => $folders
+            'folders' => $folders,
         ));
     }
 
@@ -172,8 +172,8 @@ class HistarchController extends BaseController
     */
     protected function filter($queryBuilder, Request $request){
         $session = $request->getSession();
-        $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType');
 
+        $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType',$this->getCodigoCarpeta());
 
         //Reset filter
         if($request->get('filter_action') == 'reset'){
@@ -197,21 +197,21 @@ class HistarchController extends BaseController
                 $session->set('HistarchControllerFilter', $filterData);
             }
         }
-         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
-        // else{
-        //     if($session->has('HistarchControllerFilter')){
-        //         $filterData = $session->get('HistarchControllerFilter');
+        //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        else{
+            if($session->has('HistarchControllerFilter')){
+                $filterData = $session->get('HistarchControllerFilter');
 
-        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-        //             if (is_object($filter)) {
-        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-        //             }
-        //         }
+                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+                    if (is_object($filter)) {
+                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+                    }
+                }
 
-        //         $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType', $filterData);
-        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-        //     }
-        // }
+                $filterForm = $this->createForm('AppBundle\Form\HistarchFilterType', $filterData);
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+            }
+        }
     
         return array($filterForm, $queryBuilder);
 
@@ -224,7 +224,7 @@ class HistarchController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'DESC'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
@@ -308,6 +308,20 @@ class HistarchController extends BaseController
         }
 
         return $this->redirect($this->generateUrl('viewRecords'));
+    }
+
+    public function getCodigoCarpeta(){
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $histarchCodCarpetas = $entityManager->getRepository(Histarch::class)->findBy(array(), array('codCarpeta' => 'ASC'));
+        $arrayOptions = [];
+
+        //Armo el array directamente con los strings para no utilizar posiciones
+        foreach($histarchCodCarpetas as $histarchCodCarpeta){
+            $arrayOptions[$histarchCodCarpeta->getCodCarpeta()] = $histarchCodCarpeta->getCodCarpeta();
+        }
+        
+        return $arrayOptions;
     }
 
 }

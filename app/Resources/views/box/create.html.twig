@@ -9,6 +9,17 @@
     <div class="card-body" style="padding-bottom:0px;padding-top:16px;">
         {% if box is defined %}
         <div class="row">
+            <div class="col-md-3">
+                <label>Fecha<span class="ml-1 text-danger">*</span></label>
+                <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
+            </div>
+            <div class="col-md-3">
+                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
+                <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
             <div class="col-md-2">
                 <label>Código estante<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="Depcaja[codEstante]" value="{{box.codEstante}}" required>
@@ -34,18 +45,12 @@
             </div>       
             <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" required  >
-                <datalist id="areas">
+                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" value="{{box.codArea}}" required  >
+                <datalist id="areas">               
                 {% for area in areas %}
-                    <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
+                    <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
                 {% endfor %}
                 </datalist>
-                {# <select class="form-control" name="Depcaja[codArea]">
-                    {% for area in areas %}
-                        <option value="{{area.id}}" {% if box.codArea == area.id %} selected  {% endif %}>{{area.id}} - {{area.nomArea}}</option>
-                    {% endfor %}
-                </select> #} 
-                {# <input class="form-control" type="text" name="Depcaja[codArea]" value="{{box.codArea}}" required>  #}
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -58,27 +63,31 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-3">
-                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
-            </div>
-            <div class="col-md-3">
-                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input value="{{box.fechaHastaCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaHasta]" required>
-            </div>
-            <div class="col-md-3">
-                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
-                <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" required>
-            </div>
-        </div>
-        <br>
-        <div class="row">
             <div class="col-md-8">
                 <label>Observa</label>
                 <input class="form-control" type="text" name="Depcaja[observa]" value="{{box.observa}}">
             </div>
+            <div class="col-md-2">
+                <label>Estado<span class="ml-1 text-danger">*</span></label>
+                <select class="form-control" name="Depcaja[estado]" id="" required>
+                    <option value="0" {% if box.estado == 0 %} selected {% endif %}>Vigente</option>
+                    <option value="1" {% if box.estado == 1 %} selected {% endif %}>Destruida</option>
+                    <option value="2" {% if box.estado == 2 %} selected {% endif %}>No encontrada</option>
+                </select>
+            </div>   
         </div>
         {% else %}
+        <div class="row">
+            <div class="col-md-3">
+                <label>Fecha<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="{{now|date('Y-m-d')}}" readonly> 
+            </div>
+            <div class="col-md-3">
+                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="" required> 
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-2">
                 <label>Código estante<span class="ml-1 text-danger">*</span></label>
@@ -111,13 +120,6 @@
                     <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
                 {% endfor %}
                 </datalist>
-                {# <select class="form-control" name="Depcaja[codArea]" required>
-                    <option value="">Seleccione un código de área</option>
-                    {% for area in areas %}
-                        <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
-                    {% endfor %}
-                </select> #}
-                {# <input class="form-control" type="text" name="Depcaja[codArea]" value="" required> #}
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -130,24 +132,13 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-3">
-                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="" required>
-            </div>
-            <div class="col-md-3">
-                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[fechaHasta]" value="" required>
-            </div>
-            <div class="col-md-3">
-                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="" required>
-            </div>
-        </div>
-        <br>
-        <div class="row">
             <div class="col-md-8">
                 <label>Observa</label>
                 <input class="form-control" type="text" name="Depcaja[observa]" value="" >
+            </div>
+            <div class="col-md-2">
+                <label>Estado</label>
+                <input class="form-control" type="text" name="Depcaja[estado]" value="Vigente" readonly>
             </div>
         </div>
         {% endif %}

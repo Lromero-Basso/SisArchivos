@@ -26,13 +26,28 @@ function sweetAlert(route) {
         confirmButtonText: 'Aceptar'   
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(route);
             if(route == "create"){
                 window.location.href = 'view'
             }else{
                 window.location.href = '../view'
             }
             
+        }
+    })
+}
+
+function closeModal(idModal){
+    Swal.fire({
+        title: '¿Está seguro/a que desea cancelar el registro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Rechazar",
+        confirmButtonText: 'Aceptar'   
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(idModal).modal('hide');
         }
     })
 }

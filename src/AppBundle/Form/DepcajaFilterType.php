@@ -17,7 +17,7 @@ class DepcajaFilterType extends AbstractType
     {
         $builder
             ->add('id', Filters\NumberFilterType::class, array(
-                'label' => 'Código caja'
+                'label' => 'Código caja - ID'
             ))
             ->add('codEstante', Filters\NumberFilterType::class, array(
                 'label' => 'Código estante'
@@ -31,46 +31,40 @@ class DepcajaFilterType extends AbstractType
             ->add('piso', Filters\NumberFilterType::class, array(
                 'label' => 'Piso'
             ))
-            ->add('codArea', Filters\NumberFilterType::class, array(
+            ->add('codArea', Filters\ChoiceFilterType::class, array(
+                'choices' => $options['data'][1],
                 'label' => 'Código área'
             ))
-            // ->add('tituloCaja', Filters\TextFilterType::class, array(
-            //     'label' => 'Título caja'
-            // ))
             ->add('tituloCaja', Filters\ChoiceFilterType::class, array(
-                'choices' => $options['data'],
+                'choices' => $options['data'][0],
                 'label' => 'Título caja'
             ))
-            ->add('nroDesdeCaja', Filters\NumberFilterType::class, array(
-                'label' => 'N° Desde'
-            ))
-            ->add('nroHastaCaja', Filters\NumberFilterType::class, array(
-                'label' => 'N° Hasta'
-            ))
+            // ->add('nroDesdeCaja', Filters\NumberRangeFilterType::class, array(
+            //     'label' => 'N° Desde',
+            //     'left_number_options' => array(
+            //         'label' => 'desde'
+            //     ),
+            //     'right_number_options' => array(
+            //         'label' => 'hasta'
+            //     )
+            // ))
+            // ->add('nroHastaCaja', Filters\NumberFilterType::class, array(
+            //     'label' => 'N° Hasta'
+            // ))
             ->add('fechaDesdeCaja', Filters\DateRangeFilterType::class,  array(
-                'label' => 'Fecha',
+                'label'     => 'Fecha Desde',
                 'left_date_options' => array(
                     'widget' => 'single_text',
                     'label' => 'desde'
                 ),
-            ))
-            ->add('fechaHastaCaja', Filters\DateRangeFilterType::class,  array(
-                'label' => 'Fecha',
                 'right_date_options' => array(
                     'widget' => 'single_text',
                     'label' => 'hasta'
                 )
             ))
-            ->add('archivadoHasta', Filters\DateRangeFilterType::class,  array(
-                'label' => 'Fecha',
-                'left_date_options' => array(
-                    'widget' => 'single_text',
-                    'label' => 'archivado desde'
-                ),
-                'right_date_options' => array(
-                    'widget' => 'single_text',
-                    'label' => 'archivado hasta'
-                )
+            ->add('archivadoHasta', Filters\DateFilterType::class,  array(
+                'label'     => 'Archivado hasta',
+                'widget'    => 'single_text'
             ))
             ->add('observa', Filters\TextFilterType::class, array(
                 'label' => 'Observa'

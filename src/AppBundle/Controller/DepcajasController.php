@@ -35,6 +35,7 @@ class DepcajasController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
+        $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
         $formBox = $request->get("Depcaja");
 
@@ -53,10 +54,9 @@ class DepcajasController extends BaseController
             $box->setNroDesdeCaja($formBox['nroDesde']);
             $box->setNroHastaCaja($formBox['nroHasta']);
             $box->setObserva($formBox['observa']);
-            //Las fechas va de la mano del fitro de busqueda
-            // $box->setFechaDesdeCaja($formBox['fechaDesde']);
-            // $box->setFechaHastaCaja($formBox['fechaHasta']);
-            // $box->setArchivadoHasta($formBox['archivadoHasta']);
+            $box->setEstado(0); //0 Porque hace referencia al estado VIGENTE
+            $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+            $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
             $entityManager->persist($box);
             $entityManager->flush();
@@ -70,7 +70,8 @@ class DepcajasController extends BaseController
         }
 
         return $this->render('box/create.html.twig', array(
-            'areas'     => $areas
+            'areas'     => $areas,
+            'now'       => $now
         ));
     }
 
@@ -125,6 +126,7 @@ class DepcajasController extends BaseController
 
         if($formBox != null){
 
+
             $box->setCodEstante($formBox['codEstante']);
             $box->setCodLado($formBox['codLado']);
             $box->setPiso($formBox['piso']);
@@ -134,10 +136,9 @@ class DepcajasController extends BaseController
             $box->setNroDesdeCaja($formBox['nroDesde']);
             $box->setNroHastaCaja($formBox['nroHasta']);
             $box->setObserva($formBox['observa']);
-            //Las fechas va de la mano del fitro de busqueda
-            // $box->setFechaDesdeCaja($formBox['fechaDesde']);
-            // $box->setFechaHastaCaja($formBox['fechaHasta']);
-            // $box->setArchivadoHasta($formBox['archivadoHasta']);
+            $box->setEstado($formBox['estado']);
+            $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+            $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
             $entityManager->persist($box);
             $entityManager->flush();
@@ -148,6 +149,7 @@ class DepcajasController extends BaseController
 
             return $this->redirectToRoute('viewBoxes');
         }
+
 
         return $this->render('box/create.html.twig', array(
             'countBox'  => $countBox,
@@ -215,21 +217,21 @@ class DepcajasController extends BaseController
                 $session->set('DepcajaControllerFilter', $filterData);
             }
         }
-        //Este else me deja el filtrado puesto por mas que me vaya a otro lado
-        // else{
-        //     if($session->has('DepcajaControllerFilter')){
-        //         $filterData = $session->get('DepcajaControllerFilter');
+        //Este else me deja el filtrado puesto por mas que me vaya a otro lado  
+        else{
+            if($session->has('DepcajaControllerFilter')){
+                $filterData = $session->get('DepcajaControllerFilter');
 
-        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-        //             if (is_object($filter)) {
-        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-        //             }
-        //         }
+                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+                    if (is_object($filter)) {
+                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+                    }
+                }
 
-        //         $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType', $filterData);
-        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-        //     }
-        // }
+                $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType', $filterData);
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+            }
+        }
         return array($filterForm, $queryBuilder);
 
     }
@@ -241,7 +243,7 @@ class DepcajasController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'DESC'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
@@ -330,14 +332,24 @@ class DepcajasController extends BaseController
     public function getTituloCaja(){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $depcajas = $entityManager->getRepository(Depcajas::class)->findBy(array(), array('tituloCaja' => 'ASC'));
+        $depcajasTitulos    = $entityManager->getRepository(Depcajas::class)->findBy(array(), array('tituloCaja' => 'ASC'));
+        $areas              = $entityManager->getRepository(Areas::class)->findBy(array(), array('id' => 'ASC'));
 
         $arrayOptions = [];
+        $arrayTitulos = [];
+        $arrayCodigoArea = [];
+        $i = 0;
 
-        foreach($depcajas as $depcaja){
-            $arrayOptions[$depcaja->getTituloCaja()] = $depcaja->getTituloCaja();
+        foreach($depcajasTitulos as $depcaja){
+            $arrayTitulos[$depcaja->getTituloCaja()] = $depcaja->getTituloCaja();
         }   
+        foreach($areas as $area){
+            $i = $area->getId();
+            $arrayCodigoArea[$i." - ".$area->getNomArea()] = $area->getId();
+        } 
 
+        array_push($arrayOptions, $arrayTitulos, $arrayCodigoArea);
+       
         return $arrayOptions;
         
     }

@@ -15,7 +15,7 @@ class AreaFilterType extends AbstractType
       
         $builder
             ->add('id', Filters\NumberFilterType::class, array(
-                'label'     => 'Código área'
+                'label'     => 'Código área - ID'
             ))
             ->add('nomArea', Filters\ChoiceFilterType::class, array(
                 'choices'   => $options['data'],

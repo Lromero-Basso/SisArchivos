@@ -1,0 +1,7 @@
+{% if (estado == 0) %}
+    <span class="badge badge-success">VIGENTE</span>
+{% elseif ( estado == 1 ) %}
+    <span class="badge badge-danger">DESTRUIDA</span>
+{% elseif ( estado == 2 ) %}
+    <span class="badge badge-warning">NO ENCONTRADA</span>
+{% endif %}

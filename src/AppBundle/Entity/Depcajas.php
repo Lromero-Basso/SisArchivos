@@ -59,7 +59,7 @@ class Depcajas
     /**
      * @var string
      *
-     * @ORM\Column(name="titulocaja", type="string", length=100)
+     * @ORM\Column(name="tituloCaja", type="string", length=100)
      */
     private $tituloCaja;
 
@@ -76,6 +76,20 @@ class Depcajas
      * @ORM\Column(name="n_has_caja", type="string", length=20)
      */
     private $nroHastaCaja;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observa", type="string", length=255)
+     */
+    private $observa;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="estado", type="integer")
+     */
+    private $estado;
 
     /**
      * @var \DateTime
@@ -97,13 +111,6 @@ class Depcajas
      * @ORM\Column(name="arch_hasta", type="datetime")
      */
     private $archivadoHasta;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="observa", type="string", length=255)
-     */
-    private $observa;
 
 
     /**
@@ -309,6 +316,54 @@ class Depcajas
     }
 
     /**
+     * Set observa
+     *
+     * @param string $observa
+     *
+     * @return Depcajas
+     */
+    public function setObserva($observa)
+    {
+        $this->observa = $observa;
+
+        return $this;
+    }
+
+    /**
+     * Get observa
+     *
+     * @return string
+     */
+    public function getObserva()
+    {
+        return $this->observa;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param integer $estado
+     *
+     * @return Depcajas
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return int
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
      * Set fechaDesdeCaja
      *
      * @param \DateTime $fechaDesdeCaja
@@ -378,30 +433,6 @@ class Depcajas
     public function getArchivadoHasta()
     {
         return $this->archivadoHasta;
-    }
-
-    /**
-     * Set observa
-     *
-     * @param string $observa
-     *
-     * @return Depcajas
-     */
-    public function setObserva($observa)
-    {
-        $this->observa = $observa;
-
-        return $this;
-    }
-
-    /**
-     * Get observa
-     *
-     * @return string
-     */
-    public function getObserva()
-    {
-        return $this->observa;
     }
 }
 

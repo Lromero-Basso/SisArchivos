@@ -36,6 +36,8 @@ class CarpecajaController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
+        $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
         $boxes = $entityManager->getRepository(Depcajas::class)->findAll();
         
         $formFolder = $request->get("Carpecaja");
@@ -47,12 +49,9 @@ class CarpecajaController extends BaseController
             $folder->setNroCarpeta($formFolder['nroCarp']);
             $folder->setCodCaja($formFolder['codigoCaja']);
             $folder->setTituloCarp($formFolder['tituloCarp']);
-            $folder->setNEstado($formFolder['estado']);
-            //Las fechas va de la mano del fitro de busqueda
-            // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
-            // $folder->setFechaHastaCarp($formFolder['fechaHasta']);
+            $folder->setNEstado(0); //Seteo a 0 porque equivale al estado "EN ARCHIVO"
+            $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
             
-
             $entityManager->persist($folder);
             $entityManager->flush();
             $this->addFlash(
@@ -65,7 +64,8 @@ class CarpecajaController extends BaseController
         }
 
         return $this->render('folder/create.html.twig', array(
-            'boxes' => $boxes
+            'boxes' => $boxes,
+            'now'   => $now
         ));
     }
 
@@ -124,9 +124,7 @@ class CarpecajaController extends BaseController
             $folder->setCodCaja($formFolder['codigoCaja']);
             $folder->setTituloCarp($formFolder['tituloCarp']);
             $folder->setNEstado($formFolder['estado']);
-            //Las fechas va de la mano del fitro de busqueda
-            // $folder->setFechaDesdeCarp($formFolder['fechaDesde']);
-            // $folder->setFechaHastaCarp($formFolder['fechaHasta']);
+            $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
             
             $entityManager->persist($folder);
             $entityManager->flush();
@@ -205,20 +203,20 @@ class CarpecajaController extends BaseController
             }
         }
         //Este else me deja el filtrado puesto por mas que me vaya a otro lado
-        // else{
-        //     if($session->has('CarpecajaControllerFilter')){
-        //         $filterData = $session->get('CarpecajaControllerFilter');
+        else{
+            if($session->has('CarpecajaControllerFilter')){
+                $filterData = $session->get('CarpecajaControllerFilter');
 
-        //         foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
-        //             if (is_object($filter)) {
-        //                 $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
-        //             }
-        //         }
+                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+                    if (is_object($filter)) {
+                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+                    }
+                }
 
-        //         $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
-        //         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
-        //     }
-        // }
+                $filterForm = $this->createForm('AppBundle\Form\CarpecajaFilterType', $filterData);
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+            }
+        }
 
         return array($filterForm, $queryBuilder);
 
@@ -231,7 +229,7 @@ class CarpecajaController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'DESC'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
@@ -320,25 +318,31 @@ class CarpecajaController extends BaseController
     public function getDataCarpeta(){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $carpecajasTitulo = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('tituloCarp' => 'ASC'));
-        $carpecajasNro = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('nroCarpeta' => 'ASC'));
+        //Al select no mando el total de datos, mando solo los que tiene la entidad en la que estoy
 
+        $carpeCajasTitulo   = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('tituloCarp' => 'ASC'));
+        $carpeCajasNro      = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('nroCarpeta' => 'ASC'));
+        $carpeCajascodCajas           = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array('codCaja' => 'ASC'));
         //Como solo recibe un array la funcion del FORM, tengo que unirlos en uno nuevo
-        
+
         $arrayOptions = [];
         $arrayTitulos = [];
         $arrayNroCarp = [];
+        $arrayCodCaja = [];
 
-        foreach($carpecajasTitulo as $carpecaja){
+        foreach($carpeCajasTitulo as $carpecaja){
             $arrayTitulos[$carpecaja->getTituloCarp()] = $carpecaja->getTituloCarp();
         }
 
-        foreach($carpecajasNro as $carpecaja){
+        foreach($carpeCajasNro as $carpecaja){
             $arrayNroCarp[$carpecaja->getNroCarpeta()] = $carpecaja->getNroCarpeta();
         }
 
-        array_push($arrayOptions, $arrayTitulos, $arrayNroCarp);
+        foreach($carpeCajascodCajas as $codCaja){
+            $arrayCodCaja[$codCaja->getCodCaja()] = $codCaja->getCodCaja();
+        }
 
+        array_push($arrayOptions, $arrayTitulos, $arrayNroCarp, $arrayCodCaja);
 
         return $arrayOptions;
         
