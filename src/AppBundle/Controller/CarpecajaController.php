@@ -49,7 +49,7 @@ class CarpecajaController extends BaseController
             $folder->setNroCarpeta($formFolder['nroCarp']);
             $folder->setCodCaja($formFolder['codigoCaja']);
             $folder->setTituloCarp($formFolder['tituloCarp']);
-            $folder->setNEstado($formFolder['estado']);
+            $folder->setNEstado(0); //Seteo a 0 porque equivale al estado "EN ARCHIVO"
             $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
             
             $entityManager->persist($folder);
