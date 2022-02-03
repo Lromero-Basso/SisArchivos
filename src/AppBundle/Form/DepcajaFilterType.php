@@ -39,18 +39,6 @@ class DepcajaFilterType extends AbstractType
                 'choices' => $options['data'][0],
                 'label' => 'Título caja'
             ))
-            // ->add('nroDesdeCaja', Filters\NumberRangeFilterType::class, array(
-            //     'label' => 'N° Desde',
-            //     'left_number_options' => array(
-            //         'label' => 'desde'
-            //     ),
-            //     'right_number_options' => array(
-            //         'label' => 'hasta'
-            //     )
-            // ))
-            // ->add('nroHastaCaja', Filters\NumberFilterType::class, array(
-            //     'label' => 'N° Hasta'
-            // ))
             ->add('fechaDesdeCaja', Filters\DateRangeFilterType::class,  array(
                 'label'     => 'Fecha Desde',
                 'left_date_options' => array(
@@ -62,9 +50,16 @@ class DepcajaFilterType extends AbstractType
                     'label' => 'hasta'
                 )
             ))
-            ->add('archivadoHasta', Filters\DateFilterType::class,  array(
-                'label'     => 'Archivado hasta',
-                'widget'    => 'single_text'
+            ->add('archivadoHasta', Filters\DateRangeFilterType::class,  array(
+                'label'     => 'Archivado Desde',
+                'left_date_options' => array(
+                    'widget' => 'single_text',
+                    'label' => 'desde'
+                ),
+                'right_date_options' => array(
+                    'widget' => 'single_text',
+                    'label' => 'hasta'
+                )
             ))
             ->add('observa', Filters\TextFilterType::class, array(
                 'label' => 'Observa'

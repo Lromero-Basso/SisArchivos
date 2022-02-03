@@ -104,13 +104,13 @@
     <table class="table table-striped table-hover table-sm" id="tabla" namefile="Histarch">
       <thead>
         <tr>
-          {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
+          {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
           <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código interno')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Legajo')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Retiro')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Devolución')}}</th>
-          <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha retiro')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha devolución')}}</th>
+          <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
@@ -142,6 +142,11 @@
 </form>
 <!-- END TABLE -->
 
+
+<button  class="btn btn-info" style="margin-top:30px;" type="submit" onclick="ajaxTest(1)"> 
+    <i class="far fa-check-circle"></i>Guardar movimiento
+</button> 
+
 <div class="row">
   <div class="col-md-4 pull-left">
     <!-- EXPORT DATE -->
@@ -170,6 +175,6 @@
 
 {% block javascript %}
 	{{ parent()}}
-    <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+  <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
 {% endblock %} 
 

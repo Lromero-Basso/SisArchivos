@@ -3,7 +3,6 @@
 {% block title %} {{ parent() }} - Carpetas {% endblock %}
 
 {% block body %}
-
 <!-- HEADER -->
 <div class="row"> 
   <!-- FILTERING -->
@@ -21,14 +20,14 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label" for="fecha_left_date">Fecha Desde</label>
+                  <label class="control-label" for="fecha_left_date">Fecha desde</label>
                   <input type="date" id="fecha_left_date" name="fechaDesdeCarp[left_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.left_date.vars.value}}" />
                 </div>
               </div>
             
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label" for="fecha_right_date">Fecha Hasta</label>
+                  <label class="control-label" for="fecha_right_date">Fecha hasta</label>
                   <input type="date" id="fecha_right_date" name="fechaDesdeCarp[right_date]" class="form-control" value="{{ filterForm.fechaDesdeCarp.children.right_date.vars.value}}"/>
                 </div>
               </div>
@@ -104,19 +103,18 @@
 {{ include('modals/_movementsModal.html.twig') }}
 <!-- END MODALS -->
 
-<form method="POST" id="bulk_form" action="{{ path('carpecaja_bulk_action') }} ">
   <div class="card mb-4 mt-4">
     <table class="table table-striped table-hover table-sm" id="tabla" namefile="Carpecaja">
       <thead>
         <tr>
-          {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
+          {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
           <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código carpeta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('nroCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° Carpeta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código Caja')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('tituloCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título Carpeta')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('nroCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° carpeta')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código caja')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('tituloCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaDesdeCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha')}}</th>
           <th style="border:0px;">{{macros.th_sortable('nEstado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Estado')}}</th>
-          <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
+          <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
@@ -140,6 +138,7 @@
                 <div class="dropdown-divider"></div>
                 {% if folder.nEstado == 0 %}
                 <a class="dropdown-item" title='Editar'  href="#" data-toggle="modal" data-target="#modalRetirarCarpeta">Retirar</a>
+                {# <a class="dropdown-item" title='Editar'  href="{{path('retireFolder')}}">Retirar</a> #}
                 {% else %}
                 <a class="dropdown-item" title='Editar'  href="#" data-toggle="modal" data-target="#modalDevolverCarpeta">Devolver</a>
                 {% endif %}
@@ -154,8 +153,9 @@
       </tbody>
     </table>
   </div>
-</form>
+
 <!-- END TABLE -->
+
 
 <div class="row">
   <div class="col-md-4 pull-left">

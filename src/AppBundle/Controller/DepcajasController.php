@@ -95,6 +95,8 @@ class DepcajasController extends BaseController
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
+        $this->modificarAutomaticamenteEstadoCaja($entityManager, $boxes);
+
         return $this->render('box/all.html.twig', array(
             'boxes' => $boxes,
             'pagerHtml' => $pagerHtml,
@@ -354,5 +356,16 @@ class DepcajasController extends BaseController
         
     }
 
+    public function modificarAutomaticamenteEstadoCaja($entityManager, $boxes){
+        $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+        foreach($boxes as $box){
+            //Comparo que la fecha de archivado hasta sea menor a la fecha actual y se setee solo a destruida
+            if($box->getArchivadoHasta() > $actualDate){
+                $box->setEstado(0); //La seteo a destruida
+                $entityManager->persist($box);
+                $entityManager->flush();
+            }
+        }
+    }
 
 }

@@ -77,10 +77,10 @@
     <table class="table table-striped table-hover table-sm" id="tabla" namefile="Areas">
       <thead>
         <tr>
-          {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
+          {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
           <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewAreas','Código área')}}</th>
           <th style="border:0px;">{{macros.th_sortable('nomArea',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewAreas','Nombre área')}}</th>
-          <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
+          <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 

@@ -85,16 +85,19 @@ class CarpecajaController extends BaseController
 
         $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
 
+        $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
         list($folders, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
         return $this->render('folder/all.html.twig', array(
-            'folders' => $folders,
-            'pagerHtml' => $pagerHtml,
-            'filterForm' => $filterForm->createView(),
-            'totalOfRecordsString' => $totalOfRecordsString,
+            'folders'               => $folders,
+            'pagerHtml'             => $pagerHtml,
+            'filterForm'            => $filterForm->createView(),
+            'totalOfRecordsString'  => $totalOfRecordsString,
+            'now'                   => $now
         ));
     }
 
@@ -281,38 +284,6 @@ class CarpecajaController extends BaseController
             $endRecord = $totalOfRecords;
         }
         return "Mostrando $startRecord - $endRecord de $totalOfRecords reg.";
-    }
-
-
-    /**
-    * Bulk Action
-    * @Route("/bulk-action/", name="carpecaja_bulk_action")
-    * @Method("POST")
-    */
-    public function bulkAction(Request $request)
-    {
-        $ids = $request->get("ids", array());
-        $action = $request->get("bulk_action", "delete");
-
-        if ($action == "delete") {
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Carpecaja');
-
-                foreach ($ids as $id) {
-                    $folder = $repository->find($id);
-                    $em->remove($folder);
-                    $em->flush();
-                }
-
-                $this->get('session')->getFlashBag()->add('success', 'embalajeContadors was deleted successfully!');
-
-            } catch (Exception $ex) {
-                $this->get('session')->getFlashBag()->add('error', 'Problem with deletion of the embalajeContadors ');
-            }
-        }
-
-        return $this->redirect($this->generateUrl('viewFolders'));
     }
 
     public function getDataCarpeta(){

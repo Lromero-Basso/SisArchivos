@@ -167,6 +167,24 @@ class HistarchController extends BaseController
     }
 
     /**
+     * @Route("/retire", name="retireFolder")
+     * @Method({"POST"})
+     */
+    public function retireFolder(){
+        dump("TOY EN RETIRE FOLDER");
+        die;
+    }
+
+      /**
+     * @Route("/return", name="returnFolder")
+     * @Method({"POST"})
+     */
+    public function returnFolder(){
+        dump("TOY EN RETURN FOLDER");
+        die;
+    }
+
+    /**
     * Create filter form and process filter request.
     *
     */
