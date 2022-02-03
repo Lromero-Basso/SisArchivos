@@ -168,7 +168,7 @@ class HistarchController extends BaseController
 
     /**
      * @Route("/retire", name="retireFolder")
-     * @Method({"POST"})
+     * @Method({"GET", "POST"})
      */
     public function retireFolder(){
         dump("TOY EN RETIRE FOLDER");
@@ -177,7 +177,7 @@ class HistarchController extends BaseController
 
       /**
      * @Route("/return", name="returnFolder")
-     * @Method({"POST"})
+     * @Method({"GET", "POST"})
      */
     public function returnFolder(){
         dump("TOY EN RETURN FOLDER");
