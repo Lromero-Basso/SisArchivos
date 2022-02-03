@@ -19,8 +19,7 @@
           <div class="col-md-1"></div>
           <div class="col-md-4">{{ form_row(filterForm.tituloCaja) }}</div>
           <div class="col-md-3">{{ form_row(filterForm.codArea) }}</div>
-          <div class="col-md-3">{{ form_row(filterForm.archivadoHasta) }}</div>
-          <div class="col-md-4"></div>
+          <div class="col-md-3">{{ form_row(filterForm.observa) }}</div>
 
           {# Falta los nros DESDE Y HASTA #}
 
@@ -44,7 +43,7 @@
           </div> 
           {% do filterForm.fechaDesdeCaja.setRendered %}
           {# FIN Render manual date range#}
-
+          <div class="col-md-3">{{ form_row(filterForm.archivadoHasta) }}</div>
           <div class="col-md-6">
             {{ form_rest(filterForm) }}
           </div>
@@ -122,6 +121,7 @@
           <th style="border:0px;">{{macros.th_sortable('fechaDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Fecha')}}</th>
           <th style="border:0px;">{{macros.th_sortable('archivadoHasta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Archivado hasta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('observa',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Observa')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('estado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Estado')}}</th>
           <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
         </tr>
       </thead>
@@ -140,6 +140,7 @@
           <td><small>{{box.fechaDesdeCaja|date('d-m-Y')}}</small></td>
           <td><small>{{box.archivadoHasta|date('d-m-Y')}}</small></td>
           <td><small>{{box.observa}}</small></td>
+          <td><small><td>{% include 'box/_boxEstados.html.twig' with {'estado': box.estado } %}</small></td>
           {# <td>{{box.observa}}</td> #}
           <td class="actions  noExl">
             <div class="btn-group">

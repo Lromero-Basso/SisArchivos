@@ -54,7 +54,9 @@ class DepcajasController extends BaseController
             $box->setNroDesdeCaja($formBox['nroDesde']);
             $box->setNroHastaCaja($formBox['nroHasta']);
             $box->setObserva($formBox['observa']);
+            $box->setEstado(0); //0 Porque hace referencia al estado VIGENTE
             $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+            $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
             $entityManager->persist($box);
             $entityManager->flush();
@@ -124,6 +126,7 @@ class DepcajasController extends BaseController
 
         if($formBox != null){
 
+
             $box->setCodEstante($formBox['codEstante']);
             $box->setCodLado($formBox['codLado']);
             $box->setPiso($formBox['piso']);
@@ -133,7 +136,9 @@ class DepcajasController extends BaseController
             $box->setNroDesdeCaja($formBox['nroDesde']);
             $box->setNroHastaCaja($formBox['nroHasta']);
             $box->setObserva($formBox['observa']);
+            $box->setEstado($formBox['estado']);
             $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+            $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
             $entityManager->persist($box);
             $entityManager->flush();
@@ -144,6 +149,7 @@ class DepcajasController extends BaseController
 
             return $this->redirectToRoute('viewBoxes');
         }
+
 
         return $this->render('box/create.html.twig', array(
             'countBox'  => $countBox,
@@ -211,7 +217,7 @@ class DepcajasController extends BaseController
                 $session->set('DepcajaControllerFilter', $filterData);
             }
         }
-        //Este else me deja el filtrado puesto por mas que me vaya a otro lado
+        //Este else me deja el filtrado puesto por mas que me vaya a otro lado  
         else{
             if($session->has('DepcajaControllerFilter')){
                 $filterData = $session->get('DepcajaControllerFilter');
@@ -237,7 +243,7 @@ class DepcajasController extends BaseController
     protected function paginator($queryBuilder, Request $request){
         //Sorting
         $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
-        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'asc'));
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'DESC'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
