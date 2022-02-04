@@ -63,6 +63,14 @@ class DepcajaFilterType extends AbstractType
             ))
             ->add('observa', Filters\TextFilterType::class, array(
                 'label' => 'Observa'
+            ))
+            ->add('estado', Filters\ChoiceFilterType::class, array(
+                'label' => 'Estado',
+                'choices'  => [
+                    'Vigente' => 0,
+                    'Destruida' => 1,
+                    'No encontrada' => 2
+                ],
             ));
         $builder->setMethod("GET");
     }

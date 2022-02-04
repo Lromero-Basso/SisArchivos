@@ -139,14 +139,14 @@ class AreaController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $entityManager->getConnection()->beginTransaction();
+        // $entityManager->getConnection()->beginTransaction();
 
         $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id'=>$id));
 
         try{
             $entityManager->remove($area);
             $entityManager->flush();
-            $entityManager->getConnection()->commit();
+            // $entityManager->getConnection()->commit();
 
             return new JsonResponse(['success' => true]);
 

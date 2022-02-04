@@ -140,14 +140,26 @@ class HistarchController extends BaseController
 
 
     /**
-     * @Route("delete/{id}", name="deleteRecord")
+     * @Route("/{id}", name="deleteRecord")
      * @Method({"GET", "POST"})
      */
     public function deleteRecord(Request $request, $id){
-
         $entityManager = $this->getDoctrine()->getManager();
-        
-        return $this->redirectToRoute('viewRecords');
+
+        // $entityManager->getConnection()->beginTransaction();
+
+        $record = $entityManager->getRepository(Histarch::class)->findOneBy(array('id'=>$id));
+
+        try{
+            $entityManager->remove($record);
+            $entityManager->flush();
+            // $entityManager->getConnection()->commit();
+
+            return new JsonResponse(['success' => true]);
+
+        }catch(\Exception $e){
+            return new JsonResponse(['success' => false]);
+        }
     }
 
    

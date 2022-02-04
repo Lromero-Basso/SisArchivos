@@ -10,9 +10,14 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <label>Legajo<span class="ml-1 text-danger">*</span></label>
-                        <input class="form-control" type="text" name="HistarchRetire[legajo]" value="" required>
+                        <input list="empleados" name="HistarchRetire[legajo]" class="form-control" id="empleado" placeholder="Seleccione un legajo" value="" required  >
+                        <datalist id="empleados">               
+                        {% for empleado in empleados %}
+                            <option value="{{empleado.id}}">{{empleado.id}} - {{empleado.nombre}}</option>
+                        {% endfor %}
+                        </datalist>
                     </div>
                     <div class="col-md-6">
                         <label>Fecha retiro<span class="ml-1 text-danger">*</span></label>

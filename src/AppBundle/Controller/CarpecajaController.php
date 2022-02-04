@@ -6,10 +6,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Carpecaja;
 use AppBundle\Entity\Depcajas;
 use AppBundle\Entity\Histarch;
+use AppBundle\Entity\Empleados;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -161,6 +164,8 @@ class CarpecajaController extends BaseController
 
         $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
+        $empleados = $entityManager->getRepository(Empleados::class)->findAll();
+
         if($formHistarchRetire != null){
 
             $histarch = new Histarch();
@@ -183,7 +188,8 @@ class CarpecajaController extends BaseController
         }
         
         return $this->render('modals/_retireFolderModal.html.twig', array(
-            'now'   => $now
+            'now'       => $now,
+            'empleados' => $empleados
         ));
     }
 
@@ -197,9 +203,11 @@ class CarpecajaController extends BaseController
 
         $formHistarchReturn =  $request->get("HistarchReturn");
 
-        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
+        $folder         = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
 
-        $histarch = $entityManager->getRepository(Histarch::class)->findOneBy(array('codCarpeta'=>$id));
+        $histarch       = $entityManager->getRepository(Histarch::class)->findOneBy(array('codCarpeta'=>$id));
+
+        $legajoEmpleado = $entityManager->getRepository(Empleados::class)->findOneBy(array('id'=>$histarch->getLegajo()));
 
         $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
@@ -222,19 +230,32 @@ class CarpecajaController extends BaseController
         
         return $this->render('modals/_returnFolderModal.html.twig', array(
             'now'       => $now,
-            'legajo'    => $histarch->getLegajo()
+            'legajoEmpleado'    => $legajoEmpleado
         ));
     }
     
     /**
-     * @Route("/delete/{id}", name="deleteFolder")
+     * @Route("/{id}", name="deleteFolder")
      * @Method({"GET", "POST"})
      */
     public function deleteFolder(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
-        
-        return $this->redirectToRoute('viewFolders');
+
+        // $entityManager->getConnection()->beginTransaction();
+
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id'=>$id));
+
+        try{
+            $entityManager->remove($folder);
+            $entityManager->flush();
+            // $entityManager->getConnection()->commit();
+
+            return new JsonResponse(['success' => true]);
+
+        }catch(\Exception $e){
+            return new JsonResponse(['success' => false]);
+        }
     }
 
     /**
