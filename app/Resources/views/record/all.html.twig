@@ -120,17 +120,16 @@
           <td>{{record.codCarpeta}}</td>
           <td>{{record.legajo}}</td>
           <td>{{record.fechaRetiro|date('d-m-Y')}}</td>
-          <td>{{record.fechaDevolucion|date('d-m-Y')}}</td>
+          <td>{% if record.fechaDevolucion != null %}{{record.fechaDevolucion|date('d-m-Y')}}{% else %}<span class="badge badge-warning">No devuelto aún</span>{% endif %}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showRecord', { 'id': record.id }) }}">Vista Previa</a>
-                <div class="dropdown-divider"></div>
+              <div class="dropdown-menu">    
                 <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': record.id }) }}">Editar</a>
-                {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar</a> #}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title="Eliminar" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>

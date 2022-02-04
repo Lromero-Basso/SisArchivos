@@ -94,10 +94,9 @@
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showArea', { 'id': area.id }) }}">Vista Previa</a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" title='Editar'  href="{{ path('editArea', { 'id': area.id }) }}">Editar</a>
-                {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteArea', { 'id': area.id}) }}">Eliminar</a> #}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title="Eliminar" onclick="sweetAlertDelete({{area.id}})" href="#">Eliminar</a>
               </div>
             </div>
           </td>
@@ -137,5 +136,6 @@
 
 {% block javascript %}
 	{{ parent()}}
-    <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+  <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+  <script src="{{ asset('js/customAlerts.js') }}"></script>
 {% endblock %} 

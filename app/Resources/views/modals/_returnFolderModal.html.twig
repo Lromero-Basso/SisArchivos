@@ -1,31 +1,30 @@
 {# Modal devolver carpeta #}
+{% extends "base.html.twig" %}
+{% block body %}
 <div class="modal fade" id="modalDevolverCarpeta" tabindex="-1" role="dialog" aria-labelledby="modalDevolverCarpetaLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <form>
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalDevolverCarpetaLabel">Devolver carpeta</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4">
                         <label>Legajo<span class="ml-1 text-danger">*</span></label>
-                        <input class="form-control" type="text" name="Histarch[legajo]" value="" required>
+                        <input class="form-control" type="text" name="HistarchReturn[legajo]" value="{{legajo}}" readonly>
                     </div>
                     <div class="col-md-6">
                         <label>Fecha devolución<span class="ml-1 text-danger">*</span></label>
-                        <input class="form-control" type="date" name="Histarch[fechaRetiro]" value="{{now|date('Y-m-d')}}" readonly>
+                        <input class="form-control" type="date" name="HistarchReturn[fechaDevolucion]" value="{{now|date('Y-m-d')}}" readonly>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button  class="btn btn-info" style="margin-top:30px;" type="submit" > 
-                    <i class="far fa-check-circle"></i>Guardar movimiento
+                    <i class="far fa-check-circle"></i>Devolver
                 </button> 
-                <a class="btn btn-secondary text-white" onclick="closeModal(modalDevolverCarpeta)"  style="margin-top:30px;"> 
+                <a class="btn btn-secondary text-white" href="{{path('viewFolders')}}" style="margin-top:30px;"> 
                     <i class="fas fa-undo-alt"></i> Cancelar
                 </a>
             </div>
@@ -33,3 +32,8 @@
     </form>
   </div>
 </div>
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{ asset('js/staticModal.js') }}"></script>
+{% endblock %}

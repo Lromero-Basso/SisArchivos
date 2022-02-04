@@ -98,8 +98,6 @@
 <!-- /TABLE WITH SORT -->
 
 <!-- MODALS -->
-{{ include('modals/_retireFolderModal.html.twig') }}
-{{ include('modals/_returnFolderModal.html.twig') }}
 {{ include('modals/_movementsModal.html.twig') }}
 <!-- END MODALS -->
 
@@ -132,19 +130,15 @@
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showFolder', { 'id': folder.id }) }} ">Vista Previa</a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar</a>
                 <div class="dropdown-divider"></div>
                 {% if folder.nEstado == 0 %}
-                <a class="dropdown-item" title='Editar'  href="#" data-toggle="modal" data-target="#modalRetirarCarpeta">Retirar</a>
-                {# <a class="dropdown-item" title='Editar'  href="{{path('retireFolder')}}">Retirar</a> #}
+                <a class="dropdown-item" title='Retirar'  href="{{ path('retireFolder', { 'id': folder.id }) }}">Retirar</a>     
                 {% else %}
-                <a class="dropdown-item" title='Editar'  href="#" data-toggle="modal" data-target="#modalDevolverCarpeta">Devolver</a>
+                <a class="dropdown-item" title='Devolver'  href="{{ path('returnFolder', { 'id': folder.id }) }}">Devolver</a>     
                 {% endif %}
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" title='Editar'  href="#" data-toggle="modal" data-target="#modalMovements">Movimientos</a>
-                {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteFolder', { 'id': folder.id}) }}">Eliminar</a> #}
+                <a class="dropdown-item" title='Deshacer'  href="{{ path('deleteFolder', { 'id': folder.id}) }}">Deshacer Movimiento</a>
               </div>
             </div>
           </td>
@@ -171,7 +165,7 @@
   </div>
     
   <div class='col-md-3 text-center'>
-        <p>{{totalOfRecordsString}}</p>
+    <p>{{totalOfRecordsString}}</p>
   </div>
 
   <div class="col-md-5">
