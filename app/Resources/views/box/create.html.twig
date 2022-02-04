@@ -14,8 +14,8 @@
                 <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
             </div>
             <div class="col-md-3">
-                <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
-                <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" required>
+                <label>Archivado hasta {% if box.estado == 2 %}<span class="text-success" style="cursor: pointer;" data-toggle="tooltip" data-placement="right" title="Si desea modificar esta fecha, por favor ponga en NO la última opción del formulario">(?)</span>{% else %}<span class="ml-1 text-danger">*</span>{% endif %}</label>
+                <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" {% if box.estado == 2 %}readonly{% else %}required{% endif %}>
             </div>
         </div>
         <br>
@@ -69,12 +69,27 @@
             </div>
             <div class="col-md-2">
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
-                <select class="form-control" name="Depcaja[estado]" id="" required>
+                <input class="form-control" type="text" name="" {% if box.estado == 0 %} value="Vigente" {% elseif box.estado == 1 %} value="Destruida" {% else %} value="No encontrada" {% endif %} readonly>
+                {# <select class="form-control" name="Depcaja[estado]" id="" required>
                     <option value="0" {% if box.estado == 0 %} selected {% endif %}>Vigente</option>
                     <option value="1" {% if box.estado == 1 %} selected {% endif %}>Destruida</option>
                     <option value="2" {% if box.estado == 2 %} selected {% endif %}>No encontrada</option>
-                </select>
+                </select> #}
             </div>   
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-8">
+                <label>¿Esta caja está perdida?<span class="ml-1 text-danger"></span></label>
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="radio" value="SI" name="Depcaja[estado]" {% if box.estado == 2 %} checked {% endif %}> SI
+                    </div>
+                    <div class="input-group-text ml-2">
+                        <input type="radio" value="NO"  name="Depcaja[estado]" {% if box.estado != 2 %} checked {% endif %}> NO
+                    </div>
+                </div>                    
+            </div>
         </div>
         {% else %}
         <div class="row">

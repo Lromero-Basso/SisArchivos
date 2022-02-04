@@ -104,13 +104,13 @@
     <table class="table table-striped table-hover table-sm" id="tabla" namefile="Histarch">
       <thead>
         <tr>
-          {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
+          {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
           <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código interno')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Código carpeta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Legajo')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Retiro')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha Devolución')}}</th>
-          <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha retiro')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha devolución')}}</th>
+          <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody> 
@@ -120,17 +120,16 @@
           <td>{{record.codCarpeta}}</td>
           <td>{{record.legajo}}</td>
           <td>{{record.fechaRetiro|date('d-m-Y')}}</td>
-          <td>{{record.fechaDevolucion|date('d-m-Y')}}</td>
+          <td>{% if record.fechaDevolucion != null %}{{record.fechaDevolucion|date('d-m-Y')}}{% else %}<span class="badge badge-warning">No devuelto aún</span>{% endif %}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showRecord', { 'id': record.id }) }}">Vista Previa</a>
-                <div class="dropdown-divider"></div>
+              <div class="dropdown-menu">    
                 <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': record.id }) }}">Editar</a>
-                {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar</a> #}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title="Eliminar" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>
@@ -141,6 +140,11 @@
   </div>
 </form>
 <!-- END TABLE -->
+
+
+<button  class="btn btn-info" style="margin-top:30px;" type="submit" onclick="ajaxTest(1)"> 
+    <i class="far fa-check-circle"></i>Guardar movimiento
+</button> 
 
 <div class="row">
   <div class="col-md-4 pull-left">
@@ -170,6 +174,6 @@
 
 {% block javascript %}
 	{{ parent()}}
-    <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+  <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
 {% endblock %} 
 

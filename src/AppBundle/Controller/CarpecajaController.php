@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Carpecaja;
 use AppBundle\Entity\Depcajas;
+use AppBundle\Entity\Histarch;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -85,16 +86,19 @@ class CarpecajaController extends BaseController
 
         $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
 
+        $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
         list($folders, $pagerHtml) = $this->paginator($queryBuilder, $request);
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
         return $this->render('folder/all.html.twig', array(
-            'folders' => $folders,
-            'pagerHtml' => $pagerHtml,
-            'filterForm' => $filterForm->createView(),
-            'totalOfRecordsString' => $totalOfRecordsString,
+            'folders'               => $folders,
+            'pagerHtml'             => $pagerHtml,
+            'filterForm'            => $filterForm->createView(),
+            'totalOfRecordsString'  => $totalOfRecordsString,
+            'now'                   => $now
         ));
     }
 
@@ -144,22 +148,86 @@ class CarpecajaController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="showFolder")
+     * @Route("/retire/{id}", name="retireFolder")
      * @Method({"GET", "POST"})
      */
-    public function showFolder(Request $request, $id){
+    public function retireFolder(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id'=>$id));
+        $formHistarchRetire =  $request->get("HistarchRetire");
+
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
+
+        $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
+        if($formHistarchRetire != null){
+
+            $histarch = new Histarch();
+            $histarch -> setCodCarpeta($id);  
+            $histarch -> setLegajo($formHistarchRetire['legajo']);
+            $histarch -> setFechaRetiro(new \DateTime($formHistarchRetire['fechaRetiro']));
+            $folder   -> setNEstado(1); //Seteo el estado a retirado
+
+            $entityManager->persist($histarch);
+
+            $entityManager->flush();
+            
+            $this->addFlash(
+                'notice',
+                '¡Se retiró correctamente la carpeta '. $folder->getId() .'!'
+            );
+
+            return $this->redirectToRoute('viewFolders');
+
+        }
         
-        return $this->render('folder/show.html.twig', array(
-            'folder' => $folder
+        return $this->render('modals/_retireFolderModal.html.twig', array(
+            'now'   => $now
         ));
     }
 
     /**
-     * @Route("/{id}", name="deleteFolder")
+     * @Route("/return/{id}", name="returnFolder")
+     * @Method({"GET", "POST"})
+     */
+    public function returnFolder(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $formHistarchReturn =  $request->get("HistarchReturn");
+
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
+
+        $histarch = $entityManager->getRepository(Histarch::class)->findOneBy(array('codCarpeta'=>$id));
+
+        $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
+        if($formHistarchReturn != null){
+
+            $histarch -> setFechaDevolucion(new \DateTime($formHistarchReturn['fechaDevolucion']));
+            $folder   -> setNEstado(0); //Seteo el estado a en archivo nuevamente
+
+            $entityManager->persist($histarch);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'notice',
+                '¡Se devolvió correctamente la carpeta '. $folder->getId() .'!'
+            );
+
+            return $this->redirectToRoute('viewFolders');
+
+        }
+        
+        return $this->render('modals/_returnFolderModal.html.twig', array(
+            'now'       => $now,
+            'legajo'    => $histarch->getLegajo()
+        ));
+    }
+    
+    /**
+     * @Route("/delete/{id}", name="deleteFolder")
      * @Method({"GET", "POST"})
      */
     public function deleteFolder(Request $request, $id){
@@ -281,38 +349,6 @@ class CarpecajaController extends BaseController
             $endRecord = $totalOfRecords;
         }
         return "Mostrando $startRecord - $endRecord de $totalOfRecords reg.";
-    }
-
-
-    /**
-    * Bulk Action
-    * @Route("/bulk-action/", name="carpecaja_bulk_action")
-    * @Method("POST")
-    */
-    public function bulkAction(Request $request)
-    {
-        $ids = $request->get("ids", array());
-        $action = $request->get("bulk_action", "delete");
-
-        if ($action == "delete") {
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Carpecaja');
-
-                foreach ($ids as $id) {
-                    $folder = $repository->find($id);
-                    $em->remove($folder);
-                    $em->flush();
-                }
-
-                $this->get('session')->getFlashBag()->add('success', 'embalajeContadors was deleted successfully!');
-
-            } catch (Exception $ex) {
-                $this->get('session')->getFlashBag()->add('error', 'Problem with deletion of the embalajeContadors ');
-            }
-        }
-
-        return $this->redirect($this->generateUrl('viewFolders'));
     }
 
     public function getDataCarpeta(){

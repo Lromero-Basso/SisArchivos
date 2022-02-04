@@ -40,6 +40,8 @@ twig:
     form_themes: ['bootstrap_3_layout.html.twig']
     globals:
         archivos_directory: '%kernel.project_dir%/web/uploads/'
+    paths: 
+        '%kernel.project_dir%/app/Resources/crud-generator-bundle/views/macros': generator_bundle
 
 # Doctrine Configuration
 doctrine:

@@ -3,6 +3,7 @@
 {% block title %} {{ parent() }} - Cajas {% endblock %}
 
 {% block body %}
+
 <!-- HEADER -->
 <div class="row">
 
@@ -28,14 +29,14 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label" for="fecha_left_date">Fecha Desde</label>
+                  <label class="control-label" for="fecha_left_date">Fecha carga desde</label>
                   <input type="date" id="fecha_left_date" name="fechaDesdeCaja[left_date]" class="form-control" value="{{ filterForm.fechaDesdeCaja.children.left_date.vars.value}}" />
                 </div>
               </div>
             
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label" for="fecha_right_date">Fecha Hasta</label>
+                  <label class="control-label" for="fecha_right_date">Fecha carga hasta</label>
                   <input type="date" id="fecha_right_date" name="fechaDesdeCaja[right_date]" class="form-control" value="{{ filterForm.fechaDesdeCaja.children.right_date.vars.value}}"/>
                 </div>
               </div>
@@ -43,7 +44,28 @@
           </div> 
           {% do filterForm.fechaDesdeCaja.setRendered %}
           {# FIN Render manual date range#}
-          <div class="col-md-3">{{ form_row(filterForm.archivadoHasta) }}</div>
+
+          {# INICIO Render manual date range#}
+          <div id="fecha" class="col-md-5">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label" for="fecha_left_date">Archivado desde</label>
+                  <input type="date" id="fecha_left_date" name="archivadoHasta[left_date]" class="form-control" value="{{ filterForm.archivadoHasta.children.left_date.vars.value}}" />
+                </div>
+              </div>
+            
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label" for="fecha_right_date">Archivado hasta</label>
+                  <input type="date" id="fecha_right_date" name="archivadoHasta[right_date]" class="form-control" value="{{ filterForm.archivadoHasta.children.right_date.vars.value}}"/>
+                </div>
+              </div>
+            </div>
+          </div> 
+          {% do filterForm.archivadoHasta.setRendered %}
+          {# FIN Render manual date range#}
+
           <div class="col-md-6">
             {{ form_rest(filterForm) }}
           </div>
@@ -108,21 +130,21 @@
     <table class="table table-striped table-hover table-sm" id="tabla" namefile="Depcaja">
       <thead>
         <tr>
-          {% import "@PetkoparaCrudGenerator/macros/th_sortable.html.twig" as macros %}
+          {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
           <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código caja')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Estante')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código Lado')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código estante')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código lado')}}</th>
           <th style="border:0px;">{{macros.th_sortable('columna',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Columna')}}</th>
           <th style="border:0px;">{{macros.th_sortable('piso',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Piso')}}</th>
           <th style="border:0px;">{{macros.th_sortable('codArea',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código área')}}</th>
           <th style="border:0px;">{{macros.th_sortable('tituloCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Título caja')}}</th>
           <th style="border:0px;">{{macros.th_sortable('nroDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° Desde')}}</th>
           <th style="border:0px;">{{macros.th_sortable('nroHastaCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° Hasta')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('fechaDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Fecha')}}</th>
-          <th style="border:0px;">{{macros.th_sortable('archivadoHasta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Archivado hasta')}}</th>
+          <th style="border:0px;" width = "80px">{{macros.th_sortable('fechaDesdeCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Fecha carga')}}</th>
+          <th style="border:0px;" width = "80px">{{macros.th_sortable('archivadoHasta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Archivado hasta')}}</th>
           <th style="border:0px;">{{macros.th_sortable('observa',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Observa')}}</th>
           <th style="border:0px;">{{macros.th_sortable('estado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Estado')}}</th>
-          <th style="border:0px;" width = "130px" class="noExl">Acciones</th>
+          <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -140,18 +162,16 @@
           <td><small>{{box.fechaDesdeCaja|date('d-m-Y')}}</small></td>
           <td><small>{{box.archivadoHasta|date('d-m-Y')}}</small></td>
           <td><small>{{box.observa}}</small></td>
-          <td><small><td>{% include 'box/_boxEstados.html.twig' with {'estado': box.estado } %}</small></td>
-          {# <td>{{box.observa}}</td> #}
+          <td>{% include 'box/_boxEstados.html.twig' with {'estado': box.estado } %}</td>
           <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Vista Previa' href="{{ path('showBox', { 'id': box.id }) }}">Vista Previa</a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" title='Editar'  href="{{ path('editBox', { 'id': box.id }) }}">Editar</a>
-                {# <a class="dropdown-item" onclick="return confirm('Seguro desea Eliminar!');" title="Delete" href="{{ path('deleteBox', { 'id': box.id}) }}">Eliminar</a> #}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title="Eliminar" href="{{ path('deleteBox', { 'id': box.id}) }}">Eliminar</a>
               </div>
             </div>
           </td>

@@ -95,6 +95,8 @@ class DepcajasController extends BaseController
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
+        $this->modificarAutomaticamenteEstadoCaja($entityManager, $boxes);
+
         return $this->render('box/all.html.twig', array(
             'boxes' => $boxes,
             'pagerHtml' => $pagerHtml,
@@ -118,6 +120,8 @@ class DepcajasController extends BaseController
 
         $countBox = count($entityManager->getRepository(Depcajas::class)->findAll());
 
+        $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
         $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
    
         $formBox = $request->get("Depcaja");
@@ -125,7 +129,6 @@ class DepcajasController extends BaseController
         $areas = $entityManager->getRepository(Areas::class)->findAll();
 
         if($formBox != null){
-
 
             $box->setCodEstante($formBox['codEstante']);
             $box->setCodLado($formBox['codLado']);
@@ -136,9 +139,21 @@ class DepcajasController extends BaseController
             $box->setNroDesdeCaja($formBox['nroDesde']);
             $box->setNroHastaCaja($formBox['nroHasta']);
             $box->setObserva($formBox['observa']);
-            $box->setEstado($formBox['estado']);
             $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
             $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
+
+            if($formBox['estado'] == "SI"){                
+                $box->setEstado(2);
+            }
+            else{
+                if($box->getArchivadoHasta() < $actualDate){
+                    $box->setEstado(1);
+                }
+                else{
+                    $box->setEstado(0);
+                }
+            }
+
 
             $entityManager->persist($box);
             $entityManager->flush();
@@ -158,26 +173,8 @@ class DepcajasController extends BaseController
         ));
     }
 
-    
     /**
-     * @Route("/{id}", name="showBox")
-     * @Method("GET")
-     */
-    public function showBox(Request $request, $id){
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Vista Previa");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
-        
-        return $this->render('box/show.html.twig');
-    }
-
-    /**
-     * @Route("/{id}", name="deleteBox")
+     * @Route("delete/{id}", name="deleteBox")
      * @Method({"GET", "POST"})
      */
     public function deleteBox(Request $request, $id){
@@ -354,5 +351,19 @@ class DepcajasController extends BaseController
         
     }
 
+    public function modificarAutomaticamenteEstadoCaja($entityManager, $boxes){
+        $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+        foreach($boxes as $box){
+            //Comparo que la fecha de archivado hasta sea menor a la fecha actual y se setee solo a destruida solo si el estado es vigente o perdida
+            if($box->getEstado() < 2){
+                if($box->getArchivadoHasta() < $actualDate){             
+                    $box->setEstado(1); //La seteo a destruida
+                    $entityManager->persist($box);
+                    $entityManager->flush();
+                }
+            }
+            
+        }
+    }
 
 }

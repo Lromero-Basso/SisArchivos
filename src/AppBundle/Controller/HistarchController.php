@@ -138,25 +138,9 @@ class HistarchController extends BaseController
         ));
     }
 
-    /**
-     * @Route("/{id}", name="showRecord")
-     * @Method("GET")
-     */
-    public function showRecord(Request $request, $id){
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Vista Previa");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
-        
-        return $this->render('record/show.html.twig');
-    }
 
     /**
-     * @Route("/{id}", name="deleteRecord")
+     * @Route("delete/{id}", name="deleteRecord")
      * @Method({"GET", "POST"})
      */
     public function deleteRecord(Request $request, $id){
@@ -166,6 +150,7 @@ class HistarchController extends BaseController
         return $this->redirectToRoute('viewRecords');
     }
 
+   
     /**
     * Create filter form and process filter request.
     *

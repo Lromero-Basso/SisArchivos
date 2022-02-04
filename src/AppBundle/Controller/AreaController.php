@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Areas;
 
@@ -131,31 +132,28 @@ class AreaController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="showArea")
-     * @Method("GET")
-     */
-    public function showArea(Request $request, $id){
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Vista Previa");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
-        
-        return $this->render('area/show.html.twig');
-    }
-
-    /**
      * @Route("/{id}", name="deleteArea")
-     * @Method({"GET", "POST"})
+     * @Method({"POST"})
      */
     public function deleteArea(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
-        
-        return $this->redirectToRoute('viewAreas');
+
+        $entityManager->getConnection()->beginTransaction();
+
+        $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id'=>$id));
+
+        try{
+            $entityManager->remove($area);
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
+
+            return new JsonResponse(['success' => true]);
+
+        }catch(\Exception $e){
+            return new JsonResponse(['success' => false]);
+        }
+
     }
 
 
