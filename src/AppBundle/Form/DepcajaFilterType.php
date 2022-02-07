@@ -22,8 +22,13 @@ class DepcajaFilterType extends AbstractType
             ->add('codEstante', Filters\NumberFilterType::class, array(
                 'label' => 'Código estante'
             ))
-            ->add('codLado', Filters\NumberFilterType::class, array(
-                'label' => 'Código lado'
+            ->add('codLado', Filters\ChoiceFilterType::class, array(
+                'label' => 'Código lado',
+                'choices'  => [
+                    '1 - Derecho' => 1,
+                    '2 - Izquierdo' => 2,
+                    '0 - No definido' => 0
+                ],
             ))
             ->add('columna', Filters\NumberFilterType::class, array(
                 'label' => 'Columna'

@@ -258,6 +258,28 @@ class CarpecajaController extends BaseController
         }
     }
 
+    // /**
+    //  * @Route("/undo/{id}", name="undoMove")
+    //  * @Method({"GET", "POST"})
+    //  */
+    // public function undoMove(Request $request, $id){
+
+    //     $entityManager = $this->getDoctrine()->getManager();
+
+    //     // $entityManager->getConnection()->beginTransaction();
+
+    //     try{
+    //         $entityManager->remove();
+    //         $entityManager->flush();
+    //         // // $entityManager->getConnection()->commit();
+
+    //         return new JsonResponse(['success' => true]);
+
+    //     }catch(\Exception $e){
+    //         return new JsonResponse(['success' => false]);
+    //     }
+    // }
+
     /**
     * Create filter form and process filter request.
     *
