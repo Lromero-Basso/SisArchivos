@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Depcajas;
 use AppBundle\Entity\Areas;
@@ -174,14 +176,27 @@ class DepcajasController extends BaseController
     }
 
     /**
-     * @Route("delete/{id}", name="deleteBox")
+     * @Route("/{id}", name="deleteBox")
      * @Method({"GET", "POST"})
      */
     public function deleteBox(Request $request, $id){
 
         $entityManager = $this->getDoctrine()->getManager();
-        
-        return $this->redirectToRoute('viewBoxes');
+
+        // $entityManager->getConnection()->beginTransaction();
+
+        $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id'=>$id));
+
+        try{
+            $entityManager->remove($box);
+            $entityManager->flush();
+            // $entityManager->getConnection()->commit();
+
+            return new JsonResponse(['success' => true]);
+
+        }catch(\Exception $e){
+            return new JsonResponse(['success' => false]);
+        }
     }
 
     /**

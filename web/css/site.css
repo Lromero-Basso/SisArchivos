@@ -191,3 +191,12 @@ h6 {
   cursor: pointer;
   color: black;
 }
+
+.dropdown-menu :hover{
+  background-color: #F0F0F0;
+}
+
+.logoBasso :hover{
+  transform: scale(1.1);
+  transition: 1s;
+}

@@ -29,7 +29,7 @@
 
     <nav class="navbar sticky-top navbar-expand-lg bg-basso-red">
         <div class="container">
-            <a href="{{path('homepage')}}" class="navbar-brand">
+            <a href="{{path('homepage')}}" class="logoBasso navbar-brand">
                 <img src="{{ asset('images/bassosa.png') }}" height="28" alt="Basso S.A." >
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{path('createArea')}}">Cargar</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{path('viewAreas')}}">Detalle</a>
+                            <a class="dropdown-item" href="{{path('viewAreas')}}">Detalle </a>
                             
                         </div>
                     </li>
@@ -79,6 +79,16 @@
                             <a class="dropdown-item" href="{{path('viewRecords')}}">Detalle</a> 
                         </div>
                     </li>
+                    {% if app.user %}
+                    <li class="ml-5 nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ app.user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                            <a class="dropdown-item" href="{{ path('logout')}}"><i class="mr-2 fas fa-hand-point-left"></i>Salir</a>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul> 
             </div>
         </div>

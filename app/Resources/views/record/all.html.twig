@@ -110,7 +110,7 @@
           <th style="border:0px;">{{macros.th_sortable('legajo',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Legajo')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaRetiro',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha retiro')}}</th>
           <th style="border:0px;">{{macros.th_sortable('fechaDevolucion',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewRecords','Fecha devolución')}}</th>
-          <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
+          {# <th style="border:0px;" width = "100px" class="noExl">Acciones</th> #}
         </tr>
       </thead>
       <tbody> 
@@ -121,18 +121,18 @@
           <td>{{record.legajo}}</td>
           <td>{{record.fechaRetiro|date('d-m-Y')}}</td>
           <td>{% if record.fechaDevolucion != null %}{{record.fechaDevolucion|date('d-m-Y')}}{% else %}<span class="badge badge-warning">No devuelto aún</span>{% endif %}</td>
-          <td class="actions  noExl">
+          {# <td class="actions  noExl">
             <div class="btn-group">
               <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">    
-                <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': record.id }) }}">Editar</a>
+                <a class="dropdown-item" title='Editar'  href="{{ path('editRecord', { 'id': record.id }) }}">Editar movimiento</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" title="Eliminar" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar</a>
+                <a class="dropdown-item" title="Eliminar" href="{{ path('deleteRecord', { 'id': record.id}) }}">Eliminar movimiento</a>
               </div>
             </div>
-          </td>
+          </td> #}
         </tr>
         {% endfor %}
       </tbody>

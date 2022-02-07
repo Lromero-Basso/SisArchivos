@@ -130,15 +130,17 @@
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar</a>
+                <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar carpeta<i class="ml-1 text-success far fa-edit"></i></a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title="Eliminar" onclick="sweetAlertDelete({{folder.id}})" href="#">Eliminar carpeta<i class="ml-1 text-danger far fa-trash-alt"></i></a>
                 <div class="dropdown-divider"></div>
                 {% if folder.nEstado == 0 %}
-                <a class="dropdown-item" title='Retirar'  href="{{ path('retireFolder', { 'id': folder.id }) }}">Retirar</a>     
+                <a class="dropdown-item" title='Retirar'  href="{{ path('retireFolder', { 'id': folder.id }) }}">Retirar carpeta<i class="ml-1 fas fa-folder-open"></i></a>     
                 {% else %}
-                <a class="dropdown-item" title='Devolver'  href="{{ path('returnFolder', { 'id': folder.id }) }}">Devolver</a>     
-                {% endif %}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" title='Deshacer'  href="{{ path('deleteFolder', { 'id': folder.id}) }}">Deshacer Movimiento</a>
+                <a class="dropdown-item" title='Devolver'  href="{{ path('returnFolder', { 'id': folder.id }) }}">Devolver carpeta<i class="ml-1 fas fa-folder"></i></a>     
+                {# <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title='Deshacer'  onclick="sweetAlertUndo({{folder.id}})" href="#">Deshacer Movimiento</a> #}
+                {% endif %}  
               </div>
             </div>
           </td>

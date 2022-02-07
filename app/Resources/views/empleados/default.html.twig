@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Legajo</th>
+            <th scope="col">Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for empleado in empleados %}
+        <tr>
+            <th scope="col">{{empleado.id}}</th>
+            <th scope="col">{{empleado.nombre}}</th>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
