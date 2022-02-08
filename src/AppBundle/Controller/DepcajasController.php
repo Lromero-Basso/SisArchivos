@@ -120,8 +120,6 @@ class DepcajasController extends BaseController
         
         $breadcrumbs->prependRouteItem("Inicio", "homepage");
 
-        $countBox = count($entityManager->getRepository(Depcajas::class)->findAll());
-
         $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
         $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
@@ -169,9 +167,26 @@ class DepcajasController extends BaseController
 
 
         return $this->render('box/create.html.twig', array(
-            'countBox'  => $countBox,
             'box'       => $box,
             'areas'     => $areas
+        ));
+    }
+
+    /**
+     * @Route("show/{id}", name="showBox")
+     * @Method({"GET", "POST"})
+     */
+    public function showBox(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
+
+        $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id' => $box->getCodarea()));
+
+        return $this->render('box/show.html.twig', array(
+            'box'       => $box,
+            'area'     => $area
         ));
     }
 

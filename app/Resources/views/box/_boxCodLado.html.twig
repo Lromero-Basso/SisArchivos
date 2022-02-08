@@ -1,0 +1,7 @@
+{% if (codLado == 0) %}
+    <span class="badge badge-danger">{{codLado}} - No definido</span>
+{% elseif ( codLado == 1 ) %}
+    <span class="badge badge-primary">{{codLado}} - Derecho</span>
+{% elseif ( codLado == 2 ) %}
+    <span class="badge badge-success">{{codLado}} - Izquierdo</span>
+{% endif %}

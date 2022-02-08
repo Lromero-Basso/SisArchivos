@@ -86,11 +86,12 @@ class HistarchController extends BaseController
 
         $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
 
+
         return $this->render('record/all.html.twig', array(
-            'records' => $records,
-            'pagerHtml' => $pagerHtml,
-            'filterForm' => $filterForm->createView(),
-            'totalOfRecordsString' => $totalOfRecordsString,
+            'records'               => $records,
+            'pagerHtml'             => $pagerHtml,
+            'filterForm'            => $filterForm->createView(),
+            'totalOfRecordsString'  => $totalOfRecordsString,
         ));
     }
 
@@ -320,5 +321,6 @@ class HistarchController extends BaseController
         
         return $arrayOptions;
     }
+
 
 }

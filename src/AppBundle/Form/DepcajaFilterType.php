@@ -66,9 +66,9 @@ class DepcajaFilterType extends AbstractType
                     'label' => 'hasta'
                 )
             ))
-            ->add('observa', Filters\TextFilterType::class, array(
-                'label' => 'Observa'
-            ))
+            // ->add('observa', Filters\TextFilterType::class, array(
+            //     'label' => 'Observa'
+            // ))
             ->add('estado', Filters\ChoiceFilterType::class, array(
                 'label' => 'Estado',
                 'choices'  => [

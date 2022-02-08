@@ -20,7 +20,7 @@
           <div class="col-md-1"></div>
           <div class="col-md-4">{{ form_row(filterForm.tituloCaja) }}</div>
           <div class="col-md-3">{{ form_row(filterForm.codArea) }}</div>
-          <div class="col-md-3">{{ form_row(filterForm.observa) }}</div>
+          {# <div class="col-md-3">{{ form_row(filterForm.observa) }}</div> #}
           <div class="col-md-2">{{ form_row(filterForm.estado) }}</div>
           {# Falta los nros DESDE Y HASTA #}
 
@@ -172,6 +172,8 @@
                 <a class="dropdown-item" title='Editar'  href="{{ path('editBox', { 'id': box.id }) }}">Editar caja<i class="ml-1 text-success far fa-edit"></i></a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" title="Eliminar" onclick="sweetAlertDelete({{box.id}})" href="#">Eliminar caja<i class="ml-1 text-danger far fa-trash-alt"></i></a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" title="Eliminar" href="{{ path('showBox', { 'id': box.id }) }}">Vista previa<i class="ml-1 fas fa-search-plus"></i></a>
               </div>
             </div>
           </td>
