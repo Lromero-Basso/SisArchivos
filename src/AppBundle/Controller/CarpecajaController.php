@@ -130,7 +130,7 @@ class CarpecajaController extends BaseController
             $folder->setNroCarpeta($formFolder['nroCarp']);
             $folder->setCodCaja($formFolder['codigoCaja']);
             $folder->setTituloCarp($formFolder['tituloCarp']);
-            $folder->setNEstado($formFolder['estado']);
+            // $folder->setNEstado($formFolder['estado']);
             $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
             
             $entityManager->persist($folder);
@@ -245,6 +245,14 @@ class CarpecajaController extends BaseController
         // $entityManager->getConnection()->beginTransaction();
 
         $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id'=>$id));
+
+        $records = $entityManager->getRepository(Histarch::class)->findBy(array('codCarpeta' => $folder->getId()));
+        foreach($records as $record){
+            $record->setEstado(1);
+            $entityManager->persist($record);
+            $entityManager->flush();
+        }
+        
 
         try{
             $entityManager->remove($folder);

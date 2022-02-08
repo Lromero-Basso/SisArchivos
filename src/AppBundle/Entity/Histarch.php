@@ -49,6 +49,13 @@ class Histarch
      */
     private $legajo;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer")
+     */
+    private $estado;
+
 
     /**
      * Get id
@@ -155,6 +162,30 @@ class Histarch
     public function getLegajo()
     {
         return $this->legajo;
+    }
+
+     /**
+     * Set estado
+     *
+     * @param integer $estado
+     *
+     * @return Histarch
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return int
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }
 

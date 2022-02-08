@@ -37,6 +37,12 @@ class HistarchFilterType extends AbstractType
             ))
             ->add('legajo', Filters\NumberFilterType::class, array(
                 'label' => 'Legajo'
+            ))
+            ->add('estado', Filters\ChoiceFilterType::class, array(
+                'label' => 'Estado',
+                'choices'  => [
+                    'Carpeta destruida' => 1,
+                ],
             ));
         $builder->setMethod("GET");
     }

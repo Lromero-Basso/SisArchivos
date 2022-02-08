@@ -10,6 +10,12 @@ $('#modalDevolverCarpeta').modal({
     backdrop: 'static'
 });
 
+$('#modalShowCaja').modal({
+    show: true,
+    keyboard: false,
+    backdrop: 'static'
+});
+
 
 $("#modalShowArea").modal('show');
 $("#modalShowFolder").modal('show');

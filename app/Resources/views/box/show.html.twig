@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="modal fade " id="modalShowCaja" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content container">
+      <br>
+      <div class="container text-center">
+        <div class="float-left"><a class="btn btn-secondary text-white" href="{{path('viewBoxes')}}"><i class="mr-2 fas fa-hand-point-left"></i>Volver</a></div>
+        <h5 class="modal-title " id="exampleModalLabel">Vista previa</h5>
+      </div>
+      <br>
+      <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Cod. caja</th>
+                <th scope="col">Cod. estante</th>
+                <th scope="col">Cod. lado</th>
+                <th scope="col">Columna</th>
+                <th scope="col">Piso</th>
+                <th scope="col">Cod. área</th>
+                <th scope="col">Tit. caja</th>
+                <th scope="col">N° desde</th>
+                <th scope="col">N° hasta</th>
+                <th scope="col" style="width: 100px">Fecha carga</th>
+                <th scope="col">Archivado hasta</th>
+                <th scope="col">Observa</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{box.id}}</td>
+                <td>{{box.codEstante}}</td>
+                <td>{% include 'box/_boxCodLado.html.twig' with {'codLado': box.codLado } %}</td>
+                <td>{{box.columna}}</td>
+                <td>{{box.piso}}</td>
+                <td>{% include 'box/_boxCodArea.html.twig' with {'codArea': box.codArea } %}</td>
+                <td><small>{{box.tituloCaja}}</small></td>
+                <td>{{box.nroDesdeCaja}}</td>
+                <td>{{box.nroHastaCaja}}</td>
+                <td><small>{{box.fechaDesdeCaja|date('d-m-Y')}}</small></td>
+                <td><small>{{box.archivadoHasta|date('d-m-Y')}}</small></td>
+                <td><small>{{box.observa}}</small></td>
+                <td>{% include 'box/_boxEstados.html.twig' with {'estado': box.estado } %}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{ asset('js/staticModal.js') }}"></script>
+{% endblock %}
