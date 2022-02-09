@@ -55,6 +55,9 @@ It comes pre-configured with the following bundles:
 
   * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
     integration
+    
+    
+    
 
 All libraries and bundles included in the Symfony Standard Edition are
 released under the MIT or BSD license.
@@ -70,3 +73,9 @@ Enjoy!
 [11]: https://symfony.com/doc/3.4/logging.html
 [13]: https://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
 [14]: https://symfony.com/doc/current/setup/built_in_web_server.html
+
+
+**Dato importante**: 
+-El sistema antes de empezar a desarrollarlo se deberá poner en TRUE, en el archivo app.php, esto es para que uno como desarrollador vea las excepciones de Symfony, pero una vez finalizado y subido a producción, se tiene que volver a su estado FALSE, para que el usuario final NO vea las exepciones en rojo.
+Para realizar cambios en producción, se deberán realizar primero localmente (locamente puede seguir en TRUE el valor del archivo .php) y posterior a eso una vez copiados y pegados los cambios mediante WinSCP, se abre la consola de este y se ejecuta el siguiente comando:
+- php/bin console cache:clear --env=prod --no-debug
