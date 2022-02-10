@@ -200,3 +200,9 @@ h6 {
   transform: scale(1.1);
   transition: 1s;
 }
+
+@media (min-width: 1200px) {
+  .container{
+      max-width: 1200px;
+  }
+}
