@@ -45,27 +45,6 @@
           {% do filterForm.fechaDesdeCaja.setRendered %}
           {# FIN Render manual date range#}
 
-          {# INICIO Render manual date range#}
-          <div id="fecha" class="col-md-5">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label" for="fecha_left_date">Archivado desde</label>
-                  <input type="date" id="fecha_left_date" name="archivadoHasta[left_date]" class="form-control" value="{{ filterForm.archivadoHasta.children.left_date.vars.value}}" />
-                </div>
-              </div>
-            
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label" for="fecha_right_date">Archivado hasta</label>
-                  <input type="date" id="fecha_right_date" name="archivadoHasta[right_date]" class="form-control" value="{{ filterForm.archivadoHasta.children.right_date.vars.value}}"/>
-                </div>
-              </div>
-            </div>
-          </div> 
-          {% do filterForm.archivadoHasta.setRendered %}
-          {# FIN Render manual date range#}
-
           <div class="col-md-6">
             {{ form_rest(filterForm) }}
           </div>

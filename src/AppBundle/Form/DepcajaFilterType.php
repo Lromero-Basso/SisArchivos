@@ -55,20 +55,6 @@ class DepcajaFilterType extends AbstractType
                     'label' => 'hasta'
                 )
             ))
-            ->add('archivadoHasta', Filters\DateRangeFilterType::class,  array(
-                'label'     => 'Archivado Desde',
-                'left_date_options' => array(
-                    'widget' => 'single_text',
-                    'label' => 'desde'
-                ),
-                'right_date_options' => array(
-                    'widget' => 'single_text',
-                    'label' => 'hasta'
-                )
-            ))
-            // ->add('observa', Filters\TextFilterType::class, array(
-            //     'label' => 'Observa'
-            // ))
             ->add('estado', Filters\ChoiceFilterType::class, array(
                 'label' => 'Estado',
                 'choices'  => [
