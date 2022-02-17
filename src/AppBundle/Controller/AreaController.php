@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Areas;
+use AppBundle\Repository\AreasRepository;
+
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -29,15 +31,12 @@ class AreaController extends BaseController
      * @Method({"GET", "POST"})
      */
     public function createArea(Request $request){
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getEm();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Nuevo Area", "createArea");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Nueva área", "createArea");
 
         $formArea = $request->get("Area");
+
         if($formArea != null){
             $area = $this->findAreaByName($entityManager, strtoupper($formArea['nomArea']));
    
@@ -74,11 +73,7 @@ class AreaController extends BaseController
     public function viewAreas(Request $request){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Ver Áreas", "viewAreas");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Ver áreas", "viewAreas");
 
         $queryBuilder = $entityManager->getRepository('AppBundle:Areas')->createQueryBuilder('e');
 
@@ -101,12 +96,8 @@ class AreaController extends BaseController
      */
     public function editArea(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
-
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Editar Area - $id", "editArea");
         
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbsWithId("Editar área", "editArea", $id);
 
         $area = $entityManager->getRepository(Areas::class)->findOneBy(array('id' => $id));
 
@@ -326,5 +317,7 @@ class AreaController extends BaseController
 
         return $area;
     }
+
+    
 
 }
