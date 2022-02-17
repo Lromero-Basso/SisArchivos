@@ -10,16 +10,22 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-7">
                         <label>Legajo<span class="ml-1 text-danger">*</span></label>
-                        <input list="empleados" name="HistarchRetire[legajo]" class="form-control" id="empleado" placeholder="Seleccione un legajo" value="" required  >
+                        <select class="form-control" name="HistarchRetire[legajo]" required>
+                            <option value="">Seleccione un legajo</option>
+                            {% for empleado in empleados %}
+                                <option value="{{empleado.id}}">{{empleado.id}} - {{empleado.nombre}}</option>
+                            {% endfor %}
+                        </select>
+                        {# <input list="empleados" name="HistarchRetire[legajo]" class="form-control" id="empleado" placeholder="Seleccione un legajo" value="" required  >
                         <datalist id="empleados">               
                         {% for empleado in empleados %}
                             <option value="{{empleado.id}}">{{empleado.id}} - {{empleado.nombre}}</option>
                         {% endfor %}
-                        </datalist>
+                        </datalist> #}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label>Fecha retiro<span class="ml-1 text-danger">*</span></label>
                         <input class="form-control" type="date" name="HistarchRetire[fechaRetiro]" value="{{now|date('Y-m-d')}}" readonly> 
                     </div>

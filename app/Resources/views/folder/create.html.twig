@@ -26,17 +26,17 @@
             </div>
             <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" value="{{folder.codCaja}}" required  >
+                {# <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" value="{{folder.codCaja}}" required  >
                 <datalist id="boxes">
                 {% for box in boxes %}
                     <option value="{{box.id}}"> {{box.id}} - {{box.tituloCaja}}</option>
                 {% endfor %}
-                </datalist>
-                {# <select class="form-control" name="Carpecaja[codigoCaja]">
+                </datalist> #}
+                <select class="form-control" name="Carpecaja[codigoCaja]">
                     {% for box in boxes %}
                         <option value="{{box.id}}" {% if folder.codCaja == box.id %} selected  {% endif %}>{{box.id}} - {{box.tituloCaja}}</option>
                     {% endfor %}
-                </select> #}
+                </select>
                 {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="{{folder.codCaja}}" required> #}
             </div>
         </div>
@@ -69,18 +69,18 @@
             </div>
             <div class="col-md-4">
                 <label>Código caja<span class="ml-1 text-danger">*</span></label>
-                <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
+                {# <input list="boxes" name="Carpecaja[codigoCaja]" class="form-control" id="box" placeholder="Seleccione una caja" required  >
                 <datalist id="boxes">
                 {% for box in boxes %}
                     <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
                 {% endfor %}
-                </datalist>
-                {# <select class="form-control" name="Carpecaja[codigoCaja]" required>
+                </datalist> #}
+                <select class="form-control" name="Carpecaja[codigoCaja]" required>
                     <option value="">Seleccione un código de caja</option>
                     {% for box in boxes %}
                         <option value="{{box.id}}">{{box.id}} - {{box.tituloCaja}}</option>
                     {% endfor %}
-                </select> #}
+                </select>
                 {# <input class="form-control" type="text" name="Carpecaja[codigoCaja]" value="" required> #}
             </div>
         </div>

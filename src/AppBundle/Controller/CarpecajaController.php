@@ -142,15 +142,17 @@ class CarpecajaController extends BaseController
         $empleados = $entityManager->getRepository(Empleados::class)->findAll();
 
         if($formHistarchRetire != null){
-
-            $histarch = new Histarch();
+            $histarch       = $entityManager->getRepository(Histarch::class)->findOneBy(array('codCarpeta'=>$id));
+            if($histarch == null){
+                $histarch = new Histarch();
+            }
             $histarch = $this->setPropertiesHistarch($histarch, $folder, $entityManager, $formHistarchRetire, $id);
          
             $this->addFlash(
                 'notice',
                 '¡Se retiró correctamente la carpeta '. $folder->getId() .'!'
             );
-
+          
             return $this->redirectToRoute('viewFolders');
 
         }
@@ -182,7 +184,6 @@ class CarpecajaController extends BaseController
         if($formHistarchReturn != null){
 
             $histarch = $this->setPropertiesHistarchReturn($histarch, $folder, $entityManager, $formHistarchReturn);
-
             $this->addFlash(
                 'notice',
                 '¡Se devolvió correctamente la carpeta '. $folder->getId() .'!'
@@ -442,10 +443,14 @@ class CarpecajaController extends BaseController
     public function setPropertiesHistarchReturn($histarch, $folder, $entityManager, $formHistarchReturn){
         $histarch -> setFechaDevolucion(new \DateTime($formHistarchReturn['fechaDevolucion']));
         $folder   -> setNEstado(0); //Seteo el estado a en archivo nuevamente
+        
 
         $entityManager->persist($histarch);
         $entityManager->persist($folder);
         $entityManager->flush();
+
+        return $histarch;
+
     }
 
   
