@@ -52,7 +52,7 @@
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
                 <select class="form-control" name="Depcaja[codArea]">
                     {% for area in areas %}
-                        <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                        <option value="{{area.id}}"{% if box.codArea == area.id %} selected {% endif %} > {{area.id}} - {{area.nomArea}}</option>
                     {% endfor %}
                 </select>
             </div>
