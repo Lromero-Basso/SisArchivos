@@ -130,8 +130,10 @@
                 Opciones <span class="caret"></span>
               </button>
               <div class="dropdown-menu">
+                {% if folder.nEstado == 0 %}
                 <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar carpeta<i class="ml-1 text-success far fa-edit"></i></a>
                 <div class="dropdown-divider"></div>
+                {% endif %}
                 <a class="dropdown-item" title="Eliminar" onclick="sweetAlertDelete({{folder.id}})" href="#">Eliminar carpeta<i class="ml-1 text-danger far fa-trash-alt"></i></a>
                 <div class="dropdown-divider"></div>
                 {% if folder.nEstado == 0 %}

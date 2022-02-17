@@ -34,11 +34,7 @@ class CarpecajaController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Nueva Carpeta", "createFolder");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Nueva carpeta", "createFolder");
 
         $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
@@ -49,15 +45,8 @@ class CarpecajaController extends BaseController
         if($formFolder != null){
 
             $folder = new Carpecaja();
-            
-            $folder->setNroCarpeta($formFolder['nroCarp']);
-            $folder->setCodCaja($formFolder['codigoCaja']);
-            $folder->setTituloCarp($formFolder['tituloCarp']);
-            $folder->setNEstado(0); //Seteo a 0 porque equivale al estado "EN ARCHIVO"
-            $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
-            
-            $entityManager->persist($folder);
-            $entityManager->flush();
+            $folder = $this->setPropertiesFolder($folder, $entityManager, $formFolder);
+       
             $this->addFlash(
                 'notice',
                 '¡Se cargó correctamente la carpeta ID N° ' . $folder->getId() . '!'
@@ -81,11 +70,7 @@ class CarpecajaController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Ver Carpetas", "viewFolders");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Ver carpetas", "viewFolders");
 
         $queryBuilder = $entityManager->getRepository('AppBundle:Carpecaja')->createQueryBuilder('e');
 
@@ -113,11 +98,7 @@ class CarpecajaController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Editar Carpeta - $id", "editFolder");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbsWithId("Editar carpeta", "editFolder", $id);
 
         $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
 
@@ -127,14 +108,8 @@ class CarpecajaController extends BaseController
 
         if($formFolder != null){
 
-            $folder->setNroCarpeta($formFolder['nroCarp']);
-            $folder->setCodCaja($formFolder['codigoCaja']);
-            $folder->setTituloCarp($formFolder['tituloCarp']);
-            // $folder->setNEstado($formFolder['estado']);
-            $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
-            
-            $entityManager->persist($folder);
-            $entityManager->flush();
+            $folder = $this->setPropertiesFolderEdit($folder, $entityManager, $formFolder);
+      
             $this->addFlash(
                 'notice',
                 '¡Se actualizó correctamente la carpeta ID N° ' . $folder->getId() . '!'
@@ -169,15 +144,8 @@ class CarpecajaController extends BaseController
         if($formHistarchRetire != null){
 
             $histarch = new Histarch();
-            $histarch -> setCodCarpeta($id);  
-            $histarch -> setLegajo($formHistarchRetire['legajo']);
-            $histarch -> setFechaRetiro(new \DateTime($formHistarchRetire['fechaRetiro']));
-            $folder   -> setNEstado(1); //Seteo el estado a retirado
-
-            $entityManager->persist($histarch);
-
-            $entityManager->flush();
-            
+            $histarch = $this->setPropertiesHistarch($histarch, $folder, $entityManager, $formHistarchRetire, $id);
+         
             $this->addFlash(
                 'notice',
                 '¡Se retiró correctamente la carpeta '. $folder->getId() .'!'
@@ -213,11 +181,7 @@ class CarpecajaController extends BaseController
 
         if($formHistarchReturn != null){
 
-            $histarch -> setFechaDevolucion(new \DateTime($formHistarchReturn['fechaDevolucion']));
-            $folder   -> setNEstado(0); //Seteo el estado a en archivo nuevamente
-
-            $entityManager->persist($histarch);
-            $entityManager->flush();
+            $histarch = $this->setPropertiesHistarchReturn($histarch, $folder, $entityManager, $formHistarchReturn);
 
             $this->addFlash(
                 'notice',
@@ -433,6 +397,55 @@ class CarpecajaController extends BaseController
 
         return $arrayOptions;
         
+    }
+
+    public function setPropertiesFolder($folder, $entityManager, $formFolder){
+        $folder->setNroCarpeta($formFolder['nroCarp']);
+        $folder->setCodCaja($formFolder['codigoCaja']);
+        $folder->setTituloCarp($formFolder['tituloCarp']);
+        $folder->setNEstado(0); //Seteo a 0 porque equivale al estado "EN ARCHIVO"
+        $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
+
+        $entityManager->persist($folder);
+        $entityManager->flush();
+
+        return $folder;
+    }
+
+    public function setPropertiesFolderEdit($folder, $entityManager, $formFolder){
+        $folder->setNroCarpeta($formFolder['nroCarp']);
+        $folder->setCodCaja($formFolder['codigoCaja']);
+        $folder->setTituloCarp($formFolder['tituloCarp']);
+        // $folder->setNEstado($formFolder['estado']);
+        $folder->setFechaDesdeCarp(new \DateTime($formFolder['fechaDesde']));
+
+        $entityManager->persist($folder);
+        $entityManager->flush();
+
+        return $folder;
+    }
+
+    public function setPropertiesHistarch($histarch, $folder, $entityManager, $formHistarchRetire, $id){
+        $histarch -> setCodCarpeta($id);  
+        $histarch -> setLegajo($formHistarchRetire['legajo']);
+        $histarch -> setFechaRetiro(new \DateTime($formHistarchRetire['fechaRetiro']));
+        $folder   -> setNEstado(1); //Seteo el estado a retirado
+        
+        $entityManager->persist($histarch);
+        $entityManager->persist($folder);
+
+        $entityManager->flush();
+
+        return $histarch;
+    }
+
+    public function setPropertiesHistarchReturn($histarch, $folder, $entityManager, $formHistarchReturn){
+        $histarch -> setFechaDevolucion(new \DateTime($formHistarchReturn['fechaDevolucion']));
+        $folder   -> setNEstado(0); //Seteo el estado a en archivo nuevamente
+
+        $entityManager->persist($histarch);
+        $entityManager->persist($folder);
+        $entityManager->flush();
     }
 
   

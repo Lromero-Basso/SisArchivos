@@ -28,11 +28,7 @@ class HistarchController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Nuevo Registro", "createRecord");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Nuevo registro", "createRecord");
 
         $folders = $entityManager->getRepository(Carpecaja::class)->findAll();
 
@@ -48,7 +44,6 @@ class HistarchController extends BaseController
             // $record->setFechaRetiro($formRecord['fechaDesde']);
             // $record->setFechaDevolucion($formRecord['fechaHasta']);
             
-
             $entityManager->persist($record);
             $entityManager->flush();
             $this->addFlash(
@@ -73,11 +68,7 @@ class HistarchController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Ver Registros", "viewRecords");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Ver registros", "viewRecords");
 
         $queryBuilder = $entityManager->getRepository('AppBundle:Histarch')->createQueryBuilder('e');
 
@@ -103,11 +94,7 @@ class HistarchController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Editar Registro - $id", "editRecord");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbsWithId("Editar registro", "editRecord", $id);
 
         $record = $entityManager->getRepository(Histarch::class)->findOneBy(array('id'=>$id));
 

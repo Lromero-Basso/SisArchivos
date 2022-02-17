@@ -31,11 +31,7 @@ class DepcajasController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Nueva Caja", "createBox");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Nueva caja", "createBox");
 
         $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
@@ -46,22 +42,8 @@ class DepcajasController extends BaseController
         if($formBox != null){
            
             $box = new Depcajas();
-            
-            $box->setCodEstante($formBox['codEstante']);
-            $box->setCodLado($formBox['codLado']);
-            $box->setPiso($formBox['piso']);
-            $box->setCodArea($formBox['codArea']);
-            $box->setColumna($formBox['columna']);
-            $box->setTituloCaja($formBox['tituloCaja']);
-            $box->setNroDesdeCaja($formBox['nroDesde']);
-            $box->setNroHastaCaja($formBox['nroHasta']);
-            $box->setObserva($formBox['observa']);
-            $box->setEstado(0); //0 Porque hace referencia al estado VIGENTE
-            $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
-            $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
-
-            $entityManager->persist($box);
-            $entityManager->flush();
+            $box = $this->setPropertiesBox($box, $formBox, $entityManager);
+     
             $this->addFlash(
                 'notice',
                 '¡Se cargó correctamente la caja ID N° ' . $box->getId() . '!'
@@ -84,11 +66,7 @@ class DepcajasController extends BaseController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addRouteItem("Ver Cajas", "viewBoxes");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
+        $this->setBreadCrumbs("Ver cajas", "viewBoxes");
 
         $queryBuilder = $entityManager->getRepository('AppBundle:Depcajas')->createQueryBuilder('e');
 
@@ -114,13 +92,7 @@ class DepcajasController extends BaseController
     public function editBox(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-             
-        $breadcrumbs->addItem("Editar Caja - $id", "editBox");
-        
-        $breadcrumbs->prependRouteItem("Inicio", "homepage");
-
-        $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+        $this->setBreadCrumbsWithId("Editar caja", "editBox", $id);
 
         $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
    
@@ -130,33 +102,8 @@ class DepcajasController extends BaseController
 
         if($formBox != null){
 
-            $box->setCodEstante($formBox['codEstante']);
-            $box->setCodLado($formBox['codLado']);
-            $box->setPiso($formBox['piso']);
-            $box->setCodArea($formBox['codArea']);
-            $box->setColumna($formBox['columna']);
-            $box->setTituloCaja($formBox['tituloCaja']);
-            $box->setNroDesdeCaja($formBox['nroDesde']);
-            $box->setNroHastaCaja($formBox['nroHasta']);
-            $box->setObserva($formBox['observa']);
-            $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
-            $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
-
-            if($formBox['estado'] == "SI"){                
-                $box->setEstado(2);
-            }
-            else{
-                if($box->getArchivadoHasta() < $actualDate){
-                    $box->setEstado(1);
-                }
-                else{
-                    $box->setEstado(0);
-                }
-            }
-
-
-            $entityManager->persist($box);
-            $entityManager->flush();
+            $box = $this->setPropertiesBoxEdit($box, $formBox, $entityManager);
+        
             $this->addFlash(
                 'notice',
                 '¡Se actualizó correctamente la caja ID N° ' . $box->getId() . '!'
@@ -394,6 +341,60 @@ class DepcajasController extends BaseController
             }
             
         }
+    }
+
+    public function setPropertiesBox($box, $formBox, $entityManager){
+        $box->setCodEstante($formBox['codEstante']);
+        $box->setCodLado($formBox['codLado']);
+        $box->setPiso($formBox['piso']);
+        $box->setCodArea($formBox['codArea']);
+        $box->setColumna($formBox['columna']);
+        $box->setTituloCaja($formBox['tituloCaja']);
+        $box->setNroDesdeCaja($formBox['nroDesde']);
+        $box->setNroHastaCaja($formBox['nroHasta']);
+        $box->setObserva($formBox['observa']);
+        $box->setEstado(0); //0 Porque hace referencia al estado VIGENTE
+        $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+        $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
+
+        $entityManager->persist($box);
+        $entityManager->flush();
+
+        return $box;
+    }
+
+    public function setPropertiesBoxEdit($box, $formBox, $entityManager){
+
+        $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
+
+        $box->setCodEstante($formBox['codEstante']);
+        $box->setCodLado($formBox['codLado']);
+        $box->setPiso($formBox['piso']);
+        $box->setCodArea($formBox['codArea']);
+        $box->setColumna($formBox['columna']);
+        $box->setTituloCaja($formBox['tituloCaja']);
+        $box->setNroDesdeCaja($formBox['nroDesde']);
+        $box->setNroHastaCaja($formBox['nroHasta']);
+        $box->setObserva($formBox['observa']);
+        $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+        $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
+
+        if($formBox['estado'] == "SI"){                
+            $box->setEstado(2);
+        }
+        else{
+            if($box->getArchivadoHasta() < $actualDate){
+                $box->setEstado(1);
+            }
+            else{
+                $box->setEstado(0);
+            }
+        }
+
+        $entityManager->persist($box);
+        $entityManager->flush();
+
+        return $box;
     }
 
 }

@@ -50,12 +50,11 @@
             </div>       
             <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" value="{{box.codArea}}" required  >
-                <datalist id="areas">               
-                {% for area in areas %}
-                    <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
-                {% endfor %}
-                </datalist>
+                <select class="form-control" name="Depcaja[codArea]">
+                    {% for area in areas %}
+                        <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -104,7 +103,8 @@
             </div>
             <div class="col-md-3">
                 <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" value="" required> 
+                <input class="form-control" type="date" name="Depcaja[archivadoHasta]" id="datefield" min="01-01-2022" required> 
+                {# Esta funcion tiene un id porque en base a ese ID evalua el  valor minimo que debe ser igual o mayor a la fecha actual #}
             </div>
         </div>
         <br>
@@ -140,12 +140,12 @@
             </div>   
             <div class="col-md-4">
                 <label>Código área<span class="ml-1 text-danger">*</span></label>
-                <input list="areas" name="Depcaja[codArea]" class="form-control" id="area" placeholder="Seleccione un área" required  >
-                <datalist id="areas">
-                {% for area in areas %}
-                    <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
-                {% endfor %}
-                </datalist>
+                <select class="form-control" name="Depcaja[codArea]" required>
+                    <option value="">Seleccione un área</option>
+                    {% for area in areas %}
+                        <option value="{{area.id}}">{{area.id}} - {{area.nomArea}}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-md-2">
                 <label>N° Desde <span class="ml-1 text-danger">*</span></label>
@@ -183,4 +183,5 @@
 {% block javascript %}
 {{parent()}}
 <script src="{{ asset('js/customAlerts.js') }}"></script>
+<script src="{{ asset('js/dateToday.js') }}"></script>
 {% endblock %}
