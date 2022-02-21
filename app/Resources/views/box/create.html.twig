@@ -14,7 +14,7 @@
                 <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
             </div>
             <div class="col-md-3">
-                <label>Archivado hasta {% if box.estado == 2 %}<span class="text-success" style="cursor: pointer;" data-toggle="tooltip" data-placement="right" title="Si desea modificar esta fecha, por favor ponga en NO la última opción del formulario">(?)</span>{% else %}<span class="ml-1 text-danger">*</span>{% endif %}</label>
+                <label  style="cursor: pointer;" data-toggle="tooltip" data-placement="right" title="Si desea modificar esta fecha, por favor ponga en NO la última opción del formulario">Archivado hasta {% if box.estado == 2 %}<i class="text-success far fa-question-circle"></i>{% else %}<span class="ml-1 text-danger">*</span>{% endif %}</label>
                 <input value="{{box.archivadoHasta|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[archivadoHasta]" {% if box.estado == 2 %}readonly{% else %}required{% endif %}>
             </div>
         </div>
