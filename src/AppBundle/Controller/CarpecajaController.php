@@ -430,6 +430,7 @@ class CarpecajaController extends BaseController
         $histarch -> setCodCarpeta($id);  
         $histarch -> setLegajo($formHistarchRetire['legajo']);
         $histarch -> setFechaRetiro(new \DateTime($formHistarchRetire['fechaRetiro']));
+        $histarch -> setFechaDevolucion(null);
         $folder   -> setNEstado(1); //Seteo el estado a retirado
         
         $entityManager->persist($histarch);
