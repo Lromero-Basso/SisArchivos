@@ -135,28 +135,37 @@ class CarpecajaController extends BaseController
 
         $formHistarchRetire =  $request->get("HistarchRetire");
 
-        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
-
         $now = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
         $empleados = $entityManager->getRepository(Empleados::class)->findAll();
+
+        $folder = $entityManager->getRepository(Carpecaja::class)->findOneBy(array('id' => $id));
 
         if($formHistarchRetire != null){
             $histarch       = $entityManager->getRepository(Histarch::class)->findOneBy(array('codCarpeta'=>$id));
             if($histarch == null){
                 $histarch = new Histarch();
             }
+            
             $histarch = $this->setPropertiesHistarch($histarch, $folder, $entityManager, $formHistarchRetire, $id);
-         
-            $this->addFlash(
-                'notice',
-                '¡Se retiró correctamente la carpeta '. $folder->getId() .'!'
-            );
-          
-            return $this->redirectToRoute('viewFolders');
-
+            if($histarch){
+                $this->addFlash(
+                    'notice',
+                    '¡Se retiró correctamente la carpeta '. $folder->getId() .'!'
+                );
+            
+                return $this->redirectToRoute('viewFolders');
+            }else{
+                $this->addFlash(
+                    'error',
+                    'El legajo que eligió no existe'
+                );
+            
+                return $this->redirectToRoute('retireFolder', ['id'=>$id]);
+            }
+   
         }
-        
+   
         return $this->render('modals/_retireFolderModal.html.twig', array(
             'now'       => $now,
             'empleados' => $empleados
@@ -428,17 +437,23 @@ class CarpecajaController extends BaseController
 
     public function setPropertiesHistarch($histarch, $folder, $entityManager, $formHistarchRetire, $id){
         $histarch -> setCodCarpeta($id);  
-        $histarch -> setLegajo($formHistarchRetire['legajo']);
-        $histarch -> setFechaRetiro(new \DateTime($formHistarchRetire['fechaRetiro']));
-        $histarch -> setFechaDevolucion(null);
-        $folder   -> setNEstado(1); //Seteo el estado a retirado
-        
-        $entityManager->persist($histarch);
-        $entityManager->persist($folder);
-
-        $entityManager->flush();
-
-        return $histarch;
+        if($this->getEmpleado($formHistarchRetire['legajo'], $entityManager)){
+            $histarch -> setLegajo($formHistarchRetire['legajo']);
+            $histarch -> setFechaRetiro(new \DateTime($formHistarchRetire['fechaRetiro']));
+            $histarch -> setFechaDevolucion(null);
+            $folder   -> setNEstado(1); //Seteo el estado a retirado
+            
+            $entityManager->persist($histarch);
+            $entityManager->persist($folder);
+    
+            $entityManager->flush();
+    
+            return $histarch;
+        }
+        else{
+            return false;
+        }
+       
     }
 
     public function setPropertiesHistarchReturn($histarch, $folder, $entityManager, $formHistarchReturn){
@@ -453,6 +468,16 @@ class CarpecajaController extends BaseController
         return $histarch;
 
     }
+
+    public function getEmpleado($legajo, $entityManager){
+        $empleado = $entityManager->getRepository(Empleados::class)->findOneBy(array('id'=>$legajo));
+        if($empleado != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
   
 
