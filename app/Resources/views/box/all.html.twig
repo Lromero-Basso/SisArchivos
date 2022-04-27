@@ -105,8 +105,8 @@
 <!-- /TABLE WITH SORT -->
 
 <form method="POST" id="bulk_form" action="{{ path('depcaja_bulk_action') }} ">
-  <div class="card mb-4 mt-4">
-    <table class="table table-striped table-hover table-sm" id="tabla" namefile="Depcaja">
+  <div class="card mb-4 mt-4 table-responsive">
+    <table class="table table-striped table-hover" id="tabla" namefile="Depcaja">
       <thead>
         <tr>
           {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
