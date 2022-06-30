@@ -355,6 +355,7 @@ class DepcajasController extends BaseController
         $box->setObserva($formBox['observa']);
         $box->setEstado(0); //0 Porque hace referencia al estado VIGENTE
         $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+        $box->setFechaHastaCaja(new \DateTime($formBox['fechaHasta']));
         $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
         $entityManager->persist($box);
@@ -377,6 +378,7 @@ class DepcajasController extends BaseController
         $box->setNroHastaCaja($formBox['nroHasta']);
         $box->setObserva($formBox['observa']);
         $box->setFechaDesdeCaja(new \DateTime($formBox['fechaDesde']));
+        $box->setFechaHastaCaja(new \DateTime($formBox['fechaHasta']));
         $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
         if($formBox['estado'] == "SI"){                

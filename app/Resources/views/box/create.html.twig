@@ -10,8 +10,12 @@
         {% if box is defined %}
         <div class="row">
             <div class="col-md-3">
-                <label>Fecha<span class="ml-1 text-danger">*</span></label>
+                <label>Fecha desde<span class="ml-1 text-danger">*</span></label>
                 <input value="{{box.fechaDesdeCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaDesde]" required>
+            </div>
+            <div class="col-md-3">
+                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
+                <input value="{{box.fechaHastaCaja|date('Y-m-d')}}" type="date" class="form-control" name="Depcaja[fechaHasta]" required>
             </div>
             <div class="col-md-3">
                 <label  style="cursor: pointer;" data-toggle="tooltip" data-placement="right" title="Si desea modificar esta fecha, por favor ponga en NO la última opción del formulario">Archivado hasta {% if box.estado == 2 %}<i class="text-success far fa-question-circle"></i>{% else %}<span class="ml-1 text-danger">*</span>{% endif %}</label>
@@ -21,25 +25,24 @@
         <br>
         <div class="row">
             <div class="col-md-2">
-                <label>Código estante<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codEstante]" value="{{box.codEstante}}" required>
+                <label>Código estante</label>
+                <input class="form-control" type="text" name="Depcaja[codEstante]" value="{{box.codEstante}}">
             </div>
             <div class="col-md-3">
-                <label>Código lado<span class="ml-1 text-danger">*</span></label>
-                {# <input class="form-control" type="text" name="Depcaja[codLado]" value="{{box.codLado}}" required> #}
-                <select class="form-control" name="Depcaja[codLado]" id="" required>
+                <label>Código lado</label>
+                <select class="form-control" name="Depcaja[codLado]" id="">
                     <option value="1" {% if box.codLado == 1 %}selected{% endif %}>1 - Derecho</option>
                     <option value="2" {% if box.codLado == 2 %}selected{% endif %}>2 - Izquierdo</option>
                     <option value="0" {% if box.codLado == 0 %}selected{% endif %}>0 - No definido</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <label>Columna<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[columna]" value="{{box.columna}}" required>
+                <label>Columna</label>
+                <input class="form-control" type="text" name="Depcaja[columna]" value="{{box.columna}}">
             </div>
             <div class="col-md-2">
-                <label>Piso<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[piso]" value="{{box.piso}}" required>
+                <label>Piso</label>
+                <input class="form-control" type="text" name="Depcaja[piso]" value="{{box.piso}}">
             </div>
         </div>
         <br>
@@ -57,12 +60,12 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <label>N° Desde <span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[nroDesde]" value="{{box.nroDesdeCaja}}" required>
+                <label>N° Desde </label>
+                <input class="form-control" type="text" name="Depcaja[nroDesde]" value="{{box.nroDesdeCaja}}">
             </div>
             <div class="col-md-2">
-                <label>N° Hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[nroHasta]" value="{{box.nroHastaCaja}}" required>
+                <label>N° Hasta</label>
+                <input class="form-control" type="text" name="Depcaja[nroHasta]" value="{{box.nroHastaCaja}}">
             </div>
         </div>
         <br>
@@ -74,11 +77,6 @@
             <div class="col-md-2">
                 <label>Estado<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="text" name="" {% if box.estado == 0 %} value="Vigente" {% elseif box.estado == 1 %} value="Destruida" {% else %} value="No encontrada" {% endif %} readonly>
-                {# <select class="form-control" name="Depcaja[estado]" id="" required>
-                    <option value="0" {% if box.estado == 0 %} selected {% endif %}>Vigente</option>
-                    <option value="1" {% if box.estado == 1 %} selected {% endif %}>Destruida</option>
-                    <option value="2" {% if box.estado == 2 %} selected {% endif %}>No encontrada</option>
-                </select> #}
             </div>   
         </div>
         <br>
@@ -102,21 +100,23 @@
                 <input class="form-control" type="date" name="Depcaja[fechaDesde]" value="{{now|date('Y-m-d')}}" readonly> 
             </div>
             <div class="col-md-3">
+                <label>Fecha hasta<span class="ml-1 text-danger">*</span></label>
+                <input class="form-control" type="date"  name="Depcaja[fechaHasta]" required>
+            </div>
+            <div class="col-md-3">
                 <label>Archivado hasta<span class="ml-1 text-danger">*</span></label>
                 <input class="form-control" type="date" name="Depcaja[archivadoHasta]" id="datefield" min="01-01-2022" required> 
-                {# Esta funcion tiene un id porque en base a ese ID evalua el  valor minimo que debe ser igual o mayor a la fecha actual #}
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-2">
-                <label>Código estante<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[codEstante]" value="" required>
+                <label>Código estante</label>
+                <input class="form-control" type="text" name="Depcaja[codEstante]" value="">
             </div>
             <div class="col-md-3">
-                <label>Código lado<span class="ml-1 text-danger">*</span></label>
-                {# <input class="form-control" type="text" name="Depcaja[codLado]" value="" required> #}
-                <select class="form-control" name="Depcaja[codLado]" id="" required>
+                <label>Código lado</label>
+                <select class="form-control" name="Depcaja[codLado]" id="">
                     <option value="" selected>Seleccione una opción</option>
                     <option value="1" >1 - Derecho</option>
                     <option value="2" >2 - Izquierdo</option>
@@ -124,12 +124,12 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <label>Columna<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[columna]" value="" required>
+                <label>Columna</label>
+                <input class="form-control" type="text" name="Depcaja[columna]" value="">
             </div>
             <div class="col-md-2">
-                <label>Piso<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[piso]" value="" required>
+                <label>Piso</label>
+                <input class="form-control" type="text" name="Depcaja[piso]" value="">
             </div>
         </div>
         <br>
@@ -148,12 +148,12 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <label>N° Desde <span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[nroDesde]" value="" required>
+                <label>N° Desde </label>
+                <input class="form-control" type="text" name="Depcaja[nroDesde]" value="">
             </div>
             <div class="col-md-2">
-                <label>N° Hasta<span class="ml-1 text-danger">*</span></label>
-                <input class="form-control" type="text" name="Depcaja[nroHasta]" value="" required>
+                <label>N° Hasta</label>
+                <input class="form-control" type="text" name="Depcaja[nroHasta]" value="">
             </div>
         </div>
         <br>

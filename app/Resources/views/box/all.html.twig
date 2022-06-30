@@ -132,7 +132,7 @@
         <tr>
           <td>{{box.id}}</td>
           {# <td>{{box.codEstante}}</td> #}
-          <td>{{box.codLado}}</td>
+          <td>{% if box.codLado != 0 %}{{box.codLado}}{% endif %}</td>
           {# <td>{{box.columna}}</td>
           <td>{{box.piso}}</td> #}
           <td>{{box.codArea}}</td>
