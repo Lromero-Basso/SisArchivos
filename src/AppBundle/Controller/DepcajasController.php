@@ -360,6 +360,7 @@ class DepcajasController extends BaseController
     }
 
     public function setPropertiesBox($box, $formBox, $entityManager){
+        $box->setNroCaja($formBox['nroCaja']);
         $box->setCodEstante($formBox['codEstante']);
         $box->setCodLado($formBox['codLado']);
         $box->setPiso($formBox['piso']);
@@ -384,6 +385,7 @@ class DepcajasController extends BaseController
 
         $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
+        $box->setNroCaja($formBox['nroCaja']);
         $box->setCodEstante($formBox['codEstante']);
         $box->setCodLado($formBox['codLado']);
         $box->setPiso($formBox['piso']);

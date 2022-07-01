@@ -92,6 +92,13 @@ class Depcajas
     private $estado;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="nro_caja", type="integer")
+     */
+    private $nroCaja;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="f_des_caja", type="datetime")
@@ -361,6 +368,30 @@ class Depcajas
     public function getEstado()
     {
         return $this->estado;
+    }
+
+     /**
+     * Set nroCaja
+     *
+     * @param integer $nroCaja
+     *
+     * @return Depcajas
+     */
+    public function setNroCaja($nroCaja)
+    {
+        $this->nroCaja = $nroCaja;
+
+        return $this;
+    }
+
+    /**
+     * Get nroCaja
+     *
+     * @return int
+     */
+    public function getNroCaja()
+    {
+        return $this->nroCaja;
     }
 
     /**

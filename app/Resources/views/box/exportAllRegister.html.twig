@@ -17,7 +17,7 @@
             <table class="table table-bordered" id="tabla" width="100%" namefile="Listado total de cajas">
                 <thead>
                     <tr>
-                        <th> Cod. Caja </th>
+                        <th> N° Caja </th>
                         <th> Cod. Lado </th>
                         <th> Cod. Área </th>
                         <th> Cod. Estante </th>
@@ -36,7 +36,7 @@
                 <tbody>
                     {% for depcaja in depcajas %}
                     <tr>
-                        <td>{{depcaja.id}}</td>
+                        <td>{{depcaja.nroCaja}}</td>
                         <td>{% if depcaja.codLado != 0 %}{{depcaja.codLado}}{% endif %}</td>
                         <td>{{depcaja.codArea}}</td>
                         <td>{{depcaja.codEstante}}</td>

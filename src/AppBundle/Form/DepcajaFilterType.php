@@ -16,8 +16,8 @@ class DepcajaFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', Filters\NumberFilterType::class, array(
-                'label' => 'Código caja - ID'
+            ->add('nroCaja', Filters\NumberFilterType::class, array(
+                'label' => 'N° caja'
             ))
             ->add('codEstante', Filters\NumberFilterType::class, array(
                 'label' => 'Código estante'

@@ -12,7 +12,7 @@
     <div  id="filters" class="collapse">
       <form class="card pl-3 pr-3 pt-2 bg-light mb-3" action="{{ path('viewBoxes') }}" method="get">
         <div class="row">
-          <div class="col-md-2">{{ form_row(filterForm.id) }}</div>
+          <div class="col-md-2">{{ form_row(filterForm.nroCaja) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codEstante) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.codLado) }}</div>
           <div class="col-md-2">{{ form_row(filterForm.columna) }}</div>
@@ -111,7 +111,7 @@
       <thead>
         <tr>
           {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
-          <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código caja')}}</th>
+          <th style="border:0px;">{{macros.th_sortable('nroCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','N° caja')}}</th>
           {# <th style="border:0px;">{{macros.th_sortable('codEstante',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código estante')}}</th> #}
           <th style="border:0px;">{{macros.th_sortable('codLado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Código lado')}}</th>
           {# <th style="border:0px;">{{macros.th_sortable('columna',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewBoxes','Columna')}}</th>
@@ -131,7 +131,7 @@
       <tbody>
         {% for box in boxes %}
         <tr>
-          <td>{{box.id}}</td>
+          <td>{{box.nroCaja}}</td>
           {# <td>{{box.codEstante}}</td> #}
           <td>{% if box.codLado != 0 %}{{box.codLado}}{% endif %}</td>
           {# <td>{{box.columna}}</td>
