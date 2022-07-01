@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md-2">
                 <label>N° Caja</label>
-                <input class="form-control" type="number" name="Depcaja[nroCaja]" value="{{box.nroCaja}}">
+                <input class="form-control" type="number" name="Depcaja[nroCaja]" {% if box.nroCaja != null %}value="{{box.nroCaja}}"{% endif %}>
             </div>
             <div class="col-md-2">
                 <label>Código estante</label>
