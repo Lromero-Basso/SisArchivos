@@ -85,6 +85,21 @@ class DepcajasController extends BaseController
         ));
     }
 
+       /**
+     * @Route("/exportAllRegister", name="exportAllRegister")
+     */
+    public function exportAllRegister(){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $depcajas = $entityManager->getRepository(Depcajas::class)->findBy(array(), array("id"=>"DESC"));
+
+        return $this->render('box/exportAllRegister.html.twig', array(
+            'depcajas' => $depcajas
+        ));
+    }
+
+
     /**
      * @Route("/edit/{id}", name="editBox")
      * @Method({"GET", "POST"})
@@ -302,6 +317,7 @@ class DepcajasController extends BaseController
 
         return $this->redirect($this->generateUrl('viewBoxes'));
     }
+
 
     public function getTituloCaja(){
         $entityManager = $this->getDoctrine()->getManager();

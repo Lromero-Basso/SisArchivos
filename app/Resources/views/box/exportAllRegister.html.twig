@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="page">
+    <div class="card mt-2">
+        <div class="card-header text-center">
+            <b class="h6"> Listado total de registros </b>
+            <div class="dropdown dropup float-right">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-bars"></i> Exportar Todos
+                <span class="caret"></span></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="exportToExcel()" href="#"><img src="{{ asset('images/icons/xls.png') }}" width="24"> Excel</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4 table-responsive">
+            <table class="table table-bordered" id="tabla" width="100%" namefile="Listado total de cajas">
+                <thead>
+                    <tr>
+                        <th> Cod. Caja </th>
+                        <th> Cod. Lado </th>
+                        <th> Cod. Área </th>
+                        <th> Cod. Estante </th>
+                        <th> Columna </th>
+                        <th> Piso </th>
+                        <th> Título Caja </th>
+                        <th> N° Desde </th>
+                        <th> N° Hasta </th>
+                        <th> Fecha Desde </th>
+                        <th> Fecha Hasta </th>
+                        <th> Archivado Hasta </th>
+                        <th> Observa </th>
+                        <th> Estado </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for depcaja in depcajas %}
+                    <tr>
+                        <td>{{depcaja.id}}</td>
+                        <td>{% if depcaja.codLado != 0 %}{{depcaja.codLado}}{% endif %}</td>
+                        <td>{{depcaja.codArea}}</td>
+                        <td>{{depcaja.codEstante}}</td>
+                        <td>{{depcaja.columna}}</td>
+                        <td>{{depcaja.piso}}</td> 
+                        <td><small>{{depcaja.tituloCaja}}</small></td>
+                        <td>{{depcaja.nroDesdeCaja}}</td>
+                        <td>{{depcaja.nroHastaCaja}}</td>
+                        <td><small>{{depcaja.fechaDesdeCaja|date('d-m-Y')}}</small></td>
+                        <td><small>{{depcaja.fechaHastaCaja|date('d-m-Y')}}</small></td>
+                        <td><small>{{depcaja.archivadoHasta|date('d-m-Y')}}</small></td>
+                        <td><small>{{depcaja.observa}}</small></td>
+                        <td>{% include 'box/_boxEstados.html.twig' with {'estado': depcaja.estado } %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br>
+<div id="loading"></div>
+{% endblock %}
+{% block javascript %}
+    {{parent()}}
+    <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+    <script src="{{asset('js/loadingDataTable.js') }}"></script>
+    <script src="{{asset('js/dataTableBasic.js') }}"></script>
+{% endblock %}

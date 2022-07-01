@@ -71,6 +71,7 @@
           <option value='{{ path('viewBoxes', app.request.query.all|merge({'pcg_show': '50'})) }}' {% if app.request.get('pcg_show')  == 50 %}  selected {% endif %}>50</option>
           <option value='{{ path('viewBoxes', app.request.query.all|merge({'pcg_show': '100'})) }}' {% if app.request.get('pcg_show') == 100 %} selected {% endif %}>100</option>
           <option value='{{ path('viewBoxes', app.request.query.all|merge({'pcg_show': '500'})) }}' {% if app.request.get('pcg_show') == 500 %} selected {% endif %}>500</option>
+          <option value='{{ path('viewBoxes', app.request.query.all|merge({'pcg_show': '1000'})) }}' {% if app.request.get('pcg_show') == 1000 %} selected {% endif %}>1000</option>
       </select>
     </div>
 
@@ -167,7 +168,7 @@
 <!-- END TABLE -->
 
 <div class="row">
-  <div class="col-md-4 pull-left">
+  <div class="col-md-2 pull-left">
     <!-- EXPORT DATE -->
     <div class="dropdown dropup">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-bars"></i> Exportar Datos
@@ -179,6 +180,14 @@
     <!-- END EXPORT DATE -->
   </div>
 
+  <div class="col-md-2 pull-left">
+    <!-- EXPORT DATE -->
+    <div class="dropdown dropup">
+        <a class="btn btn-secondary h3 pull-right" href="{{ path('exportAllRegister') }}"><i class="fa fa-bars"></i> Exportar Todos</a>
+    </div>
+    <!-- END EXPORT DATE -->
+  </div>
+  
   <div class='col-md-3 text-center'>
         <p>{{totalOfRecordsString}}</p>
   </div>
