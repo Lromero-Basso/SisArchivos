@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="page">
+    <div class="card mt-2">
+        <div class="card-header text-center">
+            <b class="h6"> Listado total de registros </b>
+            <div class="dropdown dropup float-right">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-bars"></i> Exportar Todos
+                <span class="caret"></span></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="exportToExcel()" href="#"><img src="{{ asset('images/icons/xls.png') }}" width="24"> Excel</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4 table-responsive">
+            <table class="table table-striped table-hover" id="tabla" namefile="Listado total de carpetas" >
+                <thead>
+                    <tr>
+                    {% import "@generator_bundle/th_sortable.html.twig" as macros %} 
+                    <th style="border:0px;">{{macros.th_sortable('id',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código carpeta')}}</th>
+                    <th style="border:0px;">{{macros.th_sortable('nroCarpeta',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','N° carpeta')}}</th>
+                    <th style="border:0px;">{{macros.th_sortable('codCaja',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Código caja')}}</th>
+                    <th style="border:0px;">{{macros.th_sortable('tituloCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Título carpeta')}}</th>
+                    <th style="border:0px;">{{macros.th_sortable('fechaDesdeCarp',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Fecha')}}</th>
+                    <th style="border:0px;">{{macros.th_sortable('nEstado',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , 'viewFolders','Estado')}}</th>
+                    <th style="border:0px;" width = "100px" class="noExl">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    {% for folder in folders %}
+                    <tr>
+                    <td>{{folder.id}}</td>
+                    <td>{{folder.nroCarpeta}}</td>
+                    <td>{{folder.codCaja}}</td>
+                    <td><small>{{folder.tituloCarp}}</small></td>
+                    <td>{{folder.fechaDesdeCarp|date('d-m-Y')}}</td>
+                    <td>{% if folder.nEstado == 0 %}<span class="badge badge-success">EN ARCHIVO</span>{% else %}<span class="badge  badge-warning">RETIRADA</span>{% endif %}</td>
+                    <td class="actions  noExl">
+                        <div class="btn-group">
+                        <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Opciones <span class="caret"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            {% if folder.nEstado == 0 %}
+                            <a class="dropdown-item" title='Editar'  href="{{ path('editFolder', { 'id': folder.id }) }}">Editar carpeta<i class="ml-1 text-success far fa-edit"></i></a>
+                            <div class="dropdown-divider"></div>
+                            {% endif %}
+                            <a class="dropdown-item" title="Eliminar" onclick="sweetAlertDelete({{folder.id}})" href="#">Eliminar carpeta<i class="ml-1 text-danger far fa-trash-alt"></i></a>
+                            <div class="dropdown-divider"></div>
+                            {% if folder.nEstado == 0 %}
+                            <a class="dropdown-item" title='Retirar'  href="{{ path('retireFolder', { 'id': folder.id }) }}">Retirar carpeta<i class="ml-1 fas fa-folder-open"></i></a>     
+                            {% else %}
+                            <a class="dropdown-item" title='Devolver'  href="{{ path('returnFolder', { 'id': folder.id }) }}">Devolver carpeta<i class="ml-1 fas fa-folder"></i></a>     
+                            {# <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" title='Deshacer'  onclick="sweetAlertUndo({{folder.id}})" href="#">Deshacer Movimiento</a> #}
+                            {% endif %}  
+                        </div>
+                        </div>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+     </div>
+</div>
+<br>
+<div id="loading"></div>
+{% endblock %}
+{% block javascript %}
+    {{parent()}}
+    <script type="text/javascript" src=" {{ asset('js/jquery.table2excel.js') }}"></script>
+{% endblock %}

@@ -91,6 +91,20 @@ class CarpecajaController extends BaseController
     }
 
     /**
+     * @Route("/exportAll", name="exportAll")
+     */
+    public function exportAll(){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $carpecajas    = $entityManager->getRepository(Carpecaja::class)->findBy(array(), array("id"=>"DESC"));
+
+        return $this->render('folder/exportAll.html.twig', array(
+            'folders' => $carpecajas
+        ));
+    }
+
+    /**
      * @Route("/edit/{id}", name="editFolder")
      * @Method({"GET", "POST"})
      */

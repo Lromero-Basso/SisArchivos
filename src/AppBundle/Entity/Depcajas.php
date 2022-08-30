@@ -59,7 +59,7 @@ class Depcajas
     /**
      * @var string
      *
-     * @ORM\Column(name="tituloCaja", type="string", length=100)
+     * @ORM\Column(name="tituloCaja", type="string", length=200)
      */
     private $tituloCaja;
 
