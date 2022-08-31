@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Depcajas;
 use AppBundle\Entity\Areas;
-
+use AppBundle\Entity\Carpecaja;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap4View;
@@ -27,7 +27,8 @@ class DepcajasController extends BaseController
      * @Route("/create", name="createBox")
      * @Method({"GET", "POST"})
      */
-    public function createBox(Request $request){
+    public function createBox(Request $request)
+    {
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -39,18 +40,17 @@ class DepcajasController extends BaseController
 
         $areas = $entityManager->getRepository(Areas::class)->findAll();
 
-        if($formBox != null){
-           
+        if ($formBox != null) {
+
             $box = new Depcajas();
             $box = $this->setPropertiesBox($box, $formBox, $entityManager);
-     
+
             $this->addFlash(
                 'notice',
                 '¡Se cargó correctamente la caja ID N° ' . $box->getId() . '!'
             );
-            
+
             return $this->redirectToRoute('viewBoxes');
-    
         }
 
         return $this->render('box/create.html.twig', array(
@@ -62,7 +62,8 @@ class DepcajasController extends BaseController
     /**
      * @Route("/view", name="viewBoxes")
      */
-    public function viewBoxes(Request $request){
+    public function viewBoxes(Request $request)
+    {
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -85,14 +86,15 @@ class DepcajasController extends BaseController
         ));
     }
 
-       /**
+    /**
      * @Route("/exportAllRegister", name="exportAllRegister")
      */
-    public function exportAllRegister(){
+    public function exportAllRegister()
+    {
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $depcajas = $entityManager->getRepository(Depcajas::class)->findBy(array(), array("id"=>"DESC"));
+        $depcajas = $entityManager->getRepository(Depcajas::class)->findBy(array(), array("id" => "DESC"));
 
         return $this->render('box/exportAllRegister.html.twig', array(
             'depcajas' => $depcajas
@@ -104,21 +106,22 @@ class DepcajasController extends BaseController
      * @Route("/edit/{id}", name="editBox")
      * @Method({"GET", "POST"})
      */
-    public function editBox(Request $request, $id){
+    public function editBox(Request $request, $id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         $this->setBreadCrumbsWithId("Editar caja", "editBox", $id);
 
         $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
-   
+
         $formBox = $request->get("Depcaja");
 
         $areas = $entityManager->getRepository(Areas::class)->findAll();
 
-        if($formBox != null){
+        if ($formBox != null) {
 
             $box = $this->setPropertiesBoxEdit($box, $formBox, $entityManager);
-        
+
             $this->addFlash(
                 'notice',
                 '¡Se actualizó correctamente la caja ID N° ' . $box->getId() . '!'
@@ -138,7 +141,8 @@ class DepcajasController extends BaseController
      * @Route("show/{id}", name="showBox")
      * @Method({"GET", "POST"})
      */
-    public function showBox(Request $request, $id){
+    public function showBox(Request $request, $id)
+    {
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -156,48 +160,55 @@ class DepcajasController extends BaseController
      * @Route("/{id}", name="deleteBox")
      * @Method({"GET", "POST"})
      */
-    public function deleteBox(Request $request, $id){
+    public function deleteBox(Request $request, $id)
+    {
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager  = $this->getDoctrine()->getManager();
 
         // $entityManager->getConnection()->beginTransaction();
 
-        $box = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id'=>$id));
+        $box            = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
+        $folders        = $entityManager->getRepository(Carpecaja::class)->findBy(["codCaja" => "$id"]);
 
-        try{
+        try {
+            if (!empty($folders)) {
+                foreach ($folders as $folder) {
+                    $entityManager->remove($folder);
+                }
+            }
             $entityManager->remove($box);
             $entityManager->flush();
             // $entityManager->getConnection()->commit();
 
             return new JsonResponse(['success' => true]);
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return new JsonResponse(['success' => false]);
         }
     }
 
     /**
-    * Create filter form and process filter request.
-    *
-    */
-    protected function filter($queryBuilder, Request $request){
+     * Create filter form and process filter request.
+     *
+     */
+    protected function filter($queryBuilder, Request $request)
+    {
         $session = $request->getSession();
         $filterForm = $this->createForm('AppBundle\Form\DepcajaFilterType', $this->getTituloCaja());
 
         //Reset filter
-        if($request->get('filter_action') == 'reset'){
-            if($session->get('DepcajaControllerFilter') != null){
+        if ($request->get('filter_action') == 'reset') {
+            if ($session->get('DepcajaControllerFilter') != null) {
                 //If null apply reset, is necessary because without the validate, this closed the session
                 $session->remove('DepcajaControllerFilter');
             }
         }
 
         //Filter action
-        if($request->get('filter_action') == 'filter'){
+        if ($request->get('filter_action') == 'filter') {
             $filterForm->handleRequest($request);
-            
+
             // Bind values from the request
-            if($filterForm->isValid()){
+            if ($filterForm->isValid()) {
                 // Build the query from the given form object
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
 
@@ -222,22 +233,22 @@ class DepcajasController extends BaseController
         //     }
         // }
         return array($filterForm, $queryBuilder);
-
     }
 
-     /**
-    * Get results from paginator and get paginator view.
-    *
-    */
-    protected function paginator($queryBuilder, Request $request){
+    /**
+     * Get results from paginator and get paginator view.
+     *
+     */
+    protected function paginator($queryBuilder, Request $request)
+    {
         //Sorting
-        $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
+        $sortCol = $queryBuilder->getRootAlias() . '.' . $request->get('pcg_sort_col', 'id');
         $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'DESC'));
 
         //Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage($request->get('pcg_show' , 10));
+        $pagerfanta->setMaxPerPage($request->get('pcg_show', 10));
 
         try {
             $pagerfanta->setCurrentPage($request->get('pcg_page', 1));
@@ -249,8 +260,7 @@ class DepcajasController extends BaseController
 
         // Paginator - route generator
         $me = $this;
-        $routeGenerator = function($page) use ($me, $request)
-        {
+        $routeGenerator = function ($page) use ($me, $request) {
             $requestParams = $request->query->all();
             $requestParams['pcg_page'] = $page;
             return $me->generateUrl('viewBoxes', $requestParams);
@@ -265,14 +275,14 @@ class DepcajasController extends BaseController
         ));
 
         return array($entities, $pagerHtml);
-
     }
 
-     
+
     /*
      * Calculates the total of records string
      */
-    protected function getTotalOfRecordsString($queryBuilder, $request) {
+    protected function getTotalOfRecordsString($queryBuilder, $request)
+    {
         $totalOfRecords = $queryBuilder->select('COUNT(e.id)')->getQuery()->getSingleScalarResult();
         $show = $request->get('pcg_show', 10);
         $page = $request->get('pcg_page', 1);
@@ -288,10 +298,10 @@ class DepcajasController extends BaseController
 
 
     /**
-    * Bulk Action
-    * @Route("/bulk-action/", name="depcaja_bulk_action")
-    * @Method({"GET", "POST"})
-    */
+     * Bulk Action
+     * @Route("/bulk-action/", name="depcaja_bulk_action")
+     * @Method({"GET", "POST"})
+     */
     public function bulkAction(Request $request)
     {
         $ids = $request->get("ids", array());
@@ -309,7 +319,6 @@ class DepcajasController extends BaseController
                 }
 
                 $this->get('session')->getFlashBag()->add('success', 'embalajeContadors was deleted successfully!');
-
             } catch (Exception $ex) {
                 $this->get('session')->getFlashBag()->add('error', 'Problem with deletion of the embalajeContadors ');
             }
@@ -319,7 +328,8 @@ class DepcajasController extends BaseController
     }
 
 
-    public function getTituloCaja(){
+    public function getTituloCaja()
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         $depcajasTitulos    = $entityManager->getRepository(Depcajas::class)->findBy(array(), array('tituloCaja' => 'ASC'));
@@ -330,36 +340,36 @@ class DepcajasController extends BaseController
         $arrayCodigoArea = [];
         $i = 0;
 
-        foreach($depcajasTitulos as $depcaja){
+        foreach ($depcajasTitulos as $depcaja) {
             $arrayTitulos[$depcaja->getTituloCaja()] = $depcaja->getTituloCaja();
-        }   
-        foreach($areas as $area){
+        }
+        foreach ($areas as $area) {
             $i = $area->getId();
-            $arrayCodigoArea[$i." - ".$area->getNomArea()] = $area->getId();
-        } 
+            $arrayCodigoArea[$i . " - " . $area->getNomArea()] = $area->getId();
+        }
 
         array_push($arrayOptions, $arrayTitulos, $arrayCodigoArea);
-       
+
         return $arrayOptions;
-        
     }
 
-    public function modificarAutomaticamenteEstadoCaja($entityManager, $boxes){
+    public function modificarAutomaticamenteEstadoCaja($entityManager, $boxes)
+    {
         $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
-        foreach($boxes as $box){
+        foreach ($boxes as $box) {
             //Comparo que la fecha de archivado hasta sea menor a la fecha actual y se setee solo a destruida solo si el estado es vigente o perdida
-            if($box->getEstado() < 2){
-                if($box->getArchivadoHasta() < $actualDate){             
+            if ($box->getEstado() < 2) {
+                if ($box->getArchivadoHasta() < $actualDate) {
                     $box->setEstado(1); //La seteo a destruida
                     $entityManager->persist($box);
                     $entityManager->flush();
                 }
             }
-            
         }
     }
 
-    public function setPropertiesBox($box, $formBox, $entityManager){
+    public function setPropertiesBox($box, $formBox, $entityManager)
+    {
         $box->setNroCaja($formBox['nroCaja']);
         $box->setCodEstante($formBox['codEstante']);
         $box->setCodLado($formBox['codLado']);
@@ -381,7 +391,8 @@ class DepcajasController extends BaseController
         return $box;
     }
 
-    public function setPropertiesBoxEdit($box, $formBox, $entityManager){
+    public function setPropertiesBoxEdit($box, $formBox, $entityManager)
+    {
 
         $actualDate = new \DateTime(null, new \DateTimeZone('America/Argentina/Buenos_Aires'));
 
@@ -399,14 +410,12 @@ class DepcajasController extends BaseController
         $box->setFechaHastaCaja(new \DateTime($formBox['fechaHasta']));
         $box->setArchivadoHasta(new \DateTime($formBox['archivadoHasta']));
 
-        if($formBox['estado'] == "SI"){                
+        if ($formBox['estado'] == "SI") {
             $box->setEstado(2);
-        }
-        else{
-            if($box->getArchivadoHasta() < $actualDate){
+        } else {
+            if ($box->getArchivadoHasta() < $actualDate) {
                 $box->setEstado(1);
-            }
-            else{
+            } else {
                 $box->setEstado(0);
             }
         }
@@ -416,5 +425,4 @@ class DepcajasController extends BaseController
 
         return $box;
     }
-
 }

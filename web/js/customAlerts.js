@@ -20,10 +20,15 @@ function sweetAlert(route) {
     })
 }
 
-function sweetAlertDelete(id) {
-
+function sweetAlertDelete(id, caja = null) {
+    let title;
+    if(caja != null){
+        title = 'Se eliminarán también las carpetas asociadas a esta caja ¿Desea continuar?';
+    }else{
+        title = '¿Está seguro/a que desea eliminar?';
+    }
     Swal.fire({
-        title: '¿Está seguro/a que desea eliminar?',
+        title: title,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
