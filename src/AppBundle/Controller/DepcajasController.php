@@ -162,10 +162,25 @@ class DepcajasController extends BaseController
      */
     public function deleteBox(Request $request, $id)
     {
-
         $entityManager  = $this->getDoctrine()->getManager();
+        $box            = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
 
-        // $entityManager->getConnection()->beginTransaction();
+        try {
+            $entityManager->remove($box);
+            $entityManager->flush();
+            // $entityManager->getConnection()->commit();
+
+            return new JsonResponse(['success' => true]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['success' => false]);
+        }
+    }
+
+    /**
+     * @Route("/{id}/deleteAll", name="deleteAll")
+     */
+    public function deleteAll(Request $request, $id){
+        $entityManager  = $this->getDoctrine()->getManager();
 
         $box            = $entityManager->getRepository(Depcajas::class)->findOneBy(array('id' => $id));
         $folders        = $entityManager->getRepository(Carpecaja::class)->findBy(["codCaja" => "$id"]);
@@ -178,7 +193,6 @@ class DepcajasController extends BaseController
             }
             $entityManager->remove($box);
             $entityManager->flush();
-            // $entityManager->getConnection()->commit();
 
             return new JsonResponse(['success' => true]);
         } catch (\Exception $e) {
