@@ -13,7 +13,7 @@
       <table class="table">
         <thead>
             <tr>
-                <th scope="col">Cod. caja</th>
+                <th scope="col">N° Caja</th>
                 <th scope="col">Cod. estante</th>
                 <th scope="col">Cod. lado</th>
                 <th scope="col">Columna</th>
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{box.id}}</td>
+                <td>{{box.nroCaja}}</td>
                 <td>{{box.codEstante}}</td>
                 <td>{% include 'box/_boxCodLado.html.twig' with {'codLado': box.codLado } %}</td>
                 <td>{{box.columna}}</td>
