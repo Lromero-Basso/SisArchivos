@@ -80,7 +80,7 @@ class Depcajas
     /**
      * @var string
      *
-     * @ORM\Column(name="observa", type="string", length=255)
+     * @ORM\Column(name="observa", type="string", length=1000)
      */
     private $observa;
 
